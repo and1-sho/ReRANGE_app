@@ -5,7 +5,14 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   enum role: { member: 0, coach: 1 }
+  # ユーザーの名前を必須項目にする
   validates :name, presence: true
+  # ユーザーの識別（memberかcoach）を必須項目にする
   validates :role, presence: true
+
+  # ユーザーは複数のrequestを持つ
+  has_many :requests
+  # コーチは複数のアドバイスを持つ
+  has_many :advices
   
 end

@@ -1,0 +1,17 @@
+<h1>リクエスト一覧</h1>
+<% if current_user.member? %>
+    <p><%= link_to "新規リクエストを作成する", new_request_path %></p>
+<% end %>
+
+<% if @requests.any? %>
+    <ul>
+        <% @requests.each do |request| %>
+            <li>
+                <strong><%= link_to request.title, request_path(request) %></strong>
+                （作成者: <%= request.user.name %>）
+            </li>
+        <% end %>
+    </ul>
+<% else %>
+    <p>リクエストは登録されていません</p>
+<% end %>
