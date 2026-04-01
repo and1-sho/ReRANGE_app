@@ -1,7 +1,15 @@
 <h1>リクエスト詳細</h1>
-
 <p><strong>タイトル:</strong> <%= @request.title %></p>
 <p><strong>内容:</strong> <%= @request.body %></p>
 <p><strong>作成者:</strong> <%= @request.user.name %></p>
+<% if @request.advice.present? %>
+    <h2>アドバイス</h2>
+    <p><%= @request.advice.body %></p>
+<% else %>
+    <p>まだアドバイスはありません</p>
+    <% if current_user.coach? %>
+        <p><%= link_to "アドバイスを書く", new_request_advice_path(@request) %></p>
+    <% end %>
+<% end %>
 
 <p><%= link_to "一覧に戻る", requests_path %></p>

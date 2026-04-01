@@ -1,2 +1,16 @@
-<h1>Advices#new</h1>
-<p>Find me in app/views/advices/new.html.erb</p>
+<h1>アドバイス作成</h1>
+
+<p><strong>対象リクエスト:</strong> <%= @request.title %></p>
+
+<%= form_with model: @advice, url: request_advice_path(@request), local: true do |f| %>
+    <div>
+        <%= f.label :body, "アドバイス内容" %><br>
+        <%= f.text_area :body %>
+    </div>
+
+    <div>
+        <%= f.submit "送信する" %>
+    </div>
+<% end %>
+
+<p><%= link_to "リクエスト詳細に戻る", request_path(@request) %></p>
