@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'home/index'
   get 'advices/new'
   get 'advices/create'
   get 'requests/index'
@@ -10,6 +11,9 @@ Rails.application.routes.draw do
   resources :requests, only:[:index, :show, :new, :create] do
     resource :advice, only:[:new, :create]
   end
+
+  # トップページ
+  root "home#index"
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
