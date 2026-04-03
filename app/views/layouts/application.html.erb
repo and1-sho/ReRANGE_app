@@ -11,7 +11,8 @@
   </head>
 
   <body>
-  <% unless current_page?(root_path) %>
+  <% auth_style_pages = (controller_name == "registrations" && action_name == "new") || (controller_name == "sessions" && action_name == "new") %>
+  <% unless current_page?(root_path) || auth_style_pages %>
       <% if user_signed_in? %>
         <p>
           ログイン中: <%= current_user.name %>（<%= current_user.role %>） |
