@@ -2,9 +2,9 @@
 
 <p><strong>対象リクエスト:</strong> <%= @request.title %></p>
 
-<% if @post.errors.any? %>
+<% if @advice.errors.any? %>
     <ul>
-        <% @post.errors.full_messages.each do |message| %>
+        <% @advice.errors.full_messages.each do |message| %>
             <li><%= message %></li>
         <% end %>
     </ul>
