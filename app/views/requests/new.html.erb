@@ -1,8 +1,8 @@
 <h1>リクエスト作成</h1>
 
-<% if @post.errors.any? %>
+<% if @request.errors.any? %>
     <ul>
-        <% @post.errors.full_messages.each do |message| %>
+        <% @request.errors.full_messages.each do |message| %>
             <li><%= message %></li>
         <% end %>
     </ul>
