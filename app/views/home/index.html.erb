@@ -1,0 +1,24 @@
+<div class="top-wrap">
+  <header class="top-header">
+    <div class="logo">
+      <span class="logo-mark"></span>
+      <span>Re:Range</span>
+    </div>
+    <nav class="menu" aria-label="アカウント">
+      <% if user_signed_in? %>
+        <%= link_to "リクエスト一覧", requests_path, class: "menu-btn menu-btn--ghost" %>
+        <%= link_to "ログアウト", destroy_user_session_path, class: "menu-btn menu-btn--outline", data: { turbo_method: :delete } %>
+      <% else %>
+        <%= link_to "無料ではじめる", new_user_registration_path, class: "menu-btn menu-btn--primary" %>
+        <%= link_to "ログイン", new_user_session_path, class: "menu-btn menu-btn--ghost" %>
+      <% end %>
+    </nav>
+  </header>
+  <section class="hero">
+    <div>
+      <h1>Re:Range</h1>
+      <p>距離を超えて、強くなる</p>
+    </div>
+  </section>
+</div>
+
