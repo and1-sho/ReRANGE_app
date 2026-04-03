@@ -1,15 +1,52 @@
-<h1>リクエスト詳細</h1>
-<p><strong>タイトル:</strong> <%= @request.title %></p>
-<p><strong>内容:</strong> <%= @request.body %></p>
-<p><strong>作成者:</strong> <%= @request.user.name %></p>
-<% if @request.advice.present? %>
-    <h2>アドバイス</h2>
-    <p><%= @request.advice.body %></p>
-<% else %>
-    <p>まだアドバイスはありません</p>
-    <% if current_user.coach? %>
-        <p><%= link_to "アドバイスを書く", new_request_advice_path(@request) %></p>
+<div class="requests-page">
+  <header class="requests-header">
+    <%= link_to root_path, class: "requests-brand requests-brand--link" do %>
+      <span class="requests-brand__mark"></span>
+      <span class="requests-brand__name">Re:Range</span>
     <% end %>
-<% end %>
 
-<p><%= link_to "一覧に戻る", requests_path %></p>
+    <div class="requests-account">
+      <span class="requests-account__user">
+        <%= current_user.name %>（<%= current_user.role %>）
+      </span>
+      <%= link_to "ログアウト", destroy_user_session_path, class: "menu-btn menu-btn--ghost", data: { turbo_method: :delete } %>
+    </div>
+  </header>
+
+  <main class="request-show">
+    <article class="request-show__post">
+      <div class="request-show__meta">
+        <span class="request-show__author"><%= @request.user.name %></span>
+        <span class="request-show__dot">・</span>
+        <time class="request-show__date" datetime="<%= @request.created_at.iso8601 %>">
+          <%= @request.created_at.strftime("%Y/%m/%d %H:%M") %>
+        </time>
+      </div>
+
+      <h1 class="request-show__title"><%= @request.title %></h1>
+      <div class="request-show__body">
+        <%= simple_format(@request.body) %>
+      </div>
+    </article>
+
+    <section class="request-show__advice" aria-labelledby="advice-heading">
+      <% if @request.advice.present? %>
+        <h2 id="advice-heading" class="request-show__advice-heading">アドバイス</h2>
+        <div class="request-show__advice-body">
+          <%= simple_format(@request.advice.body) %>
+        </div>
+      <% else %>
+        <p class="request-show__advice-empty">まだアドバイスはありません</p>
+        <% if current_user.coach? %>
+          <p class="request-show__advice-action">
+            <%= link_to "アドバイスを書く", new_request_advice_path(@request), class: "menu-btn menu-btn--primary" %>
+          </p>
+        <% end %>
+      <% end %>
+    </section>
+
+    <p class="request-show__back">
+      <%= link_to "一覧に戻る", requests_path, class: "menu-btn menu-btn--ghost" %>
+    </p>
+  </main>
+</div>

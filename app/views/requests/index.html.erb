@@ -1,17 +1,47 @@
-<h1>リクエスト一覧</h1>
-<% if current_user.member? %>
-    <p><%= link_to "新規リクエストを作成する", new_request_path %></p>
-<% end %>
+<div class="requests-page">
+  <header class="requests-header">
+    <%= link_to root_path, class: "requests-brand requests-brand--link" do %>
+      <span class="requests-brand__mark"></span>
+      <span class="requests-brand__name">Re:Range</span>
+    <% end %>
 
-<% if @requests.any? %>
-    <ul>
-        <% @requests.each do |request| %>
-            <li>
-                <strong><%= link_to request.title, request_path(request) %></strong>
-                （作成者: <%= request.user.name %>）
-            </li>
-        <% end %>
-    </ul>
-<% else %>
-    <p>リクエストは登録されていません</p>
-<% end %>
+    <div class="requests-account">
+      <span class="requests-account__user">
+        <%= current_user.name %>（<%= current_user.role %>）
+      </span>
+      <%= link_to "ログアウト", destroy_user_session_path, class: "menu-btn menu-btn--ghost", data: { turbo_method: :delete } %>
+    </div>
+  </header>
+
+  <% if current_user.member? %>
+    <div class="requests-actions">
+      <%= link_to "新規リクエストを作成する", new_request_path, class: "menu-btn menu-btn--primary" %>
+    </div>
+  <% end %>
+
+  <% if @requests.any? %>
+    <div class="requests-list">
+      <% @requests.order(created_at: :desc).each do |request| %>
+        <article class="tweet-card">
+          <div class="tweet-card__avatar"></div>
+
+          <div class="tweet-card__body">
+            <div class="tweet-card__header">
+              <span class="tweet-card__name"><%= request.user.name %></span>
+              <span class="tweet-card__dot">・</span>
+              <span class="tweet-card__date">
+                <%= request.created_at.strftime("%Y/%m/%d %H:%M") %>
+              </span>
+            </div>
+
+            <h2 class="tweet-card__title">
+              <%= link_to request.title, request_path(request) %>
+            </h2>
+          </div>
+        </article>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="requests-empty">リクエストは登録されていません</p>
+  <% end %>
+</div>

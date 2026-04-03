@@ -1,25 +1,48 @@
-<h1>リクエスト作成</h1>
+<div class="requests-page">
+  <header class="requests-header">
+    <%= link_to root_path, class: "requests-brand requests-brand--link" do %>
+      <span class="requests-brand__mark"></span>
+      <span class="requests-brand__name">Re:Range</span>
+    <% end %>
 
-<% if @request.errors.any? %>
-    <ul>
-        <% @request.errors.full_messages.each do |message| %>
+    <div class="requests-account">
+      <span class="requests-account__user">
+        <%= current_user.name %> (<%= current_user.role %>)
+      </span>
+      <%= link_to "ログアウト", destroy_user_session_path, class: "menu-btn menu-btn--ghost", data: { turbo_method: :delete } %>
+    </div>
+  </header>
+
+  <main class="request-compose">
+    <% if @request.errors.any? %>
+      <div class="request-compose__errors" role="alert">
+        <ul>
+          <% @request.errors.full_messages.each do |message| %>
             <li><%= message %></li>
-        <% end %>
-    </ul>
-<% end %>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
 
-<%= form_with model: @request, local: true do |f| %>
-  <div>
-    <%= f.label :title, "タイトル" %><br>
-    <%= f.text_field :title %>
-  </div>
-  <div>
-    <%= f.label :body, "内容" %><br>
-    <%= f.text_area :body %>
-  </div>
-  <div>
-    <%= f.submit "作成する" %>
-  </div>
-<% end %>
+    <%= form_with model: @request, local: true, html: { class: "request-compose__form" } do |f| %>
+      <div class="request-compose__row">
+        <div class="request-compose__avatar" aria-hidden="true"></div>
 
-<p><%= link_to "一覧に戻る", requests_path %></p>
+        <div class="request-compose__fields">
+          <%= f.text_field :title, placeholder: "例）パンチ力を上げたい", class: "request-compose__title", autocomplete: "off" %>
+
+          <%= f.text_area :body, placeholder: "例）パンチ力を上げるにはどういうトレーニングをしたらいいですか？", rows: 8, class: "request-compose__body" %>
+        </div>
+      </div>
+
+      <div class="request-compose__toolbar">
+        <%= link_to "キャンセル", requests_path, class: "request-compose__cancel" %>
+        <%= f.submit "投稿する", class: "menu-btn menu-btn--primary request-compose__submit" %>
+      </div>
+    <% end %>
+
+    <p class="request-compose__footer-link">
+      <%= link_to "一覧に戻る", requests_path, class: "menu-btn menu-btn--ghost" %>
+    </p>
+  </main>
+</div>

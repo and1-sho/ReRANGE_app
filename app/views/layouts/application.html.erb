@@ -11,21 +11,6 @@
   </head>
 
   <body>
-  <% auth_style_pages = (controller_name == "registrations" && action_name == "new") || (controller_name == "sessions" && action_name == "new") %>
-  <% unless current_page?(root_path) || auth_style_pages %>
-      <% if user_signed_in? %>
-        <p>
-          ログイン中: <%= current_user.name %>（<%= current_user.role %>） |
-          <%= link_to "ログアウト", destroy_user_session_path, data: { turbo_method: :delete } %>
-        </p>
-      <% else %>
-        <p>
-          <%= link_to "新規登録", new_user_registration_path %> |
-          <%= link_to "ログイン", new_user_session_path %>
-        </p>
-      <% end %>
-    <% end %>
-
     <% if notice.present? %>
       <p style="color: green;"><%= notice %></p>
     <% end %>
