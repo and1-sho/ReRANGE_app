@@ -1,26 +1,47 @@
-<h2>Log in</h2>
+<div class="top-wrap">
+  <header class="top-header">
+    <%= link_to root_path, class: "logo logo--link" do %>
+      <span class="logo-mark"></span>
+      <span>Re:Range</span>
+    <% end %>
+  </header>
 
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
-    <p><%= f.label :email %></p>
-    <p><%= f.email_field :email, autofocus: true, autocomplete: "email" %></p>
-  </div>
+  <main class="auth-main">
+    <div class="auth-card">
+      <h1 class="auth-title">ログイン</h1>
 
-  <div class="field">
-    <p><%= f.label :password %></p>
-    <p><%= f.password_field :password, autocomplete: "current-password" %></p>
-  </div>
+      <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "auth-form" }) do |f| %>
+        <div class="auth-field">
+          <%= f.label :email, "メールアドレス", class: "auth-label" %>
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "auth-input" %>
+        </div>
 
-  <% if devise_mapping.rememberable? %>
-    <div class="field">
-      <p><%= f.check_box :remember_me %></p>
-      <p><%= f.label :remember_me %></p>
+        <div class="auth-field">
+          <%= f.label :password, "パスワード", class: "auth-label" %>
+          <%= f.password_field :password, autocomplete: "current-password", class: "auth-input" %>
+        </div>
+
+        <% if devise_mapping.rememberable? %>
+          <div class="auth-field auth-field--check">
+            <%= f.check_box :remember_me, class: "auth-checkbox" %>
+            <%= f.label :remember_me, "ログイン状態を保持する", class: "auth-check-label" %>
+          </div>
+        <% end %>
+
+        <div class="auth-actions">
+          <%= f.submit "ログインする", class: "menu-btn menu-btn--primary auth-submit" %>
+        </div>
+      <% end %>
+
+      <p class="auth-footer">
+        <%= link_to "新規登録はこちら", new_user_registration_path, class: "auth-link" %>
+      </p>
+
+      <% if devise_mapping.recoverable? %>
+        <p class="auth-footer auth-footer--sub">
+          <%= link_to "パスワードをお忘れの方", new_password_path(resource_name), class: "auth-link auth-link--sub" %>
+        </p>
+      <% end %>
     </div>
-  <% end %>
-
-  <div class="actions">
-    <%= f.submit "Log in" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+  </main>
+</div>

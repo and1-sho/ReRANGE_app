@@ -1,13 +1,13 @@
 <div class="top-wrap">
   <header class="top-header">
-    <div class="logo">
+    <%= link_to root_path, class: "logo logo--link" do %>
       <span class="logo-mark"></span>
       <span>Re:Range</span>
-    </div>
+    <% end %>
     <nav class="menu" aria-label="アカウント">
       <% if user_signed_in? %>
-        <%= link_to "リクエスト一覧", requests_path, class: "menu-btn menu-btn--ghost" %>
-        <%= link_to "ログアウト", destroy_user_session_path, class: "menu-btn menu-btn--outline", data: { turbo_method: :delete } %>
+        <%= link_to "リクエスト一覧", requests_path, class: "menu-btn menu-btn--primary" %>
+        <%= link_to "ログアウト", destroy_user_session_path, class: "menu-btn menu-btn--ghost", data: { turbo_method: :delete } %>
       <% else %>
         <%= link_to "無料ではじめる", new_user_registration_path, class: "menu-btn menu-btn--primary" %>
         <%= link_to "ログイン", new_user_session_path, class: "menu-btn menu-btn--ghost" %>
