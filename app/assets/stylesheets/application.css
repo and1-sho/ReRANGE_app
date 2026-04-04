@@ -112,6 +112,14 @@
     letter-spacing: 0.02em;
   }
 
+  .auth-lead {
+    margin: -8px 0 20px;
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: rgba(2, 27, 21, 0.62);
+    text-align: center;
+  }
+
   .auth-form {
     display: flex;
     flex-direction: column;
