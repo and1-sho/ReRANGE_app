@@ -588,3 +588,44 @@
   margin: 24px 0 0;
   max-width: 680px;
 }
+
+/* ==== Advice 新規（リクエスト新規と同系・返信先コンテキスト付き） ==== */
+.advice-compose__context {
+  max-width: 680px;
+  margin: 0 0 20px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: rgba(2, 27, 21, 0.04);
+  border: 1px solid rgba(2, 27, 21, 0.08);
+}
+
+.advice-compose__context-label {
+  margin: 0 0 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(2, 27, 21, 0.45);
+}
+
+.advice-compose__context-title {
+  margin: 0 0 6px;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: #021b15;
+}
+
+.advice-compose__context-meta {
+  margin: 0;
+  font-size: 0.85rem;
+  color: rgba(2, 27, 21, 0.55);
+}
+
+.request-compose__avatar--coach {
+  background: #1da1f2;
+}
+
+.request-compose__body--advice {
+  min-height: 200px;
+}
