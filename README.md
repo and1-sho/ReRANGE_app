@@ -1,5 +1,7 @@
 # FightHub（仮）
 
+
+
 ## 概要（What）
 FightHubは、距離を超えてトレーナーからアドバイスを受けられる
 ボクシングのプラットフォームです。
@@ -30,7 +32,7 @@ FightHub（仮）を開発しました。
 
 ## 前提条件 / 実行環境
 ・Ruby 3.3.10  
-・Ruby on Rails 7.1.6
+・Ruby on Rails 7.1.6  
 ・Devise  
 ・SQLite3  
 ・HTML / CSS  
