@@ -4,6 +4,10 @@ class RequestsController < ApplicationController
   before_action :authenticate_user!
   # memberかをチェックする設定
   before_action :ensure_member!, only: [:new, :create]
+  # リクエストをセットする設定
+  before_action :set_request, only: [:show]
+  #　他人のリクエストを見れないようにする設定（URL直打ち）
+  before_action :authorize_request_access!, only: [:show]
 
   def index
     if current_user.member?
@@ -14,7 +18,6 @@ class RequestsController < ApplicationController
   end
 
   def show
-    @request = Request.find(params[:id])
   end
 
   def new
@@ -40,4 +43,15 @@ class RequestsController < ApplicationController
   def ensure_member!
     redirect_to requests_path, alert: "メンバーのみリクエストを作成できます" unless current_user.member?
   end
+
+  def set_request
+    @request = Request.find(params[:id])
+  end
+
+  def authorize_request_access!
+    return if current_user.coach?
+    return if @request.user_id == current_user.id
+    redirect_to requests_path, alert: "このリクエストを表示する権限がありません"
+  end
+
 end
