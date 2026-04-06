@@ -1,24 +1,52 @@
-# README
+# FightHub（仮）
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## 概要（What）
+FightHubは、距離を超えてトレーナーからアドバイスを受けられる
+ボクシングのプラットフォームです。
 
-Things you may want to cover:
+会員が相談を投稿し、コーチがアドバイスを返すことで、
+新しいボクシングの学び方を提供します。
 
-* Ruby version
 
-* System dependencies
+## 背景（Why）
+息子がボクシングを習っていますが、
+距離や時間の問題により、指導を受けたいトレーナーのもとへ通うことが難しい状況がありました。
 
-* Configuration
 
-* Database creation
+ボクシングは自主練は当たり前のスポーツで、場所に依存することが多く、
+距離の問題で学びの機会が制限されてしまいます。
 
-* Database initialization
+この課題を解決するため、
+距離を超えてトレーナーからアドバイスを受けられる
+FightHub（仮）を開発しました。
 
-* How to run the test suite
 
-* Services (job queues, cache servers, search engines, etc.)
+## 使い方（How）
+1. ユーザー登録を行います  
+2. memberユーザーは相談を投稿します  
+3. coachユーザーは相談に対してアドバイスを投稿します  
+4. 投稿されたアドバイスを確認できます  
 
-* Deployment instructions
 
-* ...
+## 前提条件 / 実行環境
+・Ruby 3.3.10  
+・Ruby on Rails 7.1.6
+・Devise  
+・SQLite3  
+・HTML / CSS  
+
+
+## 補足・注意点（任意）
+・memberユーザーのみ相談投稿が可能です  
+・coachユーザーのみアドバイス投稿が可能です  
+・1つの相談につきアドバイスは1件までです  
+
+
+## ライセンス
+MIT
+
+
+## 作者 / リンク（任意）
+
+作成者: Sho Inanaga
+GitHub: https://github.com/and1-sho
