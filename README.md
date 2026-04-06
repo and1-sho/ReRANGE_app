@@ -50,5 +50,5 @@ MIT
 
 ## 作者 / リンク（任意）
 
-作成者: Sho Inanaga
-GitHub: https://github.com/and1-sho
+作成者: Sho Inanaga  
+GitHub: https://github.com/and1-sho  
