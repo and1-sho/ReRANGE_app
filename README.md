@@ -38,10 +38,37 @@ FightHub（仮）を開発しました。
 ・HTML / CSS  
 
 
-## 補足・注意点（任意）
-・memberユーザーのみ相談投稿が可能です  
-・coachユーザーのみアドバイス投稿が可能です  
-・1つの相談につきアドバイスは1件までです  
+## 開発環境の構築（Docker）
+
+次の手順で、ローカルに Ruby を入れなくても同じアプリを起動できます。
+
+**前提:** [Docker Desktop](https://www.docker.com/products/docker-desktop/) をインストール済みであること。
+
+1. このリポジトリを clone し、プロジェクトのルートに移動する。
+2. ターミナルで次を実行する。
+
+```bash
+docker compose up --build
+```
+
+3. ブラウザで次を開く（`https` ではなく **`http`**）。
+
+```
+http://127.0.0.1:3000
+```
+
+4. 止めるときはターミナルで `Ctrl+C` のあと、次を実行する。
+
+```bash
+docker compose down
+```
+
+**うまくいかないとき:** ポート 3000 を別のアプリが使っている場合は、そのアプリを止める。`Gemfile` を変更した直後なら、次を実行してから再度手順 2 へ。
+
+```bash
+docker compose run --rm web bundle install
+```
+
 
 
 ## ライセンス

@@ -1,0 +1,10 @@
+#!/bin/bash
+set -e
+
+# サーバー起動前に: 足りない gem があれば入れる / DB を用意する
+if [ "${1}" = "./bin/rails" ] && [ "${2}" = "server" ]; then
+  bundle check || bundle install
+  ./bin/rails db:prepare
+fi
+
+exec "$@"

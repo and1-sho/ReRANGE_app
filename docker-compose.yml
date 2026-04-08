@@ -1,0 +1,17 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    environment:
+      DOCKER_DEV: "1"
+    volumes:
+      - .:/rails
+      - bundle_cache:/usr/local/bundle
+    stdin_open: true
+    tty: true
+
+volumes:
+  bundle_cache:
