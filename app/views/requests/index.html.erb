@@ -22,19 +22,21 @@
   <% if @requests.any? %>
     <div class="requests-list">
       <% @requests.order(created_at: :desc).each do |request| %>
-        <article class="tweet-card">
-          <div class="tweet-card__avatar"></div>
-
-          <div class="tweet-card__body">
-            <div class="tweet-card__header">
-              <span class="tweet-card__name"><%= request.user.name %></span>
-              <span class="tweet-card__dot">・</span>
-              <span class="tweet-card__date">
+        <article class="request-card">
+          <div class="request-card__avatar"></div>
+          <div class="request-card__body">
+            <div class="request-card__header">
+              <span class="request-card__name"><%= request.user.name %></span>
+              <span class="request-card__dot">・</span>
+              <span class="request-card__date">
                 <%= request.created_at.strftime("%Y/%m/%d %H:%M") %>
               </span>
+              <p class="request-card__status <%= request.advice.present? ? "request-card__status--answered" : "request-card__status--pending" %>">
+                <%= request.advice.present? ? "回答済み" : "未回答" %>
+              </p>
             </div>
 
-            <h2 class="tweet-card__title">
+            <h2 class="request-card__title">
               <%= link_to request.title, request_path(request) %>
             </h2>
           </div>

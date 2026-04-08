@@ -319,7 +319,7 @@
   gap: 0;
 }
 
-.tweet-card {
+.request-card {
   display: grid;
   grid-template-columns: 48px 1fr;
   column-gap: 12px;
@@ -327,19 +327,19 @@
   border-bottom: 1px solid rgba(2, 27, 21, 0.08);
 }
 
-.tweet-card__avatar {
+.request-card__avatar {
   width: 40px;
   height: 40px;
   border-radius: 9999px;
   background: #1da1f2;
 }
 
-.tweet-card__body {
+.request-card__body {
   display: flex;
   flex-direction: column;
 }
 
-.tweet-card__header {
+.request-card__header {
   display: flex;
   align-items: center;
   gap: 4px;
@@ -347,33 +347,54 @@
   color: rgba(2, 27, 21, 0.7);
 }
 
-.tweet-card__name {
+.request-card__name {
   font-weight: 700;
   color: #021b15;
 }
 
-.tweet-card__dot {
+.request-card__dot {
   opacity: 0.6;
 }
 
-.tweet-card__date {
+.request-card__date {
   font-size: 0.8rem;
 }
 
-.tweet-card__title {
+.request-card__title {
   margin: 2px 0 0;
   font-size: 0.98rem;
   font-weight: 400;
   line-height: 1.45;
 }
 
-.tweet-card__title a {
+.request-card__title a {
   color: #021b15;
   text-decoration: none;
 }
 
-.tweet-card__title a:hover {
+.request-card__title a:hover {
   text-decoration: underline;
+}
+
+.request-card__status {
+  margin-left: auto;
+  margin-top: 0;
+  padding: 2px 16px;
+  border-radius: 30px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.request-card__status--answered {
+  color: #11663a;
+  background: rgba(24, 156, 87, 0.14);
+}
+
+.request-card__status--pending {
+  color: #8a4a00;
+  background: rgba(255, 173, 51, 0.2);
 }
 
 .requests-empty {
@@ -481,7 +502,7 @@
   margin: 28px 0 0;
 }
 
-/* ==== Request 新規（Twitter風コンポーザー） ==== */
+/* ==== Request 新規 ==== */
 .request-compose {
   max-width: 1200px;
   margin: 0 auto;
