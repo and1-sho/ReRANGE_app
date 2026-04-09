@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   devise_for :users
 
   resources :requests, only:[:index, :show, :new, :create, :edit, :update, :destroy] do
-    resource :advice, only:[:new, :create]
+    resource :advice, only: [:new, :create, :edit, :update, :destroy]
   end
 
   # トップページ

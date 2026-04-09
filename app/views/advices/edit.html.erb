@@ -1,0 +1,52 @@
+<div class="requests-page">
+  <header class="requests-header">
+    <%= link_to root_path, class: "requests-brand requests-brand--link" do %>
+      <span class="requests-brand__mark"></span>
+      <span class="requests-brand__name">Re:Range</span>
+    <% end %>
+
+    <div class="requests-account">
+      <span class="requests-account__user">
+        <%= current_user.name %> (<%= current_user.role %>)
+      </span>
+      <%= link_to "ログアウト", destroy_user_session_path, class: "menu-btn menu-btn--ghost", data: { turbo_method: :delete } %>
+    </div>
+  </header>
+
+  <main class="request-compose">
+    <div class="advice-compose__context">
+      <p class="advice-compose__context-label">返信先のリクエスト</p>
+      <p class="advice-compose__context-title"><%= @request.title %></p>
+      <p class="advice-compose__context-meta"><%= @request.user.name %></p>
+    </div>
+
+    <% if @advice.errors.any? %>
+      <div class="request-compose__errors" role="alert">
+        <ul>
+          <% @advice.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <%= form_with model: @advice, url: request_advice_path(@request), method: :patch, local: true, html: { class: "request-compose__form" } do |f| %>
+      <div class="request-compose__row">
+        <div class="request-compose__avatar request-compose__avatar--coach" aria-hidden="true"></div>
+
+        <div class="request-compose__fields">
+          <%= f.text_area :body, placeholder: "アドバイスを書いてください...", rows: 10, class: "request-compose__body request-compose__body--advice" %>
+        </div>
+      </div>
+
+      <div class="request-compose__toolbar">
+        <%= link_to "キャンセル", request_path(@request), class: "request-compose__cancel" %>
+        <%= f.submit "更新する", class: "menu-btn menu-btn--primary request-compose__submit" %>
+      </div>
+    <% end %>
+
+    <p class="request-compose__footer-link">
+      <%= link_to "リクエスト詳細に戻る", request_path(@request), class: "menu-btn menu-btn--ghost" %>
+    </p>
+  </main>
+</div>

@@ -43,6 +43,13 @@
         <div class="request-show__advice-body">
           <%= simple_format(@request.advice.body) %>
         </div>
+        <% if current_user.coach? && @request.advice.user_id == current_user.id %>
+          <div class="request-show__actions">
+            <%= link_to "編集", edit_request_advice_path(@request), class: "menu-btn menu-btn--ghost" %>
+            <%= link_to "削除", request_advice_path(@request), class: "menu-btn menu-btn--ghost",
+                  data: { turbo_method: :delete, turbo_confirm: "このアドバイスを削除しますか？" } %>
+          </div>
+        <% end %>
       <% else %>
         <p class="request-show__advice-empty">まだアドバイスはありません</p>
         <% if current_user.coach? %>
