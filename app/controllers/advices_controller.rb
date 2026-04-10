@@ -22,6 +22,7 @@ class AdvicesController < ApplicationController
     @advice.user = current_user
 
     if @advice.save
+      notify_request_owner_advice_received!
       redirect_to request_path(@request), notice: "アドバイスを投稿しました"
     else
       render :new, status: :unprocessable_entity
@@ -45,6 +46,16 @@ class AdvicesController < ApplicationController
   end
 
   private
+
+  # 相談の投稿者（メンバー）へ「アドバイスが届いた」通知を1件作る
+  def notify_request_owner_advice_received!
+    Notification.create!(
+      user: @request.user,
+      request: @request,
+      kind: "advice_received",
+      message: "「#{@request.title}」にアドバイスが届きました"
+    )
+  end
 
   def set_request
     @request = Request.find(params[:request_id])

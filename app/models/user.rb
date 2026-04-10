@@ -14,5 +14,7 @@ class User < ApplicationRecord
   has_many :requests
   # コーチは複数のアドバイスを持つ
   has_many :advices
-  
+  # 自分宛の通知
+  has_many :notifications, dependent: :destroy
+
 end

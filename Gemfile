@@ -61,6 +61,8 @@ group :development do
 end
 
 group :test do
+  # Rails 7.1 系との互換のため 5 系に固定
+  gem "minitest", "~> 5.25"
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
