@@ -8,6 +8,8 @@ Rails.application.routes.draw do
     resource :advice, only: [:new, :create, :edit, :update, :destroy]
   end
 
+  resources :notifications, only: [:index]
+
   # トップページ
   root "home#index"
 
