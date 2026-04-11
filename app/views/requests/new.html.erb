@@ -30,7 +30,9 @@
 
     <%= form_with model: @request, local: true, html: { class: "request-compose__form" } do |f| %>
       <div class="request-compose__row">
-        <div class="request-compose__avatar" aria-hidden="true"></div>
+        <div class="request-compose__avatar-slot" aria-hidden="true">
+          <%= render "shared/user_avatar_icon", variant: :card %>
+        </div>
 
         <div class="request-compose__fields">
           <%= f.text_field :title, placeholder: "例）パンチ力を上げたい", class: "request-compose__title", autocomplete: "off" %>

@@ -20,7 +20,10 @@
   <main class="request-show">
     <article class="request-show__post">
       <div class="request-show__meta">
-        <span class="request-show__author"><%= @request.user.name %></span>
+        <div class="request-show__identity">
+          <%= render "shared/user_avatar_icon", variant: :header %>
+          <span class="request-show__author"><%= @request.user.name %></span>
+        </div>
         <span class="request-show__dot">・</span>
         <time class="request-show__date" datetime="<%= @request.created_at.iso8601 %>">
           <%= @request.created_at.strftime("%Y/%m/%d %H:%M") %>
@@ -44,6 +47,10 @@
     <section class="request-show__advice" aria-labelledby="advice-heading">
       <% if @request.advice.present? %>
         <h2 id="advice-heading" class="request-show__advice-heading">アドバイス</h2>
+        <div class="request-show__advice-meta">
+          <%= render "shared/user_avatar_icon", variant: :header %>
+          <span class="request-show__advice-author"><%= @request.advice.user.name %></span>
+        </div>
         <div class="request-show__advice-body">
           <%= simple_format(@request.advice.body) %>
         </div>

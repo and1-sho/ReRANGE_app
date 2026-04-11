@@ -21,7 +21,14 @@
     <div class="advice-compose__context">
       <p class="advice-compose__context-label">返信先のリクエスト</p>
       <p class="advice-compose__context-title"><%= @request.title %></p>
-      <p class="advice-compose__context-meta"><%= @request.user.name %></p>
+      <div class="advice-compose__context-author">
+        <%= render "shared/user_avatar_icon", variant: :header %>
+        <span class="advice-compose__context-author-name"><%= @request.user.name %></span>
+      </div>
+      <% if @request.body.present? %>
+        <p class="advice-compose__context-body-label">リクエスト本文</p>
+        <div class="advice-compose__context-body"><%= simple_format(h(@request.body)) %></div>
+      <% end %>
     </div>
 
     <% if @advice.errors.any? %>
@@ -36,7 +43,9 @@
 
     <%= form_with model: @advice, url: request_advice_path(@request), local: true, html: { class: "request-compose__form" } do |f| %>
       <div class="request-compose__row">
-        <div class="request-compose__avatar request-compose__avatar--coach" aria-hidden="true"></div>
+        <div class="request-compose__avatar-slot" aria-hidden="true">
+          <%= render "shared/user_avatar_icon", variant: :card %>
+        </div>
 
         <div class="request-compose__fields">
           <%= f.text_area :body, placeholder: "アドバイスを書いてください...", rows: 10, class: "request-compose__body request-compose__body--advice" %>
