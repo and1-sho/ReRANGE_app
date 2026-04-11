@@ -6,9 +6,12 @@
     <% end %>
 
     <div class="requests-account">
-      <span class="requests-account__user">
-        <%= current_user.name %>（<%= current_user.role %>）
-      </span>
+      <div class="requests-account__identity">
+        <%= render "shared/user_avatar_icon", variant: :header %>
+        <span class="requests-account__user">
+          <%= current_user.name %>（<%= current_user.role %>）
+        </span>
+      </div>
       <%= render "shared/notification_bell_link" %>
       <%= link_to "ログアウト", destroy_user_session_path, class: "menu-btn menu-btn--ghost", data: { turbo_method: :delete } %>
     </div>
@@ -32,7 +35,7 @@
     <div class="requests-list">
       <% @requests.order(created_at: :desc).each do |request| %>
         <article class="request-card">
-          <div class="request-card__avatar"></div>
+          <%= render "shared/user_avatar_icon", variant: :card %>
           <div class="request-card__body">
             <div class="request-card__header">
               <span class="request-card__name"><%= request.user.name %></span>
