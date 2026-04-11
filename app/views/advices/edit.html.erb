@@ -49,6 +49,31 @@
 
         <div class="request-compose__fields">
           <%= f.text_area :body, placeholder: "アドバイスを書いてください...", rows: 10, class: "request-compose__body request-compose__body--advice" %>
+
+          <div class="request-compose__video" data-controller="video-upload-preview">
+            <%= f.label :video, "動画（任意）", class: "request-compose__video-label" %>
+            <p class="request-compose__video-hint">MP4 / MOV・1本あたり100MBまで。差し替えは新しいファイルを選ぶか、削除にチェック。</p>
+            <% if @advice.video.attached? %>
+              <p class="request-compose__video-current">
+                現在の動画: <%= @advice.video.filename.to_s %>
+              </p>
+              <label class="request-compose__video-remove">
+                <%= check_box_tag "advice[remove_video]", "1", false %>
+                動画を削除する
+              </label>
+            <% end %>
+            <%= f.file_field :video,
+                  accept: "video/mp4,video/quicktime,.mp4,.mov",
+                  class: "request-compose__video-input",
+                  data: {
+                    "video-upload-preview-target" => "input",
+                    action: "change->video-upload-preview#preview"
+                  } %>
+            <div class="request-compose__video-preview" data-video-upload-preview-target="box" hidden>
+              <p class="request-compose__video-preview-label">選択中の動画</p>
+              <video data-video-upload-preview-target="player" controls playsinline class="request-compose__video-preview-player"></video>
+            </div>
+          </div>
         </div>
       </div>
 

@@ -10,6 +10,7 @@ RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y \
       build-essential \
       curl \
+      ffmpeg \
       git \
       libsqlite3-dev \
       libvips \

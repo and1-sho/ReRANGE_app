@@ -22,6 +22,7 @@ class AdvicesController < ApplicationController
     @advice.user = current_user
 
     if @advice.save
+      enqueue_advice_video_thumbnail_job_if_attached!(@advice)
       notify_request_owner_advice_received!
       redirect_to request_path(@request), notice: "アドバイスを投稿しました"
     else
@@ -33,7 +34,11 @@ class AdvicesController < ApplicationController
   end
 
   def update
+    old_video_key = @advice.video.attached? ? @advice.video.blob.key : nil
+    handle_advice_video_removal_on_update!
+
     if @advice.update(advice_params)
+      sync_advice_video_thumbnail_after_update!(old_video_key)
       redirect_to request_path(@request), notice: "アドバイスを更新しました"
     else
       render :edit, status: :unprocessable_entity
@@ -84,7 +89,29 @@ class AdvicesController < ApplicationController
   end
 
   def advice_params
-    params.require(:advice).permit(:body)
+    params.require(:advice).permit(:body, :video)
+  end
+
+  def handle_advice_video_removal_on_update!
+    return unless params.dig(:advice, :remove_video) == "1"
+    return if params.dig(:advice, :video).present?
+
+    @advice.video_thumbnail.purge if @advice.video_thumbnail.attached?
+    @advice.video.purge if @advice.video.attached?
+  end
+
+  def enqueue_advice_video_thumbnail_job_if_attached!(advice)
+    VideoThumbnailJob.perform_later("Advice", advice.id) if advice.video.attached?
+  end
+
+  def sync_advice_video_thumbnail_after_update!(old_video_key)
+    unless @advice.video.attached?
+      @advice.video_thumbnail.purge if @advice.video_thumbnail.attached?
+      return
+    end
+
+    new_key = @advice.video.blob.key
+    VideoThumbnailJob.perform_later("Advice", @advice.id) if old_video_key != new_key
   end
 
   def ensure_coach!

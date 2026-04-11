@@ -35,6 +35,16 @@
         <%= simple_format(@request.body) %>
       </div>
 
+      <% if @request.video.attached? %>
+        <div class="request-show__video-wrap">
+          <%= video_tag url_for(@request.video),
+                controls: true,
+                playsinline: true,
+                class: "request-show__video",
+                preload: "metadata" %>
+        </div>
+      <% end %>
+
       <% if current_user.member? && @request.user_id == current_user.id %>
         <div class="request-show__actions">
           <%= link_to "編集", edit_request_path(@request), class: "menu-btn menu-btn--ghost" %>
@@ -54,6 +64,15 @@
         <div class="request-show__advice-body">
           <%= simple_format(@request.advice.body) %>
         </div>
+        <% if @request.advice.video.attached? %>
+          <div class="request-show__video-wrap request-show__video-wrap--advice">
+            <%= video_tag url_for(@request.advice.video),
+                  controls: true,
+                  playsinline: true,
+                  class: "request-show__video",
+                  preload: "metadata" %>
+          </div>
+        <% end %>
         <% if current_user.coach? && @request.advice.user_id == current_user.id %>
           <div class="request-show__actions">
             <%= link_to "編集", edit_request_advice_path(@request), class: "menu-btn menu-btn--ghost" %>

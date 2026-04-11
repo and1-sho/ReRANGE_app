@@ -64,6 +64,9 @@ Rails.application.configure do
   # Highlight code that triggered database queries in logs.
   config.active_record.verbose_query_logs = true
 
+  # 開発ではジョブを即時実行（Docker 含む）。サムネ生成が一覧表示前に完了しやすい。
+  config.active_job.queue_adapter = :inline
+
   # Highlight code that enqueued background job in logs.
   config.active_job.verbose_enqueue_logs = true
 

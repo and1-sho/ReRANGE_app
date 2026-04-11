@@ -14,15 +14,16 @@ class RequestsController < ApplicationController
   before_action :authorize_request_owner!, only: [:edit, :update, :destroy]
 
   def index
-    if current_user.member?
-      @requests = current_user.requests
+    @requests = if current_user.member?
+      current_user.requests
     elsif current_user.coach?
       if params[:filter] == "advised_by_me"
-        @requests = Request.joins(:advice).where(advices: { user_id: current_user.id })
+        Request.joins(:advice).where(advices: { user_id: current_user.id })
       else
-        @requests = Request.all
+        Request.all
       end
     end
+    @requests = @requests.includes(:user, video_attachment: :blob, video_thumbnail_attachment: :blob)
   end
 
   def show
@@ -36,6 +37,7 @@ class RequestsController < ApplicationController
     @request = current_user.requests.build(request_params)
 
     if @request.save
+      enqueue_video_thumbnail_job_if_video_attached!(@request)
       notify_coaches_new_request!
       redirect_to requests_path, notice: "作成しました"
     else
@@ -47,7 +49,11 @@ class RequestsController < ApplicationController
   end
 
   def update
+    old_video_key = @request.video.attached? ? @request.video.blob.key : nil
+    handle_video_removal_on_update!
+
     if @request.update(request_params)
+      sync_video_thumbnail_after_update!(old_video_key)
       notify_advising_coach_request_body_updated!
       # /requests/:idにリダイレクトするってこと（つまりrequests#showに移動する）
       redirect_to @request, notice: "更新しました"
@@ -64,7 +70,30 @@ class RequestsController < ApplicationController
   private
 
   def request_params
-    params.require(:request).permit(:title, :body)
+    params.require(:request).permit(:title, :body, :video)
+  end
+
+  # 動画のみ削除（新しいファイルを選んだ場合は update 内の attach で差し替え）
+  def handle_video_removal_on_update!
+    return unless params.dig(:request, :remove_video) == "1"
+    return if params.dig(:request, :video).present?
+
+    @request.video_thumbnail.purge if @request.video_thumbnail.attached?
+    @request.video.purge if @request.video.attached?
+  end
+
+  def enqueue_video_thumbnail_job_if_video_attached!(request)
+    VideoThumbnailJob.perform_later("Request", request.id) if request.video.attached?
+  end
+
+  def sync_video_thumbnail_after_update!(old_video_key)
+    unless @request.video.attached?
+      @request.video_thumbnail.purge if @request.video_thumbnail.attached?
+      return
+    end
+
+    new_key = @request.video.blob.key
+    VideoThumbnailJob.perform_later("Request", @request.id) if old_video_key != new_key
   end
 
   def ensure_member!
@@ -72,7 +101,15 @@ class RequestsController < ApplicationController
   end
 
   def set_request
-    @request = Request.find(params[:id])
+    scope = Request
+    if action_name == "show"
+      scope = Request.includes(
+        :user,
+        video_attachment: :blob,
+        advice: [:user, video_attachment: :blob]
+      )
+    end
+    @request = scope.find(params[:id])
   end
 
   # 自分とコーチ以外は自分の投稿を表示できない
