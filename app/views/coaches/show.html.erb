@@ -1,0 +1,144 @@
+<div class="coach-profile">
+  <header class="requests-header">
+    <%= link_to root_path, class: "requests-brand requests-brand--link" do %>
+      <span class="requests-brand__mark"></span>
+      <span class="requests-brand__name">Re:Range</span>
+    <% end %>
+
+    <div class="requests-account">
+      <% if user_signed_in? %>
+        <%= render "shared/notification_bell_link" %>
+        <%= render "shared/account_menu" %>
+      <% else %>
+        <%= link_to "無料ではじめる", new_user_registration_path, class: "menu-btn menu-btn--primary" %>
+        <%= link_to "ログイン", new_user_session_path, class: "menu-btn menu-btn--ghost" %>
+      <% end %>
+    </div>
+  </header>
+
+  <%# ヘッダー画像（未設定ならプレースホルダ） %>
+  <div class="coach-profile__header">
+    <% if @coach.header_image.attached? %>
+      <%= image_tag @coach.header_image, class: "coach-profile__header-image", alt: "#{@coach.name}のヘッダー画像" %>
+    <% else %>
+      <div class="coach-profile__header-placeholder"></div>
+    <% end %>
+  </div>
+
+  <div class="coach-profile__body">
+    <div class="coach-profile__summary">
+      <div class="coach-profile__summary-name">
+        <%# アイコン画像（未設定なら既存の汎用アイコン） %>
+        <div class="coach-profile__avatar">
+          <% if @coach.avatar_image.attached? %>
+            <%= image_tag @coach.avatar_image, class: "coach-profile__avatar-image", alt: "#{@coach.name}のプロフィール画像" %>
+          <% else %>
+            <%= render "shared/user_avatar_icon", variant: :card %>
+          <% end %>
+        </div>
+        <p class="coach-profile__last-seen">
+          最終アクセス:
+          <% if @coach.last_seen_at.present? %>
+            <%# 見やすさ優先で「○分前」を表示し、title に絶対時刻を保持 %>
+            <span title="<%= l(@coach.last_seen_at, format: :long) %>">
+              <%= @coach.last_seen_label %>
+            </span>
+          <% else %>
+            未記録
+          <% end %>
+        </p>
+
+        <h1 class="coach-profile__name"><%= @coach.name %></h1>
+        <% if user_signed_in? && current_user == @coach %>
+          <p class="coach-profile__edit-link">
+            <%= link_to "プロフィールを編集", edit_coach_path(@coach), class: "menu-btn menu-btn--ghost" %>
+          </p>
+        <% end %>
+      </div>
+
+      <div class="coach-profile__summary-meta">
+        <p class="coach-profile__meta">所属: <%= @coach.profile_affiliation.presence || "未設定" %></p>
+        <p class="coach-profile__meta">地域: <%= [@coach.profile_prefecture, @coach.profile_area_detail].compact_blank.join(" ").presence || "未設定" %></p>
+
+        <%# 開始日から自動計算した「◯年◯ヶ月」を表示 %>
+        <p class="coach-profile__meta">選手歴: <%= @coach.boxing_experience_label %></p>
+        <p class="coach-profile__meta">指導歴: <%= @coach.coaching_experience_label %></p>
+      </div>
+
+      <%# 6軸レーダー（右側） %>
+      <section class="coach-profile__radar">
+        <h2 class="coach-profile__section-title">コーチスタイル</h2>
+      <%# チャート描画順（上→右上→右下→下→左下→左上）に合わせる %>
+      <% radar_values = [
+        @coach.radar_attack,
+        @coach.radar_technique,
+        @coach.radar_speed,
+        @coach.radar_defense,
+        @coach.radar_strategy,
+        @coach.radar_physical
+      ] %>
+      <% center = 110.0 %>
+      <% max_radius = 76.0 %>
+      <% value_points = radar_values.each_with_index.map do |value, index|
+           angle = (-90 + index * 60) * Math::PI / 180
+           radius = max_radius * (value.to_f / 5.0)
+           x = center + radius * Math.cos(angle)
+           y = center + radius * Math.sin(angle)
+           "#{x.round(2)},#{y.round(2)}"
+         end.join(" ") %>
+
+      <div class="coach-profile__radar-chart-wrap">
+        <svg viewBox="0 0 220 220" class="coach-profile__radar-chart" aria-label="6軸レーダーチャート">
+          <% 1.upto(5) do |level| %>
+            <% ring_points = 6.times.map do |index|
+                 angle = (-90 + index * 60) * Math::PI / 180
+                 radius = max_radius * (level / 5.0)
+                 x = center + radius * Math.cos(angle)
+                 y = center + radius * Math.sin(angle)
+                 "#{x.round(2)},#{y.round(2)}"
+               end.join(" ") %>
+            <polygon points="<%= ring_points %>" class="coach-profile__radar-ring"></polygon>
+          <% end %>
+
+          <% 6.times do |index| %>
+            <% angle = (-90 + index * 60) * Math::PI / 180 %>
+            <% x = center + max_radius * Math.cos(angle) %>
+            <% y = center + max_radius * Math.sin(angle) %>
+            <line x1="<%= center %>" y1="<%= center %>" x2="<%= x.round(2) %>" y2="<%= y.round(2) %>" class="coach-profile__radar-axis"></line>
+          <% end %>
+
+          <polygon points="<%= value_points %>" class="coach-profile__radar-shape"></polygon>
+
+          <%# 6つの角ラベル（数値は出さず名称のみ） %>
+          <% label_positions = [
+            [110, 14],   # 上: 攻撃
+            [184, 56],   # 右上: テクニック
+            [184, 164],  # 右下: スピード
+            [110, 206],  # 下: 守備
+            [36, 164],   # 左下: 戦術
+            [36, 56]     # 左上: フィジカル
+          ] %>
+          <% axis_names = ["攻撃", "テクニック", "スピード", "守備", "戦術", "フィジカル"] %>
+          <% axis_names.each_with_index do |name, index| %>
+            <% lx, ly = label_positions[index] %>
+            <text x="<%= lx %>" y="<%= ly %>" class="coach-profile__radar-label"><%= name %></text>
+          <% end %>
+        </svg>
+      </div>
+      </section>
+    </div>
+
+    <h2 class="coach-profile__section-title">トレーナーについて</h2>
+    <%# 自己紹介文を表示するグレーボックス %>
+    <div class="coach-profile__bio-box">
+      <p class="coach-profile__bio"><%= @coach.profile_bio.presence || "未設定" %></p>
+    </div>
+
+    <div class="coach-profile__bottom-actions">
+      <%# 未ログイン公開ページでも迷わないよう、戻り先を出し分ける %>
+      <% back_path = user_signed_in? ? requests_path : root_path %>
+      <% back_label = user_signed_in? ? "一覧に戻る" : "トップに戻る" %>
+      <%= link_to back_label, back_path, class: "menu-btn menu-btn--ghost" %>
+    </div>
+  </div>
+</div>

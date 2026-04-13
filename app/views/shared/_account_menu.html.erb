@@ -1,0 +1,16 @@
+<details class="account-menu" data-controller="account-menu">
+  <summary class="account-menu__summary" aria-label="アカウントメニュー" data-action="click->account-menu#onSummaryClick">
+    <span class="account-menu__identity">
+      <%= render "shared/user_avatar_icon", variant: :header %>
+      <span class="requests-account__user"><%= current_user.name %>（<%= current_user.role %>）</span>
+    </span>
+  </summary>
+
+  <div class="account-menu__panel">
+    <% if current_user.coach? %>
+      <%= link_to "プロフィールを見る", coach_path(current_user), class: "account-menu__item", data: { action: "click->account-menu#close" } %>
+      <%= link_to "プロフィールを編集", edit_coach_path(current_user), class: "account-menu__item", data: { action: "click->account-menu#close" } %>
+    <% end %>
+    <%= link_to "ログアウト", destroy_user_session_path, class: "account-menu__item account-menu__item--danger", data: { turbo_method: :delete, action: "click->account-menu#close" } %>
+  </div>
+</details>

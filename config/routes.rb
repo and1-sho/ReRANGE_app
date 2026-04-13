@@ -4,6 +4,9 @@ Rails.application.routes.draw do
   get 'advices/create'
   devise_for :users
 
+  # コーチプロフィール（公開ページ）
+  resources :coaches, only: [:show, :edit, :update], param: :slug
+
   resources :requests, only:[:index, :show, :new, :create, :edit, :update, :destroy] do
     resource :advice, only: [:new, :create, :edit, :update, :destroy]
   end
