@@ -475,9 +475,9 @@ body {
 }
 
 .dashboard-main {
-  max-width: 1200px;
+  max-width: 1280px;
   margin: 0 auto;
-  padding: 24px 32px 48px;
+  padding: 24px 40px 48px;
 }
 
 .dashboard-title {
@@ -488,8 +488,8 @@ body {
 
 .dashboard-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 20px;
 }
 
 .dashboard-card {
@@ -537,21 +537,21 @@ body {
   color: rgba(2, 27, 21, 0.66);
 }
 
-/* ==== Coaches Directory ==== */
-.coaches-directory {
+/* ==== Trainers directory ==== */
+.trainers-directory {
   min-height: 100vh;
   background: #f7f8fa;
   color: #021b15;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
-.coaches-directory__main {
+.trainers-directory__main {
   max-width: 1200px;
   margin: 0 auto;
   padding: 8px 32px 48px;
 }
 
-.coaches-directory__top {
+.trainers-directory__top {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -560,25 +560,25 @@ body {
   margin-bottom: 16px;
 }
 
-.coaches-directory__title {
+.trainers-directory__title {
   margin: 0;
   font-size: 1.35rem;
   font-weight: 700;
 }
 
-.coaches-directory__sort {
+.trainers-directory__sort {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-.coaches-directory__grid {
+.trainers-directory__grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
 }
 
-.coach-card {
+.trainer-card {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -593,20 +593,20 @@ body {
   transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
 }
 
-.coach-card:hover {
+.trainer-card:hover {
   transform: translateY(-1px);
   border-color: rgba(9, 103, 255, 0.26);
   box-shadow: 0 8px 20px rgba(2, 27, 21, 0.08);
 }
 
-.coach-card__identity {
+.trainer-card__identity {
   display: flex;
   align-items: center;
   gap: 12px;
   min-width: 0;
 }
 
-.coach-card__avatar {
+.trainer-card__avatar {
   width: 120px;
   height: 120px;
   border-radius: 12px;
@@ -619,14 +619,14 @@ body {
   flex-shrink: 0;
 }
 
-.coach-card__avatar-image {
+.trainer-card__avatar-image {
   width: 120px;
   height: 120px;
   border-radius: 10px;
   object-fit: cover;
 }
 
-.coach-card__avatar-placeholder {
+.trainer-card__avatar-placeholder {
   width: 100%;
   height: 100%;
   border-radius: 10px;
@@ -639,50 +639,50 @@ body {
   font-weight: 700;
 }
 
-.coach-card__meta {
+.trainer-card__meta {
   min-width: 0;
 }
 
-.coach-card__name {
+.trainer-card__name {
   margin: 0;
   font-size: 1rem;
   font-weight: 700;
   color: #021b15;
 }
 
-.coach-card__last-seen {
+.trainer-card__last-seen {
   margin: 4px 0 0;
   font-size: 0.82rem;
   color: rgba(2, 27, 21, 0.65);
 }
 
-.coach-card__radar {
+.trainer-card__radar {
   flex-shrink: 0;
 }
 
-.coach-card__radar-chart {
+.trainer-card__radar-chart {
   width: 108px;
   height: 108px;
 }
 
-.coach-card__radar-ring {
+.trainer-card__radar-ring {
   fill: none;
   stroke: rgba(2, 27, 21, 0.16);
   stroke-width: 0.8;
 }
 
-.coach-card__radar-axis {
+.trainer-card__radar-axis {
   stroke: rgba(2, 27, 21, 0.2);
   stroke-width: 0.8;
 }
 
-.coach-card__radar-shape {
+.trainer-card__radar-shape {
   fill: rgba(9, 103, 255, 0.22);
   stroke: var(--accent-color);
   stroke-width: 1.4;
 }
 
-.coach-card__radar-label {
+.trainer-card__radar-label {
   fill: #021b15;
   font-size: 6.75px;
   font-weight: 700;
@@ -960,6 +960,13 @@ body {
   color: #021b15;
 }
 
+.messages-lead {
+  margin: -12px 0 20px;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: rgba(2, 27, 21, 0.66);
+}
+
 .notifications-list {
   list-style: none;
   margin: 0;
@@ -1203,6 +1210,12 @@ body {
   min-width: 0;
 }
 
+.request-compose__visibility {
+  margin-top: 4px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(2, 27, 21, 0.08);
+}
+
 .request-compose__title,
 .request-compose__body {
   width: 100%;
@@ -1402,15 +1415,15 @@ body {
   min-height: 200px;
 }
 
-/* ==== Coach Profile（公開プロフィール） ==== */
-.coach-profile {
+/* ==== Public profile（メンバー・トレーナー共通レイアウト） ==== */
+.public-profile {
   min-height: 100vh;
   background: #ffffff;
   color: #021b15;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
-.coach-profile__header {
+.public-profile__header {
   width: 100%;
   height: 280px;
   background: #e7ecea;
@@ -1420,7 +1433,7 @@ body {
   overflow: hidden;
 }
 
-.coach-profile__header-image {
+.public-profile__header-image {
   display: block;
   width: 100%;
   height: 100%;
@@ -1429,19 +1442,19 @@ body {
   object-position: center center;
 }
 
-.coach-profile__header-placeholder {
+.public-profile__header-placeholder {
   width: 100%;
   height: 100%;
   background: linear-gradient(135deg, #e5eeea 0%, #d4e3dc 100%);
 }
 
-.coach-profile__body {
+.public-profile__body {
   max-width: 920px;
   margin: 0 auto;
   padding: 0 32px 40px;
 }
 
-.coach-profile__summary {
+.public-profile__summary {
   margin-top: 12px;
   display: grid;
   grid-template-columns: 220px minmax(0, 1fr) 320px;
@@ -1449,12 +1462,12 @@ body {
   align-items: center;
 }
 
-.coach-profile__summary-name {
+.public-profile__summary-name {
   min-width: 0;
   align-self: start;
 }
 
-.coach-profile__summary-meta {
+.public-profile__summary-meta {
   min-width: 0;
   padding-top: 0;
   display: grid;
@@ -1463,12 +1476,12 @@ body {
   row-gap: 8px;
 }
 
-.coach-profile__summary-meta .coach-profile__meta {
+.public-profile__summary-meta .public-profile__meta {
   font-size: 0.86rem;
   white-space: nowrap;
 }
 
-.coach-profile__avatar {
+.public-profile__avatar {
   margin-top: -72px;
   width: 164px;
   height: 164px;
@@ -1479,54 +1492,54 @@ body {
   justify-content: center;
 }
 
-.coach-profile__avatar-image {
+.public-profile__avatar-image {
   width: 146px;
   height: 146px;
   border-radius: 9999px;
   object-fit: cover;
 }
 
-.coach-profile__avatar .user-avatar-icon--card {
+.public-profile__avatar .user-avatar-icon--card {
   width: 170px;
   height: 170px;
 }
 
-.coach-profile__name {
+.public-profile__name {
   margin: 12px 0 10px;
   font-size: 1.55rem;
   font-weight: 700;
 }
 
-.coach-profile__last-seen {
+.public-profile__last-seen {
   margin: 8px 0 0;
   font-size: 0.72rem;
   color: rgba(2, 27, 21, 0.62);
 }
 
-.coach-profile__edit-link {
+.public-profile__edit-link {
   margin: 0 0 12px;
 }
 
-.coach-profile__meta {
+.public-profile__meta {
   margin: 0 0 8px;
   font-size: 0.95rem;
   line-height: 1.6;
   color: rgba(2, 27, 21, 0.8);
 }
 
-.coach-profile__section-title {
+.public-profile__section-title {
   margin: 20px 0 10px;
   font-size: 1.1rem;
   font-weight: 700;
 }
 
-.coach-profile__bio {
+.public-profile__bio {
   margin: 0;
   white-space: pre-wrap;
   line-height: 1.7;
 }
 
-.coach-profile__bio-box {
+.public-profile__bio-box {
   margin-top: 8px;
   padding: 14px 16px;
   border-radius: 12px;
@@ -1534,44 +1547,44 @@ body {
   background: rgba(2, 27, 21, 0.03);
 }
 
-.coach-profile__bottom-actions {
+.public-profile__bottom-actions {
   margin-top: 24px;
 }
 
-.coach-profile__radar {
+.public-profile__radar {
   margin-top: 0;
   text-align: center;
 }
 
-.coach-profile__radar-chart-wrap {
+.public-profile__radar-chart-wrap {
   margin-top: 6px;
   display: flex;
   justify-content: center;
 }
 
-.coach-profile__radar-chart {
+.public-profile__radar-chart {
   width: 240px;
   height: 240px;
 }
 
-.coach-profile__radar-ring {
+.public-profile__radar-ring {
   fill: none;
   stroke: rgba(2, 27, 21, 0.18);
   stroke-width: 1;
 }
 
-.coach-profile__radar-axis {
+.public-profile__radar-axis {
   stroke: rgba(2, 27, 21, 0.24);
   stroke-width: 1;
 }
 
-.coach-profile__radar-shape {
+.public-profile__radar-shape {
   fill: rgba(17, 102, 58, 0.28);
   stroke: #11663a;
   stroke-width: 2;
 }
 
-.coach-profile__radar-label {
+.public-profile__radar-label {
   fill: #021b15;
   font-size: 10px;
   font-weight: 700;
@@ -1584,71 +1597,71 @@ body {
     grid-template-columns: 1fr;
   }
 
-  .coaches-directory__grid {
+  .trainers-directory__grid {
     grid-template-columns: 1fr;
   }
 
-  .coach-card {
+  .trainer-card {
     gap: 10px;
     padding: 12px 14px;
   }
 
-  .coach-card__avatar,
-  .coach-card__avatar-image,
-  .coach-card__avatar-placeholder {
+  .trainer-card__avatar,
+  .trainer-card__avatar-image,
+  .trainer-card__avatar-placeholder {
     width: 90px;
     height: 90px;
   }
 
-  .coach-card__radar-chart {
+  .trainer-card__radar-chart {
     width: 92px;
     height: 92px;
   }
 
-  .coach-profile__header {
+  .public-profile__header {
     height: 220px;
   }
 
-  .coach-profile__summary {
+  .public-profile__summary {
     grid-template-columns: 1fr;
   }
 
-  .coach-profile__summary-meta {
+  .public-profile__summary-meta {
     padding-top: 0;
     grid-template-columns: 1fr;
     row-gap: 2px;
   }
 
-  .coach-profile__summary-meta .coach-profile__meta {
+  .public-profile__summary-meta .public-profile__meta {
     white-space: normal;
   }
 
-  .coach-profile__radar {
+  .public-profile__radar {
     margin-top: 6px;
   }
 }
 
-/* ==== Coach Profile Edit ==== */
-.coach-profile-edit {
+/* ==== Profile edit form ==== */
+.public-profile-edit {
   min-height: 100vh;
   background: #ffffff;
   color: #021b15;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
-.coach-profile-edit__body {
+.public-profile-edit__body {
   max-width: 760px;
   margin: 0 auto;
   padding: 24px 32px 48px;
 }
 
-.coach-profile-edit__title {
+.public-profile-edit__title {
   margin: 0 0 16px;
   font-size: 1.4rem;
   font-weight: 700;
 }
 
-.coach-profile-edit__errors {
+.public-profile-edit__errors {
   margin: 0 0 14px;
   padding: 12px 14px;
   border-radius: 10px;
@@ -1658,36 +1671,36 @@ body {
   font-size: 0.88rem;
 }
 
-.coach-profile-edit__errors-title {
+.public-profile-edit__errors-title {
   margin: 0 0 6px;
   font-weight: 700;
 }
 
-.coach-profile-edit__errors ul {
+.public-profile-edit__errors ul {
   margin: 0;
   padding-left: 1.2rem;
 }
 
-.coach-profile-edit__form {
+.public-profile-edit__form {
   display: flex;
   flex-direction: column;
   gap: 14px;
 }
 
-.coach-profile-edit__field {
+.public-profile-edit__field {
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
 
-.coach-profile-edit__current-file {
+.public-profile-edit__current-file {
   margin: 0;
   font-size: 0.82rem;
   color: rgba(2, 27, 21, 0.66);
   word-break: break-all;
 }
 
-.coach-profile-edit__remove-check {
+.public-profile-edit__remove-check {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -1695,25 +1708,25 @@ body {
   color: rgba(2, 27, 21, 0.72);
 }
 
-.coach-profile-edit__grid {
+.public-profile-edit__grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
 }
 
-.coach-profile-edit__radar {
+.public-profile-edit__radar {
   padding: 12px 14px;
   border: 1px solid rgba(2, 27, 21, 0.12);
   border-radius: 10px;
   background: rgba(2, 27, 21, 0.03);
 }
 
-.coach-profile-edit__radar-remaining {
+.public-profile-edit__radar-remaining {
   margin: 0 0 10px;
   font-size: 0.92rem;
 }
 
-.coach-profile-edit__actions {
+.public-profile-edit__actions {
   margin-top: 8px;
   display: flex;
   gap: 10px;

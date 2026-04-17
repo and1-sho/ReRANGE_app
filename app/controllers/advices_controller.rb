@@ -2,15 +2,17 @@ class AdvicesController < ApplicationController
 
   # ログインしていない人はアクセスできない設定
   before_action :authenticate_user!
-  # URL の request_id から相談を読み込み、@request に入れる設定
+  # URL の request_id からリクエストを読み込み、@request に入れる設定
   before_action :set_request
-  # coachかをチェックする設定
-  before_action :ensure_coach!, only: [:new, :create, :edit, :update, :destroy]
-  # まだアドバイスが無い相談だけ new / create できる（二重投稿を防ぐ）
+  # トレーナーかをチェックする設定
+  before_action :ensure_trainer!, only: [:new, :create, :edit, :update, :destroy]
+  # 指定トレーナー宛はそのトレーナーのみアドバイス可能
+  before_action :authorize_designated_trainer_for_direct_request!, only: [:new, :create]
+  # まだアドバイスが無いリクエストだけ new / create できる（二重投稿を防ぐ）
   before_action :ensure_no_advice_yet!, only: [:new, :create]
   # アドバイスを @advice にセットする設定（edit / update / destroy）
   before_action :set_advice, only: [:edit, :update, :destroy]
-  # 編集・削除はアドバイスを書いたコーチ本人のみ
+  # 編集・削除はアドバイスを書いたトレーナー本人のみ
   before_action :authorize_advice_owner!, only: [:edit, :update, :destroy]
 
   def new
@@ -52,7 +54,7 @@ class AdvicesController < ApplicationController
 
   private
 
-  # 相談の投稿者（メンバー）へ「アドバイスが届いた」通知を1件作る
+  # リクエストの投稿者（メンバー）へ「アドバイスが届いた」通知を1件作る
   def notify_request_owner_advice_received!
     Notification.create!(
       user: @request.user,
@@ -81,7 +83,7 @@ class AdvicesController < ApplicationController
     redirect_to request_path(@request), alert: "このアドバイスを編集・削除する権限がありません"
   end
 
-  # すでにアドバイスがある相談には新規投稿させない
+  # すでにアドバイスがあるリクエストには新規投稿させない
   def ensure_no_advice_yet!
     return if @request.advice.blank?
 
@@ -114,7 +116,14 @@ class AdvicesController < ApplicationController
     VideoThumbnailJob.perform_later("Advice", @advice.id) if old_video_key != new_key
   end
 
-  def ensure_coach!
-    redirect_to requests_path, alert: "コーチのみアドバイスできます" unless current_user.coach?
+  def ensure_trainer!
+    redirect_to requests_path, alert: "トレーナーのみアドバイスできます" unless current_user.trainer?
+  end
+
+  def authorize_designated_trainer_for_direct_request!
+    return if @request.directed_to_trainer_id.blank?
+    return if @request.directed_to_trainer_id == current_user.id
+
+    redirect_to request_path(@request), alert: "このリクエストにアドバイスできるのは指定されたトレーナーのみです"
   end
 end

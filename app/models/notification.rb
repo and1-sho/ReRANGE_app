@@ -1,7 +1,7 @@
 class Notification < ApplicationRecord
   # 通知を受け取るユーザー
   belongs_to :user
-  # 関連する相談
+  # 関連するリクエスト
   belongs_to :request
 
   validates :kind, presence: true

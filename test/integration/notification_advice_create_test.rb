@@ -13,31 +13,23 @@ class NotificationAdviceCreateTest < ActionDispatch::IntegrationTest
       password_confirmation: "password123"
     )
 
-    @coach = User.create!(
-      name: "coach user",
-      email: "coach_notify_#{SecureRandom.hex(4)}@example.test",
-      role: :coach,
-      password: "password123",
-      password_confirmation: "password123"
-    )
-
-    @coach2 = User.create!(
-      name: "coach user 2",
-      email: "coach_notify_#{SecureRandom.hex(4)}@example.test",
-      role: :coach,
+    @trainer = User.create!(
+      name: "trainer user",
+      email: "trainer_notify_#{SecureRandom.hex(4)}@example.test",
+      role: :trainer,
       password: "password123",
       password_confirmation: "password123"
     )
 
     @target_request = Request.create!(
       user: @member,
-      title: "通知テストの相談",
+      title: "通知テストのリクエスト",
       body: "フォームの確認をしたいです"
     )
   end
 
-  test "coachがadviceを投稿するとmemberに通知が1件作成される" do
-    sign_in @coach
+  test "trainerがadviceを投稿するとmemberに通知が1件作成される" do
+    sign_in @trainer
 
     assert_difference("Notification.count", 1) do
       post request_advice_path(@target_request), params: {
@@ -54,27 +46,27 @@ class NotificationAdviceCreateTest < ActionDispatch::IntegrationTest
     assert_equal "「#{@target_request.title}」にアドバイスが届きました", notification.message
   end
 
-  test "memberが新規相談を投稿すると全coachに通知が作成される" do
+  test "memberが新規リクエストを投稿すると全trainerに通知が作成される" do
     sign_in @member
 
-    assert_difference("Notification.where(kind: 'new_request').count", User.coach.count) do
+    assert_difference("Notification.where(kind: 'new_request').count", User.trainer.count) do
       post requests_path, params: {
         request: {
-          title: "新規相談通知テスト",
-          body: "コーチ全員に通知が行くか確認します"
+          title: "新規リクエスト通知テスト",
+          body: "トレーナー全員に通知が行くか確認します"
         }
       }
     end
 
     created_request = Request.order(:created_at).last
-    coach_ids = Notification.where(kind: "new_request", request_id: created_request.id).pluck(:user_id).sort
-    assert_equal User.coach.order(:id).pluck(:id), coach_ids
+    trainer_ids = Notification.where(kind: "new_request", request_id: created_request.id).pluck(:user_id).sort
+    assert_equal User.trainer.order(:id).pluck(:id), trainer_ids
   end
 
-  test "memberが本文を更新したときだけアドバイス担当coachに通知される" do
+  test "memberが本文を更新したときだけアドバイス担当trainerに通知される" do
     Advice.create!(
       request: @target_request,
-      user: @coach,
+      user: @trainer,
       body: "最初のアドバイス"
     )
 
@@ -99,16 +91,16 @@ class NotificationAdviceCreateTest < ActionDispatch::IntegrationTest
     end
 
     notification = Notification.where(kind: "request_body_updated").order(:created_at).last
-    assert_equal @coach.id, notification.user_id
+    assert_equal @trainer.id, notification.user_id
     assert_equal @target_request.id, notification.request_id
   end
 
-  test "相談詳細を開くと既読になりベルバッジは9件以上で9+表示になる" do
-    sign_in @coach
+  test "リクエスト詳細を開くと既読になりベルバッジは9件以上で9+表示になる" do
+    sign_in @trainer
 
     10.times do |i|
       Notification.create!(
-        user: @coach,
+        user: @trainer,
         request: @target_request,
         kind: "new_request",
         message: "通知#{i + 1}"
@@ -118,9 +110,27 @@ class NotificationAdviceCreateTest < ActionDispatch::IntegrationTest
     get requests_path
     assert_select ".notification-bell-link__badge", text: "9+"
 
-    unread_notification = @coach.notifications.unread.order(:created_at).first
+    unread_notification = @trainer.notifications.unread.order(:created_at).first
     get request_path(@target_request)
     unread_notification.reload
     assert_not_nil unread_notification.read_at
+  end
+
+  test "memberがトレーナー宛てリクエストを投稿するとそのトレーナーにだけ通知が1件できる" do
+    sign_in @member
+
+    assert_difference("Notification.where(kind: 'direct_request').count", 1) do
+      post requests_path, params: {
+        request: {
+          title: "トレーナー宛てテスト",
+          body: "一覧には出さないリクエストです",
+          directed_to_trainer_id: @trainer.id
+        }
+      }
+    end
+
+    n = Notification.where(kind: "direct_request").order(:created_at).last
+    assert_equal @trainer.id, n.user_id
+    assert_equal "あなた宛のリクエスト「トレーナー宛てテスト」が届きました", n.message
   end
 end

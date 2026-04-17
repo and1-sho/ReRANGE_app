@@ -30,29 +30,29 @@ User.find_or_create_by!(email: "member3@example.test") do |user|
   user.password_confirmation = SEED_PASSWORD
 end
 
-# コーチを追加
-User.find_or_create_by!(email: "coach1@example.test") do |user|
-  user.name = "テストコーチ1"
-  user.role = :coach
+# トレーナーを追加
+User.find_or_create_by!(email: "trainer1@example.test") do |user|
+  user.name = "テストトレーナー1"
+  user.role = :trainer
   user.password = SEED_PASSWORD
   user.password_confirmation = SEED_PASSWORD
 end
 
-User.find_or_create_by!(email: "coach2@example.test") do |user|
-  user.name = "テストコーチ2"
-  user.role = :coach
+User.find_or_create_by!(email: "trainer2@example.test") do |user|
+  user.name = "テストトレーナー2"
+  user.role = :trainer
   user.password = SEED_PASSWORD
   user.password_confirmation = SEED_PASSWORD
 end
 
-User.find_or_create_by!(email: "coach3@example.test") do |user|
-  user.name = "テストコーチ3"
-  user.role = :coach
+User.find_or_create_by!(email: "trainer3@example.test") do |user|
+  user.name = "テストトレーナー3"
+  user.role = :trainer
   user.password = SEED_PASSWORD
   user.password_confirmation = SEED_PASSWORD
 end
 
-# 相談（request）5件
+# リクエスト（request）5件
 member1 = User.find_by!(email: "member1@example.test")
 member2 = User.find_by!(email: "member2@example.test")
 member3 = User.find_by!(email: "member3@example.test")
@@ -78,25 +78,25 @@ Request.find_or_create_by!(user: member3, title: "スパーリング前の準備
 end
 
 # アドバイス（advice）3件
-coach1 = User.find_by!(email: "coach1@example.test")
-coach2 = User.find_by!(email: "coach2@example.test")
-coach3 = User.find_by!(email: "coach3@example.test")
+trainer1 = User.find_by!(email: "trainer1@example.test")
+trainer2 = User.find_by!(email: "trainer2@example.test")
+trainer3 = User.find_by!(email: "trainer3@example.test")
 
 request1 = Request.find_by!(user: member1, title: "左ジャブの間合い")
 request2 = Request.find_by!(user: member1, title: "フットワーク")
 request3 = Request.find_by!(user: member2, title: "サウスポー対策")
 
 Advice.find_or_create_by!(request: request1) do |advice|
-  advice.user = coach1
+  advice.user = trainer1
   advice.body = "相手の前足との距離を一定に保つ意識で、ジャブを返す回数を増やしましょう。"
 end
 
 Advice.find_or_create_by!(request: request2) do |advice|
-  advice.user = coach2
+  advice.user = trainer2
   advice.body = "前後移動は小さく速く。まずは1分間、リズムを崩さず動く練習がおすすめです。"
 end
 
 Advice.find_or_create_by!(request: request3) do |advice|
-  advice.user = coach3
+  advice.user = trainer3
   advice.body = "サウスポー相手は外側を取ることを優先し、右ストレートを軸に組み立てましょう。"
 end

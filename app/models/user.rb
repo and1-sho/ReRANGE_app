@@ -4,13 +4,13 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  # コーチプロフィール用の画像
+  # トレーナープロフィール用の画像
   has_one_attached :avatar_image
   has_one_attached :header_image
   # 作成時に slug が空なら自動採番する
   before_validation :assign_slug, on: :create
 
-  enum role: { member: 0, coach: 1 }
+  enum role: { member: 0, trainer: 1 }
   # 地域（都道府県）は入力候補を固定
   PREFECTURES = %w[
     北海道 青森県 岩手県 宮城県 秋田県 山形県 福島県
@@ -45,7 +45,7 @@ class User < ApplicationRecord
 
   # ユーザーの名前を必須項目にする
   validates :name, presence: true
-  # ユーザーの識別（memberかcoach）を必須項目にする
+  # ユーザーの識別（member か trainer / 表示はメンバー・トレーナー）を必須項目にする
   validates :role, presence: true
   # URL 用 slug は重複不可（未入力時は自動生成）
   validates :slug, uniqueness: true, allow_blank: true
@@ -68,7 +68,9 @@ class User < ApplicationRecord
 
   # ユーザーは複数のrequestを持つ
   has_many :requests
-  # コーチは複数のアドバイスを持つ
+  # メンバーから指定されたトレーナー宛リクエスト（一覧外）
+  has_many :directed_requests, class_name: "Request", foreign_key: :directed_to_trainer_id, inverse_of: :directed_to_trainer
+  # トレーナーは複数のアドバイスを持つ
   has_many :advices
   # 自分宛の通知
   has_many :notifications, dependent: :destroy
@@ -82,8 +84,8 @@ class User < ApplicationRecord
     experience_label_from(boxing_started_on)
   end
 
-  def coaching_experience_label
-    experience_label_from(coaching_started_on)
+  def instruction_experience_label
+    experience_label_from(instruction_started_on)
   end
 
   # 誕生日から年齢を計算して表示用文字列を返す
@@ -100,13 +102,13 @@ class User < ApplicationRecord
     "#{age}歳"
   end
 
-  # コーチプロフィールの最低入力が埋まっているか
-  def coach_profile_completed?
-    return false unless coach?
+  # トレーナープロフィールの最低入力が埋まっているか
+  def trainer_profile_completed?
+    return false unless trainer?
 
     profile_affiliation.present? &&
       profile_prefecture.present? &&
-      coaching_started_on.present? &&
+      instruction_started_on.present? &&
       profile_bio.present?
   end
 
@@ -138,7 +140,7 @@ class User < ApplicationRecord
     "#{days}日前"
   end
 
-  # /coaches/:slug のような URL を使う
+  # /trainers/:slug のような URL を使う
   def to_param
     slug.presence || id.to_s
   end
@@ -155,7 +157,7 @@ class User < ApplicationRecord
     return if slug.present?
 
     # 英数字の URL 文字列を作る。日本語名のみでも role 別の採番で補完する
-    fallback = coach? ? "coach" : "member"
+    fallback = trainer? ? "trainer" : "member"
     base = name.to_s.parameterize.presence || fallback
     candidate = base
     sequence = 1

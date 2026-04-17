@@ -1,4 +1,4 @@
-<div class="coach-profile">
+<div class="public-profile">
   <header class="requests-header">
     <%= link_to app_home_path, class: "requests-brand requests-brand--link" do %>
       <span class="requests-brand__name">Re:RANGE</span>
@@ -15,25 +15,25 @@
     </div>
   </header>
 
-  <div class="coach-profile__header">
+  <div class="public-profile__header">
     <% if @member.header_image.attached? %>
-      <%= image_tag @member.header_image, class: "coach-profile__header-image", alt: "#{@member.name}のヘッダー画像" %>
+      <%= image_tag @member.header_image, class: "public-profile__header-image", alt: "#{@member.name}のヘッダー画像" %>
     <% else %>
-      <div class="coach-profile__header-placeholder"></div>
+      <div class="public-profile__header-placeholder"></div>
     <% end %>
   </div>
 
-  <div class="coach-profile__body">
-    <div class="coach-profile__summary">
-      <div class="coach-profile__summary-name">
-        <div class="coach-profile__avatar">
+  <div class="public-profile__body">
+    <div class="public-profile__summary">
+      <div class="public-profile__summary-name">
+        <div class="public-profile__avatar">
           <% if @member.avatar_image.attached? %>
-            <%= image_tag @member.avatar_image, class: "coach-profile__avatar-image", alt: "#{@member.name}のプロフィール画像" %>
+            <%= image_tag @member.avatar_image, class: "public-profile__avatar-image", alt: "#{@member.name}のプロフィール画像" %>
           <% else %>
             <%= render "shared/user_avatar_icon", variant: :card %>
           <% end %>
         </div>
-        <p class="coach-profile__last-seen">
+        <p class="public-profile__last-seen">
           最終アクセス:
           <% if @member.last_seen_at.present? %>
             <span title="<%= l(@member.last_seen_at, format: :long) %>"><%= @member.last_seen_label %></span>
@@ -42,30 +42,30 @@
           <% end %>
         </p>
 
-        <h1 class="coach-profile__name"><%= @member.name %></h1>
+        <h1 class="public-profile__name"><%= @member.name %></h1>
         <% if user_signed_in? && current_user == @member %>
-          <p class="coach-profile__edit-link">
+          <p class="public-profile__edit-link">
             <%= link_to "プロフィールを編集", edit_member_path(@member), class: "menu-btn menu-btn--ghost" %>
           </p>
         <% end %>
       </div>
 
-      <div class="coach-profile__summary-meta">
-        <p class="coach-profile__meta">所属: <%= @member.profile_affiliation.presence || "未設定" %></p>
-        <p class="coach-profile__meta">地域: <%= [@member.profile_prefecture, @member.profile_area_detail].compact_blank.join(" ").presence || "未設定" %></p>
-        <p class="coach-profile__meta">ボクシング歴: <%= @member.boxing_experience_label %></p>
-        <p class="coach-profile__meta">年齢: <%= @member.age_label %></p>
-        <p class="coach-profile__meta">スタンス: <%= @member.stance.presence || "未設定" %></p>
-        <p class="coach-profile__meta">階級: <%= @member.weight_class.presence || "未設定" %></p>
+      <div class="public-profile__summary-meta">
+        <p class="public-profile__meta">所属: <%= @member.profile_affiliation.presence || "未設定" %></p>
+        <p class="public-profile__meta">地域: <%= [@member.profile_prefecture, @member.profile_area_detail].compact_blank.join(" ").presence || "未設定" %></p>
+        <p class="public-profile__meta">ボクシング歴: <%= @member.boxing_experience_label %></p>
+        <p class="public-profile__meta">年齢: <%= @member.age_label %></p>
+        <p class="public-profile__meta">スタンス: <%= @member.stance.presence || "未設定" %></p>
+        <p class="public-profile__meta">階級: <%= @member.weight_class.presence || "未設定" %></p>
       </div>
     </div>
 
-    <h2 class="coach-profile__section-title">プロフィール</h2>
-    <div class="coach-profile__bio-box">
-      <p class="coach-profile__bio"><%= @member.profile_bio.presence || "未設定" %></p>
+    <h2 class="public-profile__section-title">プロフィール</h2>
+    <div class="public-profile__bio-box">
+      <p class="public-profile__bio"><%= @member.profile_bio.presence || "未設定" %></p>
     </div>
 
-    <div class="coach-profile__bottom-actions">
+    <div class="public-profile__bottom-actions">
       <% back_path = user_signed_in? ? requests_path : root_path %>
       <% back_label = user_signed_in? ? "一覧に戻る" : "トップに戻る" %>
       <%= link_to back_label, back_path, class: "menu-btn menu-btn--ghost" %>

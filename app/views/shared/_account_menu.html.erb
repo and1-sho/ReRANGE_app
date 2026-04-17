@@ -2,15 +2,15 @@
   <summary class="account-menu__summary" aria-label="アカウントメニュー" data-action="click->account-menu#onSummaryClick">
     <span class="account-menu__identity">
       <%= render "shared/user_avatar_icon", variant: :header %>
-      <span class="requests-account__user"><%= current_user.name %>（<%= current_user.role %>）</span>
+      <span class="requests-account__user"><%= current_user.name %>（<%= user_role_display_label(current_user) %>）</span>
     </span>
   </summary>
 
   <div class="account-menu__panel">
     <%= link_to "ダッシュボード", dashboard_path, class: "account-menu__item", data: { action: "click->account-menu#close" } %>
-    <% if current_user.coach? %>
-      <%= link_to "プロフィールを見る", coach_path(current_user), class: "account-menu__item", data: { action: "click->account-menu#close" } %>
-      <%= link_to "プロフィールを編集", edit_coach_path(current_user), class: "account-menu__item", data: { action: "click->account-menu#close" } %>
+    <% if current_user.trainer? %>
+      <%= link_to "プロフィールを見る", trainer_path(current_user), class: "account-menu__item", data: { action: "click->account-menu#close" } %>
+      <%= link_to "プロフィールを編集", edit_trainer_path(current_user), class: "account-menu__item", data: { action: "click->account-menu#close" } %>
     <% elsif current_user.member? %>
       <%= link_to "プロフィールを見る", member_path(current_user), class: "account-menu__item", data: { action: "click->account-menu#close" } %>
       <%= link_to "プロフィールを編集", edit_member_path(current_user), class: "account-menu__item", data: { action: "click->account-menu#close" } %>

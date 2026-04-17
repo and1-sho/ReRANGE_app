@@ -6,24 +6,26 @@ class RequestsController < ApplicationController
   before_action :ensure_member!, only: [:new, :create, :edit, :update, :destroy]
   # リクエストをセットする設定
   before_action :set_request, only: [:show, :edit, :update, :destroy]
-  # 閲覧権限: coach は全件、member は自分の相談のみ（show）
+  # 閲覧権限: 公開リクエストはログイン全員、指定トレーナー宛は投稿者とそのトレーナーのみ（show）
   before_action :authorize_request_access!, only: [:show]
-  # 相談詳細を開いたら、この相談に紐づく自分宛未読通知を既読にする
+  # リクエスト詳細を開いたら、このリクエストに紐づく自分宛未読通知を既読にする
   before_action :mark_request_notifications_as_read!, only: [:show]
-  # 編集・削除は相談の投稿者本人のみ（member 同士のなりすまし防止）
+  # 編集・削除はリクエストの投稿者本人のみ（member 同士のなりすまし防止）
   before_action :authorize_request_owner!, only: [:edit, :update, :destroy]
 
   def index
     @requests = if current_user.member?
-      current_user.requests
-    elsif current_user.coach?
-      if params[:filter] == "advised_by_me"
-        Request.joins(:advice).where(advices: { user_id: current_user.id })
-      else
-        Request.all
-      end
-    end
+                  Request.on_public_feed
+                elsif current_user.trainer?
+                  base = Request.on_public_feed
+                  if params[:filter] == "advised_by_me"
+                    base.joins(:advice).where(advices: { user_id: current_user.id })
+                  else
+                    base
+                  end
+                end
     @requests = @requests.includes(:user, video_attachment: :blob, video_thumbnail_attachment: :blob)
+                           .order(created_at: :desc)
   end
 
   def show
@@ -38,7 +40,7 @@ class RequestsController < ApplicationController
 
     if @request.save
       enqueue_video_thumbnail_job_if_video_attached!(@request)
-      notify_coaches_new_request!
+      notify_trainers_new_request!
       redirect_to requests_path, notice: "作成しました"
     else
       render :new, status: :unprocessable_entity
@@ -54,7 +56,7 @@ class RequestsController < ApplicationController
 
     if @request.update(request_params)
       sync_video_thumbnail_after_update!(old_video_key)
-      notify_advising_coach_request_body_updated!
+      notify_advising_trainer_request_body_updated!
       # /requests/:idにリダイレクトするってこと（つまりrequests#showに移動する）
       redirect_to @request, notice: "更新しました"
     else
@@ -70,7 +72,9 @@ class RequestsController < ApplicationController
   private
 
   def request_params
-    params.require(:request).permit(:title, :body, :video)
+    permitted = [:title, :body, :video]
+    permitted << :directed_to_trainer_id if action_name == "create"
+    params.require(:request).permit(*permitted)
   end
 
   # 動画のみ削除（新しいファイルを選んだ場合は update 内の attach で差し替え）
@@ -112,10 +116,9 @@ class RequestsController < ApplicationController
     @request = scope.find(params[:id])
   end
 
-  # 自分とコーチ以外は自分の投稿を表示できない
   def authorize_request_access!
-    return if current_user.coach?
-    return if @request.user_id == current_user.id
+    return if @request.visible_to?(current_user)
+
     redirect_to requests_path, alert: "このリクエストを表示する権限がありません"
   end
 
@@ -126,26 +129,38 @@ class RequestsController < ApplicationController
     redirect_to requests_path, alert: "このリクエストを編集・削除する権限がありません"
   end
 
-  # この相談に紐づく、ログイン中ユーザー宛の未読通知を既読にする
+  # このリクエストに紐づく、ログイン中ユーザー宛の未読通知を既読にする
   def mark_request_notifications_as_read!
     current_user.notifications.unread.where(request_id: @request.id).update_all(read_at: Time.current)
   end
 
-  # 新規相談が投稿されたことを全コーチに通知する
-  def notify_coaches_new_request!
-    message = "新しい相談「#{@request.title}」が投稿されました"
-    User.coach.find_each do |coach|
+  # 公開リクエストは全トレーナーへ通知。指定トレーナー宛はそのトレーナーのみ
+  def notify_trainers_new_request!
+    if @request.directed_to_trainer_id.present?
+      trainer = User.trainer.find_by(id: @request.directed_to_trainer_id)
+      return if trainer.blank?
+
       Notification.create!(
-        user: coach,
+        user: trainer,
         request: @request,
-        kind: "new_request",
-        message: message
+        kind: "direct_request",
+        message: "あなた宛のリクエスト「#{@request.title}」が届きました"
       )
+    else
+      message = "新しいリクエスト「#{@request.title}」が投稿されました"
+      User.trainer.find_each do |trainer|
+        Notification.create!(
+          user: trainer,
+          request: @request,
+          kind: "new_request",
+          message: message
+        )
+      end
     end
   end
 
-  # 本文が更新されたら、アドバイス済みのコーチにだけ通知する（タイトルだけの変更では送らない）
-  def notify_advising_coach_request_body_updated!
+  # 本文が更新されたら、アドバイス済みのトレーナーにだけ通知する（タイトルだけの変更では送らない）
+  def notify_advising_trainer_request_body_updated!
     # .saved_change_to_body?はカラムを作った時に自動生成されるメソッド
     return unless @request.saved_change_to_body?
     return if @request.advice.blank?
@@ -154,7 +169,7 @@ class RequestsController < ApplicationController
       user: @request.advice.user,
       request: @request,
       kind: "request_body_updated",
-      message: "相談「#{@request.title}」の本文が更新されました"
+      message: "リクエスト「#{@request.title}」の本文が更新されました"
     )
   end
 

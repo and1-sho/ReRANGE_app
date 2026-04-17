@@ -7,7 +7,7 @@ one:
   role: 0
 
 two:
-  email: fixture_coach1@example.test
+  email: fixture_trainer1@example.test
   encrypted_password: <%= Devise::Encryptor.digest(User, "password123") %>
-  name: フィクスチャコーチ1
+  name: フィクスチャトレーナー1
   role: 1

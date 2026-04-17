@@ -5,9 +5,10 @@ Rails.application.routes.draw do
   devise_for :users
 
   get :dashboard, to: "dashboard#index"
+  get "messages", to: "messages#index", as: :messages
 
-  # コーチプロフィール（公開ページ）
-  resources :coaches, only: [:index, :show, :edit, :update], param: :slug
+  # トレーナープロフィール（公開ページ）
+  resources :trainers, only: [:index, :show, :edit, :update], param: :slug
   # メンバープロフィール
   resources :members, only: [:show, :edit, :update], param: :slug
 

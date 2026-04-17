@@ -11,9 +11,9 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.permit(:sign_up, keys: [:name, :role])
   end
 
-  # ロゴクリック時の遷移先（ログイン中はダッシュボード、未ログインはトップ）
+  # ロゴクリック時の遷移先（ログイン中は一覧、未ログインはトップ）
   def app_home_path
-    user_signed_in? ? dashboard_path : root_path
+    user_signed_in? ? requests_path : root_path
   end
 
   # ログイン直後はダッシュボードへ遷移
@@ -25,7 +25,7 @@ class ApplicationController < ActionController::Base
   def profile_path_for(user)
     return root_path if user.blank?
 
-    user.coach? ? coach_path(user) : member_path(user)
+    user.trainer? ? trainer_path(user) : member_path(user)
   end
 
   private

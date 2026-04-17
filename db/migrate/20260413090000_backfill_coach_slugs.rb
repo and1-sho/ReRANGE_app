@@ -4,9 +4,9 @@ class BackfillCoachSlugs < ActiveRecord::Migration[7.1]
   end
 
   def up
-    # 既存コーチの slug が nil の場合、プロフィールURL用に採番する
-    MigrationUser.where(role: 1, slug: nil).find_each do |coach|
-      base = coach.name.to_s.parameterize.presence || "coach"
+    # 既存トレーナーの slug が nil の場合、プロフィールURL用に採番する
+    MigrationUser.where(role: 1, slug: nil).find_each do |trainer|
+      base = trainer.name.to_s.parameterize.presence || "trainer"
       candidate = base
       sequence = 1
 
@@ -15,7 +15,7 @@ class BackfillCoachSlugs < ActiveRecord::Migration[7.1]
         candidate = "#{base}-#{sequence}"
       end
 
-      coach.update_columns(slug: candidate)
+      trainer.update_columns(slug: candidate)
     end
   end
 

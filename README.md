@@ -6,7 +6,7 @@
 FightHubは、距離を超えてトレーナーからアドバイスを受けられる
 ボクシングのプラットフォームです。
 
-会員が相談を投稿し、コーチがアドバイスを返すことで、
+会員がリクエストを投稿し、トレーナーがアドバイスを返すことで、
 新しいボクシングの学び方を提供します。
 
 
@@ -25,8 +25,8 @@ FightHub（仮）を開発しました。
 
 ## 使い方（How）
 1. ユーザー登録を行います  
-2. memberユーザーは相談を投稿します  
-3. coachユーザーは相談に対してアドバイスを投稿します  
+2. memberユーザーはリクエストを投稿します  
+3. trainerユーザーはリクエストに対してアドバイスを投稿します  
 4. 投稿されたアドバイスを確認できます  
 
 
@@ -72,7 +72,7 @@ docker compose run --rm web bundle install
 ## 開発用サンプルデータ
 
 - member 3人
-- coach 3人
+- trainer 3人
 - request 5件
 - advice 3件（2件の request は未返信の状態）
 
@@ -83,9 +83,9 @@ docker compose run --rm web bundle install
 - member1@example.test（テストメンバー1）
 - member2@example.test（テストメンバー2）
 - member3@example.test（テストメンバー3）
-- coach1@example.test（テストコーチ1）
-- coach2@example.test（テストコーチ2）
-- coach3@example.test（テストコーチ3）
+- trainer1@example.test（テストトレーナー1）
+- trainer2@example.test（テストトレーナー2）
+- trainer3@example.test（テストトレーナー3）
 
 ### シード投入
 

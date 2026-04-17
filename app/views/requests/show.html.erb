@@ -44,7 +44,7 @@
         <div class="request-show__actions">
           <%= link_to "編集", edit_request_path(@request), class: "menu-btn menu-btn--ghost" %>
           <%= link_to "削除", request_path(@request), class: "menu-btn menu-btn--ghost",
-                data: { turbo_method: :delete, turbo_confirm: "この相談を削除しますか？" } %>
+                data: { turbo_method: :delete, turbo_confirm: "このリクエストを削除しますか？" } %>
         </div>
       <% end %>
     </article>
@@ -70,7 +70,7 @@
                   preload: "metadata" %>
           </div>
         <% end %>
-        <% if current_user.coach? && @request.advice.user_id == current_user.id %>
+        <% if current_user.trainer? && @request.advice.user_id == current_user.id %>
           <div class="request-show__actions">
             <%= link_to "編集", edit_request_advice_path(@request), class: "menu-btn menu-btn--ghost" %>
             <%= link_to "削除", request_advice_path(@request), class: "menu-btn menu-btn--ghost",
@@ -79,7 +79,7 @@
         <% end %>
       <% else %>
         <p class="request-show__advice-empty">まだアドバイスはありません</p>
-        <% if current_user.coach? %>
+        <% if current_user.trainer? %>
           <p class="request-show__advice-action">
             <%= link_to "アドバイスを書く", new_request_advice_path(@request), class: "menu-btn menu-btn--primary" %>
           </p>

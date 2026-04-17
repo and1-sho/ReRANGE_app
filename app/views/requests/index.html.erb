@@ -13,7 +13,7 @@
   <% if current_user.member? %>
     <% unless current_user.member_profile_completed? %>
       <div class="profile-reminder">
-        <p class="profile-reminder__text">プロフィールを設定すると、コーチがあなたの状況を理解しやすくなります。</p>
+        <p class="profile-reminder__text">プロフィールを設定すると、トレーナーがあなたの状況を理解しやすくなります。</p>
         <%= link_to "プロフィールを設定する", edit_member_path(current_user), class: "menu-btn menu-btn--primary" %>
       </div>
     <% end %>
@@ -21,11 +21,11 @@
       <%= link_to "新規リクエストを作成する", new_request_path, class: "menu-btn menu-btn--primary" %>
     </div>
   <% end %>
-  <% if current_user.coach? %>
-    <% unless current_user.coach_profile_completed? %>
+  <% if current_user.trainer? %>
+    <% unless current_user.trainer_profile_completed? %>
       <div class="profile-reminder">
         <p class="profile-reminder__text">プロフィールを設定すると、メンバーがあなたの指導スタイルを把握しやすくなります。</p>
-        <%= link_to "プロフィールを設定する", edit_coach_path(current_user), class: "menu-btn menu-btn--primary" %>
+        <%= link_to "プロフィールを設定する", edit_trainer_path(current_user), class: "menu-btn menu-btn--primary" %>
       </div>
     <% end %>
     <div class="requests-actions">
@@ -38,7 +38,7 @@
 
   <% if @requests.any? %>
     <div class="requests-list">
-      <% @requests.order(created_at: :desc).each do |request| %>
+      <% @requests.each do |request| %>
         <article class="request-card">
           <%= link_to profile_path_for(request.user), class: "request-card__avatar-link", aria: { label: "#{request.user.name}のプロフィールへ移動" } do %>
             <%= render "shared/user_avatar_icon", variant: :card %>
@@ -61,7 +61,7 @@
 
             <% if request.video.attached? %>
               <div class="request-card__thumb-wrap" data-controller="request-card-thumb">
-                <%= link_to request_path(request), class: "request-card__thumb-link", aria: { label: "動画付き相談「#{request.title}」の詳細へ" } do %>
+                <%= link_to request_path(request), class: "request-card__thumb-link", aria: { label: "動画付きリクエスト「#{request.title}」の詳細へ" } do %>
                   <% if request.video_thumbnail.attached? %>
                     <%= image_tag url_for(request.video_thumbnail),
                           alt: "",
@@ -85,6 +85,6 @@
       <% end %>
     </div>
   <% else %>
-    <p class="requests-empty">リクエストは登録されていません</p>
+    <p class="requests-empty">公開のリクエストはまだありません</p>
   <% end %>
 </div>
