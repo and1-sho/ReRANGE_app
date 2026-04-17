@@ -1,0 +1,49 @@
+<div class="dashboard-page">
+  <header class="requests-header">
+    <%= link_to app_home_path, class: "requests-brand requests-brand--link" do %>
+      <span class="requests-brand__name">Re:RANGE</span>
+    <% end %>
+
+    <div class="requests-account">
+      <%= render "shared/notification_bell_link" %>
+      <%= render "shared/account_menu" %>
+    </div>
+  </header>
+
+  <main class="dashboard-main">
+    <h1 class="dashboard-title">ダッシュボード</h1>
+    <div class="dashboard-grid">
+      <% if current_user.member? %>
+        <%= link_to coaches_path, class: "dashboard-card" do %>
+          <div class="dashboard-card__header">
+            <h2 class="dashboard-card__title">コーチを探す</h2>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="dashboard-card__icon" aria-hidden="true" focusable="false">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+            </svg>
+          </div>
+          <p class="dashboard-card__text">一覧から探して、あなたに合ったコーチを見つけましょう</p>
+        <% end %>
+
+        <%= link_to requests_path, class: "dashboard-card" do %>
+          <div class="dashboard-card__header">
+            <h2 class="dashboard-card__title">あなたの投稿</h2>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="dashboard-card__icon" aria-hidden="true" focusable="false">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0ZM3.75 12h.007v.008H3.75V12Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm-.375 5.25h.007v.008H3.75v-.008Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+            </svg>
+          </div>
+          <p class="dashboard-card__text">これまでの投稿やアドバイスを確認できます</p>
+        <% end %>
+      <% else %>
+        <%= link_to requests_path, class: "dashboard-card" do %>
+          <div class="dashboard-card__header">
+            <h2 class="dashboard-card__title">みんなの投稿</h2>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="dashboard-card__icon" aria-hidden="true" focusable="false">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0ZM3.75 12h.007v.008H3.75V12Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm-.375 5.25h.007v.008H3.75v-.008Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+            </svg>
+          </div>
+          <p class="dashboard-card__text">メンバーの相談投稿をチェックしましょう</p>
+        <% end %>
+      <% end %>
+    </div>
+  </main>
+</div>

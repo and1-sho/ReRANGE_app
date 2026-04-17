@@ -1,8 +1,7 @@
 <div class="top-wrap">
   <header class="top-header">
     <%= link_to app_home_path, class: "logo logo--link" do %>
-      <span class="logo-mark"></span>
-      <span>Re:RANGE</span>
+      <span class="logo-name">Re:RANGE</span>
     <% end %>
     <nav class="menu" aria-label="アカウント">
       <% if user_signed_in? %>
@@ -16,7 +15,7 @@
   </header>
   <section class="hero">
     <div>
-      <h1>Re:RANGE</h1>
+      <h1 class="hero-title">Re:RANGE</h1>
       <p>「強くなる」をアップデートする。</p>
     </div>
   </section>

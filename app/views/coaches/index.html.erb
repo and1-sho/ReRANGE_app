@@ -1,0 +1,102 @@
+<div class="coaches-directory">
+  <header class="requests-header">
+    <%= link_to app_home_path, class: "requests-brand requests-brand--link" do %>
+      <span class="requests-brand__name">Re:RANGE</span>
+    <% end %>
+
+    <div class="requests-account">
+      <% if user_signed_in? %>
+        <%= render "shared/notification_bell_link" %>
+        <%= render "shared/account_menu" %>
+      <% else %>
+        <%= link_to "無料ではじめる", new_user_registration_path, class: "menu-btn menu-btn--primary" %>
+        <%= link_to "ログイン", new_user_session_path, class: "menu-btn menu-btn--ghost" %>
+      <% end %>
+    </div>
+  </header>
+
+  <main class="coaches-directory__main">
+    <div class="coaches-directory__top">
+      <h1 class="coaches-directory__title">コーチを探す</h1>
+      <div class="coaches-directory__sort">
+        <%= link_to "新着", coaches_path(sort: "new"), class: "menu-btn #{@sort == "new" ? "menu-btn--primary" : "menu-btn--ghost"}" %>
+        <%= link_to "全件", coaches_path(sort: "all"), class: "menu-btn #{@sort == "all" ? "menu-btn--primary" : "menu-btn--ghost"}" %>
+      </div>
+    </div>
+
+    <%# プロフィール詳細（220px）と同じ角位置を 108px ビューに縮小 %>
+    <% card_radar_label_positions = [
+         [110, 14], [184, 56], [184, 164], [110, 206], [36, 164], [36, 56]
+       ].map { |x, y| [(x * 108.0 / 220).round(2), (y * 108.0 / 220).round(2)] } %>
+    <% card_radar_axis_names = ["オフェンス", "テクニック", "スピード", "ディフェンス", "戦術", "フィジカル"] %>
+
+    <div class="coaches-directory__grid">
+      <% @coaches.each do |coach| %>
+        <% radar_values = [
+          coach.radar_attack,
+          coach.radar_technique,
+          coach.radar_speed,
+          coach.radar_defense,
+          coach.radar_strategy,
+          coach.radar_physical
+        ] %>
+        <% center = 54.0 %>
+        <% max_radius = 34.0 %>
+        <% value_points = radar_values.each_with_index.map do |value, index|
+             angle = (-90 + index * 60) * Math::PI / 180
+             radius = max_radius * (value.to_f / 5.0)
+             x = center + radius * Math.cos(angle)
+             y = center + radius * Math.sin(angle)
+             "#{x.round(2)},#{y.round(2)}"
+           end.join(" ") %>
+
+        <%= link_to coach_path(coach), class: "coach-card" do %>
+          <div class="coach-card__identity">
+            <div class="coach-card__avatar">
+              <% if coach.avatar_image.attached? %>
+                <%= image_tag coach.avatar_image, class: "coach-card__avatar-image", alt: "#{coach.name}のプロフィール画像" %>
+              <% else %>
+                <div class="coach-card__avatar-placeholder" aria-hidden="true">
+                  <span><%= coach.name.to_s.first %></span>
+                </div>
+              <% end %>
+            </div>
+            <div class="coach-card__meta">
+              <p class="coach-card__name"><%= coach.name %></p>
+              <p class="coach-card__last-seen">最終アクセス: <%= coach.last_seen_label %></p>
+            </div>
+          </div>
+
+          <div class="coach-card__radar">
+            <svg viewBox="0 0 108 108" class="coach-card__radar-chart" role="img" aria-label="<%= coach.name %>のコーチスタイル（6軸）" focusable="false">
+              <% 1.upto(4) do |level| %>
+                <% ring_points = 6.times.map do |index|
+                     angle = (-90 + index * 60) * Math::PI / 180
+                     radius = max_radius * (level / 4.0)
+                     x = center + radius * Math.cos(angle)
+                     y = center + radius * Math.sin(angle)
+                     "#{x.round(2)},#{y.round(2)}"
+                   end.join(" ") %>
+                <polygon points="<%= ring_points %>" class="coach-card__radar-ring"></polygon>
+              <% end %>
+
+              <% 6.times do |index| %>
+                <% angle = (-90 + index * 60) * Math::PI / 180 %>
+                <% x = center + max_radius * Math.cos(angle) %>
+                <% y = center + max_radius * Math.sin(angle) %>
+                <line x1="<%= center %>" y1="<%= center %>" x2="<%= x.round(2) %>" y2="<%= y.round(2) %>" class="coach-card__radar-axis"></line>
+              <% end %>
+
+              <polygon points="<%= value_points %>" class="coach-card__radar-shape"></polygon>
+
+              <% card_radar_axis_names.each_with_index do |name, index| %>
+                <% lx, ly = card_radar_label_positions[index] %>
+                <text x="<%= lx %>" y="<%= ly %>" class="coach-card__radar-label"><%= name %></text>
+              <% end %>
+            </svg>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  </main>
+</div>

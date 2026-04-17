@@ -7,6 +7,7 @@
   </summary>
 
   <div class="account-menu__panel">
+    <%= link_to "ダッシュボード", dashboard_path, class: "account-menu__item", data: { action: "click->account-menu#close" } %>
     <% if current_user.coach? %>
       <%= link_to "プロフィールを見る", coach_path(current_user), class: "account-menu__item", data: { action: "click->account-menu#close" } %>
       <%= link_to "プロフィールを編集", edit_coach_path(current_user), class: "account-menu__item", data: { action: "click->account-menu#close" } %>

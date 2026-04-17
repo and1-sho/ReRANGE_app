@@ -1,7 +1,6 @@
 <div class="coach-profile">
   <header class="requests-header">
     <%= link_to app_home_path, class: "requests-brand requests-brand--link" do %>
-      <span class="requests-brand__mark"></span>
       <span class="requests-brand__name">Re:RANGE</span>
     <% end %>
 
@@ -111,14 +110,14 @@
 
           <%# 6つの角ラベル（数値は出さず名称のみ） %>
           <% label_positions = [
-            [110, 14],   # 上: 攻撃
+            [110, 14],   # 上: オフェンス
             [184, 56],   # 右上: テクニック
             [184, 164],  # 右下: スピード
-            [110, 206],  # 下: 守備
+            [110, 206],  # 下: ディフェンス
             [36, 164],   # 左下: 戦術
             [36, 56]     # 左上: フィジカル
           ] %>
-          <% axis_names = ["攻撃", "テクニック", "スピード", "守備", "戦術", "フィジカル"] %>
+          <% axis_names = ["オフェンス", "テクニック", "スピード", "ディフェンス", "戦術", "フィジカル"] %>
           <% axis_names.each_with_index do |name, index| %>
             <% lx, ly = label_positions[index] %>
             <text x="<%= lx %>" y="<%= ly %>" class="coach-profile__radar-label"><%= name %></text>

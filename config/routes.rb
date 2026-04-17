@@ -4,8 +4,10 @@ Rails.application.routes.draw do
   get 'advices/create'
   devise_for :users
 
+  get :dashboard, to: "dashboard#index"
+
   # コーチプロフィール（公開ページ）
-  resources :coaches, only: [:show, :edit, :update], param: :slug
+  resources :coaches, only: [:index, :show, :edit, :update], param: :slug
   # メンバープロフィール
   resources :members, only: [:show, :edit, :update], param: :slug
 

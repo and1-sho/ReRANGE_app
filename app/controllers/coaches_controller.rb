@@ -1,7 +1,17 @@
 class CoachesController < ApplicationController
   before_action :authenticate_user!, only: [:edit, :update]
-  before_action :set_coach
+  before_action :set_coach, only: [:show, :edit, :update]
   before_action :authorize_coach_owner!, only: [:edit, :update]
+
+  def index
+    @sort = params[:sort] == "all" ? "all" : "new"
+    @coaches = User.coach
+    @coaches = if @sort == "all"
+                 @coaches.order(:name, :id)
+               else
+                 @coaches.order(created_at: :desc)
+               end
+  end
 
   # プロフィール閲覧は公開（未ログインでもアクセス可）
   def show
