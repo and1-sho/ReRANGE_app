@@ -1,9 +1,10 @@
 class RequestsController < ApplicationController
+  POLISH_MAX_ATTEMPTS = 2
 
   # ログインしていない人はアクセスできない設定
   before_action :authenticate_user!
   # memberかをチェックする設定
-  before_action :ensure_member!, only: [:new, :create, :edit, :update, :destroy]
+  before_action :ensure_member!, only: [:new, :create, :edit, :update, :destroy, :polish]
   # リクエストをセットする設定
   before_action :set_request, only: [:show, :edit, :update, :destroy]
   # 閲覧権限: 公開リクエストはログイン全員、指定トレーナー宛は投稿者とそのトレーナーのみ（show）
@@ -33,12 +34,16 @@ class RequestsController < ApplicationController
 
   def new
     @request = Request.new
+    @request_polish_draft_token = SecureRandom.uuid
+    @remaining_polish_attempts = remaining_polish_attempts(@request_polish_draft_token)
   end
 
   def create
     @request = current_user.requests.build(request_params)
+    draft_token = params[:request_polish_draft_token].to_s
 
     if @request.save
+      clear_polish_attempts!(draft_token)
       enqueue_video_thumbnail_job_if_video_attached!(@request)
       notify_trainers_new_request!
       redirect_to requests_path, notice: "作成しました"
@@ -69,12 +74,56 @@ class RequestsController < ApplicationController
     redirect_to requests_path, notice: "削除しました"
   end
 
+  def polish
+    draft_token = params[:draft_token].to_s
+    return render json: { error: "整形セッションが無効です。再読み込みしてください。" }, status: :unprocessable_entity if draft_token.blank?
+
+    if remaining_polish_attempts(draft_token) <= 0
+      return render json: { error: "文章を整える操作は2回までです", remaining_attempts: 0 }, status: :unprocessable_entity
+    end
+
+    body = params[:body].to_s.strip
+    return render json: { error: "本文を入力してください", remaining_attempts: remaining_polish_attempts(draft_token) }, status: :unprocessable_entity if body.blank?
+
+    polisher = ::RequestTextPolisher.new(body: body)
+    proposal = polisher.call
+    increment_polish_attempts!(draft_token)
+    render json: proposal.merge(remaining_attempts: remaining_polish_attempts(draft_token)), status: :ok
+  rescue RequestTextPolisher::PolishError => e
+    render json: { error: e.message, remaining_attempts: remaining_polish_attempts(draft_token) }, status: :unprocessable_entity
+  end
+
   private
 
   def request_params
     permitted = [:title, :body, :video]
     permitted << :directed_to_trainer_id if action_name == "create"
     params.require(:request).permit(*permitted)
+  end
+
+  def polish_attempts_store
+    raw = session[:request_polish_attempts]
+    store = raw.is_a?(Hash) ? raw : {}
+    session[:request_polish_attempts] = store
+    store
+  end
+
+  def polish_attempts(draft_token)
+    polish_attempts_store[draft_token].to_i
+  end
+
+  def remaining_polish_attempts(draft_token)
+    [POLISH_MAX_ATTEMPTS - polish_attempts(draft_token), 0].max
+  end
+
+  def increment_polish_attempts!(draft_token)
+    polish_attempts_store[draft_token] = polish_attempts(draft_token) + 1
+  end
+
+  def clear_polish_attempts!(draft_token)
+    return if draft_token.blank?
+
+    polish_attempts_store.delete(draft_token)
   end
 
   # 動画のみ削除（新しいファイルを選んだ場合は update 内の attach で差し替え）
@@ -101,7 +150,14 @@ class RequestsController < ApplicationController
   end
 
   def ensure_member!
-    redirect_to requests_path, alert: "メンバーのみリクエストを作成できます" unless current_user.member?
+    return if current_user.member?
+
+    message = "メンバーのみリクエストを作成できます"
+    if request.format.json?
+      render json: { error: message }, status: :forbidden
+    else
+      redirect_to requests_path, alert: message
+    end
   end
 
   def set_request

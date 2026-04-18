@@ -13,6 +13,9 @@ Rails.application.routes.draw do
   resources :members, only: [:show, :edit, :update], param: :slug
 
   resources :requests, only:[:index, :show, :new, :create, :edit, :update, :destroy] do
+    collection do
+      post :polish
+    end
     resource :advice, only: [:new, :create, :edit, :update, :destroy]
   end
 
