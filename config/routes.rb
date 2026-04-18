@@ -16,7 +16,11 @@ Rails.application.routes.draw do
     collection do
       post :polish
     end
-    resource :advice, only: [:new, :create, :edit, :update, :destroy]
+    resource :advice, only: [:new, :create, :edit, :update, :destroy] do
+      collection do
+        post :polish
+      end
+    end
   end
 
   resources :notifications, only: [:index]

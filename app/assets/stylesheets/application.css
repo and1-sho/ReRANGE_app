@@ -1078,17 +1078,72 @@ body {
   max-width: 100%;
 }
 
-.request-show__video {
-  display: block;
-  width: 100%;
-  max-width: 720px;
-  max-height: 70vh;
-  border-radius: 12px;
-  background: #000;
-}
-
 .request-show__video-wrap--advice {
   margin-top: 14px;
+}
+
+/* 動画プレーヤー枠: 横 16:9 / 縦 9:16（メタデータで自動判定） */
+.video-aspect {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  background: #0e1412;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 120px;
+}
+
+.video-aspect:not(.video-aspect--landscape):not(.video-aspect--portrait) {
+  aspect-ratio: 16 / 9;
+}
+
+.video-aspect--landscape {
+  aspect-ratio: 16 / 9;
+}
+
+.video-aspect--portrait {
+  aspect-ratio: 9 / 16;
+}
+
+.video-aspect__media {
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.video-aspect--request-show.video-aspect--landscape {
+  max-width: 720px;
+  max-height: min(70vh, 480px);
+}
+
+.video-aspect--request-show.video-aspect--portrait {
+  max-width: min(100%, 340px);
+  max-height: min(85vh, 620px);
+}
+
+.video-aspect--compose-context.video-aspect--landscape {
+  max-height: min(56vw, 380px);
+}
+
+.video-aspect--compose-context.video-aspect--portrait {
+  max-width: min(100%, 280px);
+  max-height: min(80vh, 560px);
+}
+
+.video-aspect--compose-preview.video-aspect--landscape {
+  max-height: 280px;
+}
+
+.video-aspect--compose-preview.video-aspect--portrait {
+  max-width: 220px;
+  max-height: 360px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .request-show__actions {
@@ -1322,6 +1377,10 @@ body {
   border-top: 1px solid rgba(2, 27, 21, 0.08);
 }
 
+.request-compose__video--advice {
+  margin-top: 14px;
+}
+
 .request-compose__video-label {
   display: block;
   font-size: 0.88rem;
@@ -1370,13 +1429,8 @@ body {
   color: rgba(2, 27, 21, 0.55);
 }
 
-.request-compose__video-preview-player {
-  display: block;
-  width: 100%;
-  max-width: 480px;
-  max-height: 280px;
+.request-compose__video-preview .video-aspect {
   border-radius: 10px;
-  background: #0e1412;
 }
 
 .request-compose__toolbar {
@@ -1475,6 +1529,18 @@ body {
 
 .advice-compose__context-body p:last-child {
   margin-bottom: 0;
+}
+
+.advice-compose__context-body-label--media {
+  margin-top: 14px;
+}
+
+.advice-compose__context-video {
+  margin: 0 0 4px;
+}
+
+.advice-compose__context-video .video-aspect {
+  border-radius: 10px;
 }
 
 .request-compose__body--advice {

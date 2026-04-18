@@ -1,6 +1,6 @@
 class HomeController < ApplicationController
   def index
-    # ログイン済みユーザーはダッシュボードをホームとして扱う
-    redirect_to dashboard_path if user_signed_in?
+    # ログイン済みユーザーは投稿一覧をホームとして扱う
+    redirect_to requests_path if user_signed_in?
   end
 end

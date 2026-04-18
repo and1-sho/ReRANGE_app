@@ -1,0 +1,12 @@
+<%# locals: url (String), wrapper_class (optional) — 横は16:9・縦は9:16の枠で表示 %>
+<div class="video-aspect <%= local_assigns[:wrapper_class] %>" data-controller="video-aspect">
+  <%= video_tag url,
+        controls: true,
+        playsinline: true,
+        preload: "metadata",
+        class: "video-aspect__media",
+        data: {
+          "video-aspect-target": "video",
+          action: "loadedmetadata->video-aspect#layout"
+        } %>
+</div>

@@ -69,7 +69,9 @@
                   } %>
             <div class="request-compose__video-preview" data-video-upload-preview-target="box" hidden>
               <p class="request-compose__video-preview-label">選択中の動画</p>
-              <video data-video-upload-preview-target="player" controls playsinline class="request-compose__video-preview-player"></video>
+              <div class="video-aspect video-aspect--compose-preview" data-controller="video-aspect">
+                <video data-video-upload-preview-target="player" data-video-aspect-target="video" data-action="loadedmetadata->video-aspect#layout" controls playsinline class="video-aspect__media"></video>
+              </div>
             </div>
           </div>
         </div>

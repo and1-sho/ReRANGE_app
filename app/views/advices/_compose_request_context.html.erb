@@ -1,0 +1,21 @@
+<%# ローカル: request（Request） %>
+<div class="advice-compose__context">
+  <p class="advice-compose__context-label">返信先のリクエスト</p>
+  <p class="advice-compose__context-title"><%= request.title %></p>
+  <div class="advice-compose__context-author">
+    <%= link_to profile_path_for(request.user), class: "request-show__avatar-link", aria: { label: "#{request.user.name}のプロフィールへ移動" } do %>
+      <%= render "shared/user_avatar_icon", variant: :header %>
+    <% end %>
+    <span class="advice-compose__context-author-name"><%= link_to request.user.name, profile_path_for(request.user) %></span>
+  </div>
+  <% if request.body.present? %>
+    <p class="advice-compose__context-body-label">リクエスト本文</p>
+    <div class="advice-compose__context-body"><%= simple_format(h(request.body)) %></div>
+  <% end %>
+  <% if request.video.attached? %>
+    <p class="advice-compose__context-body-label advice-compose__context-body-label--media">リクエストの動画</p>
+    <div class="advice-compose__context-video">
+      <%= render "shared/video_aspect", url: url_for(request.video), wrapper_class: "video-aspect--compose-context" %>
+    </div>
+  <% end %>
+</div>

@@ -17,13 +17,18 @@ export default class extends Controller {
     maxAttempts: Number,
     remainingAttempts: Number,
     draftToken: String,
-    minBodyLength: Number
+    minBodyLength: Number,
+    bodyOnly: Boolean
   }
 
   connect() {
     this.remainingAttempts = this.hasRemainingAttemptsValue ? this.remainingAttemptsValue : this.maxAttemptsValue
+    this.bodyOnlyMode = this.hasBodyOnlyValue ? this.bodyOnlyValue : false
     this.isLoading = false
     this.proposalData = null
+    if (this.bodyOnlyMode && this.hasProposalTitleTarget) {
+      this.proposalTitleTarget.hidden = true
+    }
     this.renderAttempts()
     this.onBodyInput()
   }
@@ -59,7 +64,10 @@ export default class extends Controller {
       }
 
       this.proposalData = payload
-      this.proposalTitleTarget.textContent = `タイトル案: ${payload.title}`
+      if (!this.bodyOnlyMode && this.hasProposalTitleTarget) {
+        this.proposalTitleTarget.textContent = `タイトル案: ${payload.title}`
+        this.proposalTitleTarget.hidden = false
+      }
       this.proposalBodyTarget.textContent = payload.body
       this.proposalTarget.hidden = false
       this.syncRemainingAttempts(payload)
@@ -75,9 +83,11 @@ export default class extends Controller {
   adopt() {
     if (!this.proposalData) return
 
-    this.titleTarget.value = this.proposalData.title
+    if (!this.bodyOnlyMode && this.hasTitleTarget) {
+      this.titleTarget.value = this.proposalData.title
+      this.titleTarget.dispatchEvent(new Event("input", { bubbles: true }))
+    }
     this.bodyTarget.value = this.proposalData.body
-    this.titleTarget.dispatchEvent(new Event("input", { bubbles: true }))
     this.bodyTarget.dispatchEvent(new Event("input", { bubbles: true }))
     this.proposalTarget.hidden = true
     this.onBodyInput()

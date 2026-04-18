@@ -32,11 +32,7 @@
 
       <% if @request.video.attached? %>
         <div class="request-show__video-wrap">
-          <%= video_tag url_for(@request.video),
-                controls: true,
-                playsinline: true,
-                class: "request-show__video",
-                preload: "metadata" %>
+          <%= render "shared/video_aspect", url: url_for(@request.video), wrapper_class: "video-aspect--request-show" %>
         </div>
       <% end %>
 
@@ -63,11 +59,7 @@
         </div>
         <% if @request.advice.video.attached? %>
           <div class="request-show__video-wrap request-show__video-wrap--advice">
-            <%= video_tag url_for(@request.advice.video),
-                  controls: true,
-                  playsinline: true,
-                  class: "request-show__video",
-                  preload: "metadata" %>
+            <%= render "shared/video_aspect", url: url_for(@request.advice.video), wrapper_class: "video-aspect--request-show" %>
           </div>
         <% end %>
         <% if current_user.trainer? && @request.advice.user_id == current_user.id %>

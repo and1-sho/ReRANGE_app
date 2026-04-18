@@ -11,20 +11,7 @@
   </header>
 
   <main class="request-compose">
-    <div class="advice-compose__context">
-      <p class="advice-compose__context-label">返信先のリクエスト</p>
-      <p class="advice-compose__context-title"><%= @request.title %></p>
-      <div class="advice-compose__context-author">
-        <%= link_to profile_path_for(@request.user), class: "request-show__avatar-link", aria: { label: "#{@request.user.name}のプロフィールへ移動" } do %>
-          <%= render "shared/user_avatar_icon", variant: :header %>
-        <% end %>
-        <span class="advice-compose__context-author-name"><%= link_to @request.user.name, profile_path_for(@request.user) %></span>
-      </div>
-      <% if @request.body.present? %>
-        <p class="advice-compose__context-body-label">リクエスト本文</p>
-        <div class="advice-compose__context-body"><%= simple_format(h(@request.body)) %></div>
-      <% end %>
-    </div>
+    <%= render "compose_request_context", request: @request %>
 
     <% if @advice.errors.any? %>
       <div class="request-compose__errors" role="alert">
@@ -36,16 +23,25 @@
       </div>
     <% end %>
 
-    <%= form_with model: @advice, url: request_advice_path(@request), method: :patch, local: true, html: { class: "request-compose__form" } do |f| %>
+    <%= form_with model: @advice, url: request_advice_path(@request), method: :patch, local: true, html: { class: "request-compose__form", multipart: true }, data: {
+      controller: "request-polish",
+      "request-polish-endpoint-value": polish_request_advice_path(@request),
+      "request-polish-max-attempts-value": 2,
+      "request-polish-remaining-attempts-value": @remaining_polish_attempts,
+      "request-polish-draft-token-value": @advice_polish_draft_token,
+      "request-polish-min-body-length-value": 8,
+      "request-polish-body-only-value": true
+    } do |f| %>
+      <%= hidden_field_tag :advice_polish_draft_token, @advice_polish_draft_token %>
       <div class="request-compose__row">
         <div class="request-compose__avatar-slot" aria-hidden="true">
           <%= render "shared/user_avatar_icon", variant: :card %>
         </div>
 
         <div class="request-compose__fields">
-          <%= f.text_area :body, placeholder: "アドバイスを書いてください...", rows: 10, class: "request-compose__body request-compose__body--advice" %>
+          <%= f.text_area :body, placeholder: "アドバイスを書いてください...", rows: 10, class: "request-compose__body request-compose__body--advice", data: { "request-polish-target": "body", action: "input->request-polish#onBodyInput" } %>
 
-          <div class="request-compose__video" data-controller="video-upload-preview">
+          <div class="request-compose__video request-compose__video--advice" data-controller="video-upload-preview">
             <%= f.label :video, "動画（任意）", class: "request-compose__video-label" %>
             <p class="request-compose__video-hint">MP4 / MOV・1本あたり100MBまで。差し替えは新しいファイルを選ぶか、削除にチェック。</p>
             <% if @advice.video.attached? %>
@@ -66,7 +62,25 @@
                   } %>
             <div class="request-compose__video-preview" data-video-upload-preview-target="box" hidden>
               <p class="request-compose__video-preview-label">選択中の動画</p>
-              <video data-video-upload-preview-target="player" controls playsinline class="request-compose__video-preview-player"></video>
+              <div class="video-aspect video-aspect--compose-preview" data-controller="video-aspect">
+                <video data-video-upload-preview-target="player" data-video-aspect-target="video" data-action="loadedmetadata->video-aspect#layout" controls playsinline class="video-aspect__media"></video>
+              </div>
+            </div>
+          </div>
+
+          <div class="request-compose__polish">
+            <div class="request-compose__polish-actions">
+              <button type="button" class="menu-btn menu-btn--ghost request-compose__polish-button" data-request-polish-target="polishButton" data-action="request-polish#polish" disabled>文章を整える</button>
+              <p class="request-compose__polish-meta">残り <span data-request-polish-target="attempts"><%= @remaining_polish_attempts %></span> 回</p>
+            </div>
+            <p class="request-compose__polish-error" data-request-polish-target="error" hidden></p>
+
+            <div class="request-compose__proposal" data-request-polish-target="proposal" hidden>
+              <p class="request-compose__proposal-label">AIからの提案</p>
+              <p class="request-compose__proposal-body" data-request-polish-target="proposalBody"></p>
+              <div class="request-compose__proposal-actions">
+                <button type="button" class="menu-btn menu-btn--primary" data-action="request-polish#adopt">提案を反映する</button>
+              </div>
             </div>
           </div>
         </div>

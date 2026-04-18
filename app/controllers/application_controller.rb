@@ -16,9 +16,9 @@ class ApplicationController < ActionController::Base
     user_signed_in? ? requests_path : root_path
   end
 
-  # ログイン直後はダッシュボードへ遷移
+  # ログイン直後は投稿一覧へ（SNS風のメインタイムライン）
   def after_sign_in_path_for(_resource)
-    dashboard_path
+    requests_path
   end
 
   # ユーザーのロールに応じたプロフィールURLを返す
