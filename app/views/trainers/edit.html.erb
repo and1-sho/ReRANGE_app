@@ -1,101 +1,126 @@
-<div class="public-profile-edit">
-  <div class="public-profile-edit__body">
-    <h1 class="public-profile-edit__title">プロフィール編集</h1>
-
-    <% if @trainer.errors.any? %>
-      <div class="public-profile-edit__errors">
-        <p class="public-profile-edit__errors-title">入力内容を確認してください</p>
-        <ul>
-          <% @trainer.errors.full_messages.each do |message| %>
-            <li><%= message %></li>
-          <% end %>
-        </ul>
-      </div>
+<div class="requests-page layout-feed page-trainers-edit">
+  <div class="requests-feed-chrome">
+    <%= link_to app_home_path, class: "requests-feed-chrome__brand" do %>
+      <span class="requests-feed-chrome__brand-name">Re:RANGE</span>
     <% end %>
+    <div class="requests-feed-chrome__actions">
+      <%= render "shared/notification_bell_link" %>
+      <%= render "shared/account_menu" %>
+    </div>
+  </div>
 
-    <%= form_with model: @trainer, url: trainer_path(@trainer), method: :patch, local: true, class: "public-profile-edit__form" do |f| %>
-      <div class="public-profile-edit__field">
-        <%= f.label :header_image, "ヘッダー画像", class: "auth-label" %>
-        <% if @trainer.header_image.attached? %>
-          <p class="public-profile-edit__current-file">
-            現在の画像: <%= @trainer.header_image.filename.to_s %>
-          </p>
-          <label class="public-profile-edit__remove-check">
-            <%= check_box_tag "user[remove_header_image]", "1", false %>
-            ヘッダー画像を削除する
-          </label>
-        <% else %>
-          <p class="public-profile-edit__current-file">現在の画像: 未設定</p>
-        <% end %>
-        <%= f.file_field :header_image, class: "auth-input" %>
-      </div>
+  <div class="requests-feed-body">
+    <div class="requests-trainer-layout">
+      <%= render "requests/trainer_sidebar" %>
 
-      <div class="public-profile-edit__field">
-        <%= f.label :avatar_image, "プロフィール画像", class: "auth-label" %>
-        <% if @trainer.avatar_image.attached? %>
-          <p class="public-profile-edit__current-file">
-            現在の画像: <%= @trainer.avatar_image.filename.to_s %>
-          </p>
-          <label class="public-profile-edit__remove-check">
-            <%= check_box_tag "user[remove_avatar_image]", "1", false %>
-            プロフィール画像を削除する
-          </label>
-        <% else %>
-          <p class="public-profile-edit__current-file">現在の画像: 未設定</p>
-        <% end %>
-        <%= f.file_field :avatar_image, class: "auth-input" %>
-      </div>
+      <div class="requests-trainer-main">
+        <div class="requests-feed-stage requests-feed-stage--compose-gap">
+          <div class="requests-feed-column requests-feed-column--stream">
+            <div class="public-profile-edit public-profile-edit--in-feed">
+              <div class="public-profile-edit__body">
+                <h1 class="public-profile-edit__title">プロフィール編集</h1>
 
-      <div class="public-profile-edit__field">
-        <%= f.label :profile_affiliation, "所属", class: "auth-label" %>
-        <%= f.text_field :profile_affiliation, class: "auth-input" %>
-      </div>
+                <% if @trainer.errors.any? %>
+                  <div class="public-profile-edit__errors">
+                    <p class="public-profile-edit__errors-title">入力内容を確認してください</p>
+                    <ul>
+                      <% @trainer.errors.full_messages.each do |message| %>
+                        <li><%= message %></li>
+                      <% end %>
+                    </ul>
+                  </div>
+                <% end %>
 
-      <div class="public-profile-edit__field">
-        <%= f.label :profile_prefecture, "都道府県", class: "auth-label" %>
-        <%= f.select :profile_prefecture, User::PREFECTURES, { include_blank: "選択してください" }, class: "auth-input auth-select" %>
-      </div>
+                <%= form_with model: @trainer, url: trainer_path(@trainer), method: :patch, local: true, class: "public-profile-edit__form" do |f| %>
+                  <div class="public-profile-edit__field">
+                    <%= f.label :header_image, "ヘッダー画像", class: "auth-label" %>
+                    <% if @trainer.header_image.attached? %>
+                      <p class="public-profile-edit__current-file">
+                        現在の画像: <%= @trainer.header_image.filename.to_s %>
+                      </p>
+                      <label class="public-profile-edit__remove-check">
+                        <%= check_box_tag "user[remove_header_image]", "1", false %>
+                        ヘッダー画像を削除する
+                      </label>
+                    <% else %>
+                      <p class="public-profile-edit__current-file">現在の画像: 未設定</p>
+                    <% end %>
+                    <%= f.file_field :header_image, class: "auth-input" %>
+                  </div>
 
-      <div class="public-profile-edit__field">
-        <%= f.label :profile_area_detail, "地域（市区町村など）", class: "auth-label" %>
-        <%= f.text_field :profile_area_detail, class: "auth-input" %>
-      </div>
+                  <div class="public-profile-edit__field">
+                    <%= f.label :avatar_image, "プロフィール画像", class: "auth-label" %>
+                    <% if @trainer.avatar_image.attached? %>
+                      <p class="public-profile-edit__current-file">
+                        現在の画像: <%= @trainer.avatar_image.filename.to_s %>
+                      </p>
+                      <label class="public-profile-edit__remove-check">
+                        <%= check_box_tag "user[remove_avatar_image]", "1", false %>
+                        プロフィール画像を削除する
+                      </label>
+                    <% else %>
+                      <p class="public-profile-edit__current-file">現在の画像: 未設定</p>
+                    <% end %>
+                    <%= f.file_field :avatar_image, class: "auth-input" %>
+                  </div>
 
-      <div class="public-profile-edit__field">
-        <%= f.label :boxing_started_on, "選手開始日", class: "auth-label" %>
-        <%= f.date_field :boxing_started_on, class: "auth-input" %>
-      </div>
+                  <div class="public-profile-edit__field">
+                    <%= f.label :profile_affiliation, "所属", class: "auth-label" %>
+                    <%= f.text_field :profile_affiliation, class: "auth-input" %>
+                  </div>
 
-      <div class="public-profile-edit__field">
-        <%= f.label :instruction_started_on, "指導開始日", class: "auth-label" %>
-        <%= f.date_field :instruction_started_on, class: "auth-input" %>
-      </div>
+                  <div class="public-profile-edit__field">
+                    <%= f.label :profile_prefecture, "都道府県", class: "auth-label" %>
+                    <%= f.select :profile_prefecture, User::PREFECTURES, { include_blank: "選択してください" }, class: "auth-input auth-select" %>
+                  </div>
 
-      <div class="public-profile-edit__field">
-        <%= f.label :profile_bio, "自己紹介", class: "auth-label" %>
-        <%= f.text_area :profile_bio, rows: 6, class: "auth-input" %>
-      </div>
+                  <div class="public-profile-edit__field">
+                    <%= f.label :profile_area_detail, "地域（市区町村など）", class: "auth-label" %>
+                    <%= f.text_field :profile_area_detail, class: "auth-input" %>
+                  </div>
 
-      <%# レーダー6軸（各0〜5）: 入力中に残りポイントを表示 %>
-      <div class="public-profile-edit__radar" data-controller="radar-points">
-        <p class="public-profile-edit__radar-remaining">
-          残りポイント:
-          <strong data-radar-points-target="remaining"></strong>
-        </p>
-        <div class="public-profile-edit__grid">
-          <div class="public-profile-edit__field"><%= f.label :radar_attack, "攻撃", class: "auth-label" %><%= f.number_field :radar_attack, in: 0..5, class: "auth-input", data: { "radar-points-target": "input", action: "input->radar-points#update" } %></div>
-          <div class="public-profile-edit__field"><%= f.label :radar_technique, "テクニック", class: "auth-label" %><%= f.number_field :radar_technique, in: 0..5, class: "auth-input", data: { "radar-points-target": "input", action: "input->radar-points#update" } %></div>
-          <div class="public-profile-edit__field"><%= f.label :radar_physical, "フィジカル", class: "auth-label" %><%= f.number_field :radar_physical, in: 0..5, class: "auth-input", data: { "radar-points-target": "input", action: "input->radar-points#update" } %></div>
-          <div class="public-profile-edit__field"><%= f.label :radar_speed, "スピード", class: "auth-label" %><%= f.number_field :radar_speed, in: 0..5, class: "auth-input", data: { "radar-points-target": "input", action: "input->radar-points#update" } %></div>
-          <div class="public-profile-edit__field"><%= f.label :radar_strategy, "戦術", class: "auth-label" %><%= f.number_field :radar_strategy, in: 0..5, class: "auth-input", data: { "radar-points-target": "input", action: "input->radar-points#update" } %></div>
-          <div class="public-profile-edit__field"><%= f.label :radar_defense, "守備", class: "auth-label" %><%= f.number_field :radar_defense, in: 0..5, class: "auth-input", data: { "radar-points-target": "input", action: "input->radar-points#update" } %></div>
+                  <div class="public-profile-edit__field">
+                    <%= f.label :boxing_started_on, "選手開始日", class: "auth-label" %>
+                    <%= f.date_field :boxing_started_on, class: "auth-input" %>
+                  </div>
+
+                  <div class="public-profile-edit__field">
+                    <%= f.label :instruction_started_on, "指導開始日", class: "auth-label" %>
+                    <%= f.date_field :instruction_started_on, class: "auth-input" %>
+                  </div>
+
+                  <div class="public-profile-edit__field">
+                    <%= f.label :profile_bio, "自己紹介", class: "auth-label" %>
+                    <%= f.text_area :profile_bio, rows: 6, class: "auth-input" %>
+                  </div>
+
+                  <div class="public-profile-edit__radar" data-controller="radar-points">
+                    <p class="public-profile-edit__radar-remaining">
+                      残りポイント:
+                      <strong data-radar-points-target="remaining"></strong>
+                    </p>
+                    <div class="public-profile-edit__grid">
+                      <div class="public-profile-edit__field"><%= f.label :radar_attack, "攻撃", class: "auth-label" %><%= f.number_field :radar_attack, in: 0..5, class: "auth-input", data: { "radar-points-target": "input", action: "input->radar-points#update" } %></div>
+                      <div class="public-profile-edit__field"><%= f.label :radar_technique, "テクニック", class: "auth-label" %><%= f.number_field :radar_technique, in: 0..5, class: "auth-input", data: { "radar-points-target": "input", action: "input->radar-points#update" } %></div>
+                      <div class="public-profile-edit__field"><%= f.label :radar_physical, "フィジカル", class: "auth-label" %><%= f.number_field :radar_physical, in: 0..5, class: "auth-input", data: { "radar-points-target": "input", action: "input->radar-points#update" } %></div>
+                      <div class="public-profile-edit__field"><%= f.label :radar_speed, "スピード", class: "auth-label" %><%= f.number_field :radar_speed, in: 0..5, class: "auth-input", data: { "radar-points-target": "input", action: "input->radar-points#update" } %></div>
+                      <div class="public-profile-edit__field"><%= f.label :radar_strategy, "戦術", class: "auth-label" %><%= f.number_field :radar_strategy, in: 0..5, class: "auth-input", data: { "radar-points-target": "input", action: "input->radar-points#update" } %></div>
+                      <div class="public-profile-edit__field"><%= f.label :radar_defense, "守備", class: "auth-label" %><%= f.number_field :radar_defense, in: 0..5, class: "auth-input", data: { "radar-points-target": "input", action: "input->radar-points#update" } %></div>
+                    </div>
+                  </div>
+
+                  <div class="public-profile-edit__actions">
+                    <%= link_to "戻る", trainer_path(@trainer), class: "menu-btn menu-btn--ghost" %>
+                    <%= f.submit "保存する", class: "menu-btn menu-btn--primary" %>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+          <div class="requests-feed-aside-spacer" aria-hidden="true"></div>
         </div>
+        <%= render "shared/requests_feed_aside" %>
       </div>
-
-      <div class="public-profile-edit__actions">
-        <%= link_to "戻る", trainer_path(@trainer), class: "menu-btn menu-btn--ghost" %>
-        <%= f.submit "保存する", class: "menu-btn menu-btn--primary" %>
-      </div>
-    <% end %>
+    </div>
   </div>
 </div>

@@ -19,8 +19,8 @@
           <li class="notifications-item">
             <%= link_to request_path(notification.request), class: "notifications-item__link" do %>
               <span class="notifications-item__message"><%= notification.message %></span>
-              <time class="notifications-item__time" datetime="<%= notification.created_at.iso8601 %>">
-                <%= notification.created_at.strftime("%Y/%m/%d %H:%M") %>
+              <time class="notifications-item__time" datetime="<%= notification.created_at.iso8601 %>" title="<%= social_time_title(notification.created_at) %>">
+                <%= social_time_ago(notification.created_at) %>
               </time>
             <% end %>
           </li>

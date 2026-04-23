@@ -15,6 +15,13 @@ class TrainersController < ApplicationController
 
   # プロフィール閲覧は公開（未ログインでもアクセス可）
   def show
+    @trainer_advised_requests = trainer_profile_advised_requests
+    @trainer_advised_feed_empty_subcopy =
+      if user_signed_in? && current_user == @trainer
+        "メンバーからの依頼へアドバイスすると、ここに表示されます。"
+      else
+        "公開リクエストへアドバイスすると、ここに表示されます。"
+      end
   end
 
   # トレーナー本人がプロフィール編集
@@ -33,6 +40,20 @@ class TrainersController < ApplicationController
   end
 
   private
+
+  # 本人閲覧時は限定公開を含む。それ以外は公開フィード相当のアドバイスのみ。
+  def trainer_profile_advised_requests
+    rel = Request.joins(:advice)
+                 .where(advices: { user_id: @trainer.id })
+                 .includes(:user, :advice, video_attachment: :blob, video_thumbnail_attachment: :blob)
+                 .distinct
+                 .order(created_at: :desc)
+    if user_signed_in? && current_user == @trainer
+      rel
+    else
+      rel.merge(Request.on_public_feed)
+    end
+  end
 
   def set_trainer
     # 基本は slug で検索。既存データで slug が未設定の場合のみ id も許可する

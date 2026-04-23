@@ -7,14 +7,6 @@
   </summary>
 
   <div class="account-menu__panel">
-    <%= link_to "ダッシュボード", dashboard_path, class: "account-menu__item", data: { action: "click->account-menu#close" } %>
-    <% if current_user.trainer? %>
-      <%= link_to "プロフィールを見る", trainer_path(current_user), class: "account-menu__item", data: { action: "click->account-menu#close" } %>
-      <%= link_to "プロフィールを編集", edit_trainer_path(current_user), class: "account-menu__item", data: { action: "click->account-menu#close" } %>
-    <% elsif current_user.member? %>
-      <%= link_to "プロフィールを見る", member_path(current_user), class: "account-menu__item", data: { action: "click->account-menu#close" } %>
-      <%= link_to "プロフィールを編集", edit_member_path(current_user), class: "account-menu__item", data: { action: "click->account-menu#close" } %>
-    <% end %>
     <%= link_to "ログアウト", destroy_user_session_path, class: "account-menu__item account-menu__item--danger", data: { turbo_method: :delete, action: "click->account-menu#close" } %>
   </div>
 </details>

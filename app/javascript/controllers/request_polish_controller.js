@@ -104,6 +104,12 @@ export default class extends Controller {
   updatePolishButtonState() {
     this.polishButtonTarget.disabled = !this.canPolish()
     this.polishButtonTarget.textContent = this.isLoading ? "整えています..." : "文章を整える"
+
+    const bodyMin =
+      this.bodyTarget.value.trim().length >= this.minBodyLengthValue
+    const attemptsOk = this.remainingAttempts > 0
+    const showReady = bodyMin && attemptsOk && !this.isLoading
+    this.polishButtonTarget.classList.toggle("request-polish-ready", showReady)
   }
 
   renderAttempts() {

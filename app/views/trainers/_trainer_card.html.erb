@@ -1,0 +1,16 @@
+<%= link_to trainer_path(trainer), class: "trainer-card" do %>
+  <div class="trainer-card__avatar">
+    <% if trainer.avatar_image.attached? %>
+      <%= image_tag trainer.avatar_image, class: "trainer-card__avatar-image", alt: "#{trainer.name}のプロフィール画像" %>
+    <% else %>
+      <div class="trainer-card__avatar-placeholder" aria-hidden="true">
+        <span><%= trainer.name.to_s.first %></span>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="trainer-card__meta">
+    <p class="trainer-card__name"><%= trainer.name %></p>
+    <p class="trainer-card__last-seen">最終アクセス: <%= trainer.last_seen_label %></p>
+  </div>
+<% end %>

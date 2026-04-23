@@ -1,10 +1,10 @@
 class Request < ApplicationRecord
   include ValidatesAttachedVideo
 
-  # requestのタイトルを必須項目にする
-  validates :title, presence: true
-  # requestのボディーを必須項目にする
-  validates :body, presence: true
+  # requestのタイトルを必須項目にする（UI 上のカウンタと揃えて最大24字）
+  validates :title, presence: true, length: { maximum: 24 }
+  # requestのボディーを必須項目にする（UI のカウンタと揃えて最大300字）
+  validates :body, presence: true, length: { maximum: 300 }
 
   # 動画は1リクエストにつき1本（MP4 / MOV・100MBまで）
   has_one_attached :video
@@ -39,6 +39,11 @@ class Request < ApplicationRecord
 
   def public_feed?
     directed_to_trainer_id.blank?
+  end
+
+  # 現状 has_one :advice のため 0 または 1。将来複数化したらここを件数集計に差し替える。
+  def advice_count
+    advice.present? ? 1 : 0
   end
 
   private

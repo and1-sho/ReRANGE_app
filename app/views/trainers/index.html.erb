@@ -1,10 +1,10 @@
-<div class="trainers-directory">
-  <header class="requests-header">
-    <%= link_to app_home_path, class: "requests-brand requests-brand--link" do %>
-      <span class="requests-brand__name">Re:RANGE</span>
+<div class="requests-page layout-feed trainers-directory page-trainers">
+  <div class="requests-feed-chrome">
+    <%= link_to app_home_path, class: "requests-feed-chrome__brand" do %>
+      <span class="requests-feed-chrome__brand-name">Re:RANGE</span>
     <% end %>
 
-    <div class="requests-account">
+    <div class="requests-feed-chrome__actions">
       <% if user_signed_in? %>
         <%= render "shared/notification_bell_link" %>
         <%= render "shared/account_menu" %>
@@ -13,90 +13,54 @@
         <%= link_to "ログイン", new_user_session_path, class: "menu-btn menu-btn--ghost" %>
       <% end %>
     </div>
-  </header>
+  </div>
 
-  <main class="trainers-directory__main">
-    <div class="trainers-directory__top">
-      <h1 class="trainers-directory__title">トレーナーを探す</h1>
-      <div class="trainers-directory__sort">
-        <%= link_to "新着", trainers_path(sort: "new"), class: "menu-btn #{@sort == "new" ? "menu-btn--primary" : "menu-btn--ghost"}" %>
-        <%= link_to "全件", trainers_path(sort: "all"), class: "menu-btn #{@sort == "all" ? "menu-btn--primary" : "menu-btn--ghost"}" %>
-      </div>
-    </div>
+  <div class="requests-feed-body">
+    <% if user_signed_in? && (current_user.member? || current_user.trainer?) %>
+      <% sidebar_partial = current_user.member? ? "requests/member_sidebar" : "requests/trainer_sidebar" %>
+      <div class="requests-trainer-layout">
+        <%= render sidebar_partial %>
 
-    <%# プロフィール詳細（220px）と同じ角位置を 108px ビューに縮小 %>
-    <% card_radar_label_positions = [
-         [110, 14], [184, 56], [184, 164], [110, 206], [36, 164], [36, 56]
-       ].map { |x, y| [(x * 108.0 / 220).round(2), (y * 108.0 / 220).round(2)] } %>
-    <% card_radar_axis_names = ["オフェンス", "テクニック", "スピード", "ディフェンス", "戦術", "フィジカル"] %>
-
-    <div class="trainers-directory__grid">
-      <% @trainers.each do |trainer| %>
-        <% radar_values = [
-          trainer.radar_attack,
-          trainer.radar_technique,
-          trainer.radar_speed,
-          trainer.radar_defense,
-          trainer.radar_strategy,
-          trainer.radar_physical
-        ] %>
-        <% center = 54.0 %>
-        <% max_radius = 34.0 %>
-        <% value_points = radar_values.each_with_index.map do |value, index|
-             angle = (-90 + index * 60) * Math::PI / 180
-             radius = max_radius * (value.to_f / 5.0)
-             x = center + radius * Math.cos(angle)
-             y = center + radius * Math.sin(angle)
-             "#{x.round(2)},#{y.round(2)}"
-           end.join(" ") %>
-
-        <%= link_to trainer_path(trainer), class: "trainer-card" do %>
-          <div class="trainer-card__identity">
-            <div class="trainer-card__avatar">
-              <% if trainer.avatar_image.attached? %>
-                <%= image_tag trainer.avatar_image, class: "trainer-card__avatar-image", alt: "#{trainer.name}のプロフィール画像" %>
-              <% else %>
-                <div class="trainer-card__avatar-placeholder" aria-hidden="true">
-                  <span><%= trainer.name.to_s.first %></span>
+        <div class="requests-trainer-main">
+          <div class="requests-feed-stage requests-feed-stage--compose-gap">
+            <div class="requests-feed-column requests-feed-column--stream">
+              <main class="trainers-directory__main">
+                <div class="trainers-directory__top">
+                  <h1 class="trainers-directory__title">トレーナーを探す</h1>
                 </div>
-              <% end %>
+
+                <div class="trainers-directory__grid">
+                  <% @trainers.each do |trainer| %>
+                    <%= render "trainer_card", trainer: trainer %>
+                  <% end %>
+                </div>
+              </main>
             </div>
-            <div class="trainer-card__meta">
-              <p class="trainer-card__name"><%= trainer.name %></p>
-              <p class="trainer-card__last-seen">最終アクセス: <%= trainer.last_seen_label %></p>
-            </div>
+            <div class="requests-feed-aside-spacer" aria-hidden="true"></div>
           </div>
+          <%= render "shared/requests_feed_aside" %>
+        </div>
+      </div>
+    <% else %>
+      <div class="requests-trainer-main">
+        <div class="requests-feed-stage requests-feed-stage--compose-gap">
+          <div class="requests-feed-column requests-feed-column--stream">
+            <main class="trainers-directory__main">
+              <div class="trainers-directory__top">
+                <h1 class="trainers-directory__title">トレーナーを探す</h1>
+              </div>
 
-          <div class="trainer-card__radar">
-            <svg viewBox="0 0 108 108" class="trainer-card__radar-chart" role="img" aria-label="<%= trainer.name %>のトレーナースタイル（6軸）" focusable="false">
-              <% 1.upto(4) do |level| %>
-                <% ring_points = 6.times.map do |index|
-                     angle = (-90 + index * 60) * Math::PI / 180
-                     radius = max_radius * (level / 4.0)
-                     x = center + radius * Math.cos(angle)
-                     y = center + radius * Math.sin(angle)
-                     "#{x.round(2)},#{y.round(2)}"
-                   end.join(" ") %>
-                <polygon points="<%= ring_points %>" class="trainer-card__radar-ring"></polygon>
-              <% end %>
-
-              <% 6.times do |index| %>
-                <% angle = (-90 + index * 60) * Math::PI / 180 %>
-                <% x = center + max_radius * Math.cos(angle) %>
-                <% y = center + max_radius * Math.sin(angle) %>
-                <line x1="<%= center %>" y1="<%= center %>" x2="<%= x.round(2) %>" y2="<%= y.round(2) %>" class="trainer-card__radar-axis"></line>
-              <% end %>
-
-              <polygon points="<%= value_points %>" class="trainer-card__radar-shape"></polygon>
-
-              <% card_radar_axis_names.each_with_index do |name, index| %>
-                <% lx, ly = card_radar_label_positions[index] %>
-                <text x="<%= lx %>" y="<%= ly %>" class="trainer-card__radar-label"><%= name %></text>
-              <% end %>
-            </svg>
+              <div class="trainers-directory__grid">
+                <% @trainers.each do |trainer| %>
+                  <%= render "trainer_card", trainer: trainer %>
+                <% end %>
+              </div>
+            </main>
           </div>
-        <% end %>
-      <% end %>
-    </div>
-  </main>
+          <div class="requests-feed-aside-spacer" aria-hidden="true"></div>
+        </div>
+        <%= render "shared/requests_feed_aside" %>
+      </div>
+    <% end %>
+  </div>
 </div>

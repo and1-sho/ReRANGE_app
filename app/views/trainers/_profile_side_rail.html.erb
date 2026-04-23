@@ -1,0 +1,91 @@
+<%# トレーナー公開プロフィール: 右列（トレーナースタイル → プロフィール文 → メタ） %>
+<aside class="public-profile__side-rail<%= " public-profile__side-rail--stacked" if local_assigns[:stacked] %>" aria-label="プロフィール概要">
+  <div class="public-profile__side-rail-box">
+    <section class="public-profile__radar public-profile__radar--side-rail" aria-label="トレーナースタイル">
+      <h2 class="public-profile__section-title">トレーナースタイル</h2>
+      <% radar_values = [
+        trainer.radar_attack,
+        trainer.radar_technique,
+        trainer.radar_speed,
+        trainer.radar_defense,
+        trainer.radar_strategy,
+        trainer.radar_physical
+      ] %>
+      <% center = 110.0 %>
+      <% max_radius = 76.0 %>
+      <% value_points = radar_values.each_with_index.map do |value, index|
+           angle = (-90 + index * 60) * Math::PI / 180
+           radius = max_radius * (value.to_f / 5.0)
+           x = center + radius * Math.cos(angle)
+           y = center + radius * Math.sin(angle)
+           "#{x.round(2)},#{y.round(2)}"
+         end.join(" ") %>
+
+      <div class="public-profile__radar-chart-wrap">
+        <svg viewBox="0 0 220 220" class="public-profile__radar-chart" aria-label="6軸レーダーチャート">
+          <% 1.upto(5) do |level| %>
+            <% ring_points = 6.times.map do |index|
+                 angle = (-90 + index * 60) * Math::PI / 180
+                 radius = max_radius * (level / 5.0)
+                 x = center + radius * Math.cos(angle)
+                 y = center + radius * Math.sin(angle)
+                 "#{x.round(2)},#{y.round(2)}"
+               end.join(" ") %>
+            <polygon points="<%= ring_points %>" class="public-profile__radar-ring"></polygon>
+          <% end %>
+
+          <% 6.times do |index| %>
+            <% angle = (-90 + index * 60) * Math::PI / 180 %>
+            <% x = center + max_radius * Math.cos(angle) %>
+            <% y = center + max_radius * Math.sin(angle) %>
+            <line x1="<%= center %>" y1="<%= center %>" x2="<%= x.round(2) %>" y2="<%= y.round(2) %>" class="public-profile__radar-axis"></line>
+          <% end %>
+
+          <polygon points="<%= value_points %>" class="public-profile__radar-shape"></polygon>
+
+          <% label_positions = [
+            [110, 14],
+            [184, 56],
+            [184, 164],
+            [110, 206],
+            [36, 164],
+            [36, 56]
+          ] %>
+          <% axis_names = ["オフェンス", "テクニック", "スピード", "ディフェンス", "戦術", "フィジカル"] %>
+          <% axis_names.each_with_index do |name, index| %>
+            <% lx, ly = label_positions[index] %>
+            <text x="<%= lx %>" y="<%= ly %>" class="public-profile__radar-label"><%= name %></text>
+          <% end %>
+        </svg>
+      </div>
+    </section>
+
+    <div class="public-profile__side-rail-bio">
+      <div class="public-profile__side-rail-bio-inner">
+        <%= simple_format(trainer.profile_bio.presence || "未設定") %>
+      </div>
+    </div>
+    <dl class="public-profile__side-rail-meta">
+      <div class="public-profile__side-rail-row">
+        <dt class="public-profile__side-rail-dt">年齢</dt>
+        <dd class="public-profile__side-rail-dd"><%= trainer.age_label %></dd>
+      </div>
+      <div class="public-profile__side-rail-row">
+        <dt class="public-profile__side-rail-dt">所属</dt>
+        <dd class="public-profile__side-rail-dd"><%= trainer.profile_affiliation.presence || "未設定" %></dd>
+      </div>
+      <div class="public-profile__side-rail-row">
+        <dt class="public-profile__side-rail-dt">地域</dt>
+        <dd class="public-profile__side-rail-dd"><%= trainer.profile_prefecture.presence || "未設定" %></dd>
+      </div>
+      <div class="public-profile__side-rail-row">
+        <dt class="public-profile__side-rail-dt">ボクシング歴</dt>
+        <dd class="public-profile__side-rail-dd"><%= trainer.boxing_experience_label %></dd>
+      </div>
+      <div class="public-profile__side-rail-row">
+        <dt class="public-profile__side-rail-dt">指導歴</dt>
+        <dd class="public-profile__side-rail-dd"><%= trainer.instruction_experience_label %></dd>
+      </div>
+    </dl>
+  </div>
+</aside>

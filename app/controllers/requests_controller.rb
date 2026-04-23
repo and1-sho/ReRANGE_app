@@ -13,6 +13,7 @@ class RequestsController < ApplicationController
   before_action :mark_request_notifications_as_read!, only: [:show]
   # 編集・削除はリクエストの投稿者本人のみ（member 同士のなりすまし防止）
   before_action :authorize_request_owner!, only: [:edit, :update, :destroy]
+  before_action :prepare_request_polish_session!, only: [:new, :create, :edit, :update]
 
   def index
     @requests = if current_user.member?
@@ -34,8 +35,6 @@ class RequestsController < ApplicationController
 
   def new
     @request = Request.new
-    @request_polish_draft_token = SecureRandom.uuid
-    @remaining_polish_attempts = remaining_polish_attempts(@request_polish_draft_token)
   end
 
   def create
@@ -60,6 +59,7 @@ class RequestsController < ApplicationController
     handle_video_removal_on_update!
 
     if @request.update(request_params)
+      clear_polish_attempts!(params[:request_polish_draft_token].to_s)
       sync_video_thumbnail_after_update!(old_video_key)
       notify_advising_trainer_request_body_updated!
       # /requests/:idにリダイレクトするってこと（つまりrequests#showに移動する）
@@ -94,6 +94,11 @@ class RequestsController < ApplicationController
   end
 
   private
+
+  def prepare_request_polish_session!
+    @request_polish_draft_token = params[:request_polish_draft_token].presence || SecureRandom.uuid
+    @remaining_polish_attempts = remaining_polish_attempts(@request_polish_draft_token)
+  end
 
   def request_params
     permitted = [:title, :body, :video]

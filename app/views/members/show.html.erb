@@ -1,10 +1,10 @@
-<div class="public-profile">
-  <header class="requests-header">
-    <%= link_to app_home_path, class: "requests-brand requests-brand--link" do %>
-      <span class="requests-brand__name">Re:RANGE</span>
+<div class="requests-page layout-feed page-members-show">
+  <div class="requests-feed-chrome">
+    <%= link_to app_home_path, class: "requests-feed-chrome__brand" do %>
+      <span class="requests-feed-chrome__brand-name">Re:RANGE</span>
     <% end %>
 
-    <div class="requests-account">
+    <div class="requests-feed-chrome__actions">
       <% if user_signed_in? %>
         <%= render "shared/notification_bell_link" %>
         <%= render "shared/account_menu" %>
@@ -13,62 +13,65 @@
         <%= link_to "ログイン", new_user_session_path, class: "menu-btn menu-btn--ghost" %>
       <% end %>
     </div>
-  </header>
-
-  <div class="public-profile__header">
-    <% if @member.header_image.attached? %>
-      <%= image_tag @member.header_image, class: "public-profile__header-image", alt: "#{@member.name}のヘッダー画像" %>
-    <% else %>
-      <div class="public-profile__header-placeholder"></div>
-    <% end %>
   </div>
 
-  <div class="public-profile__body">
-    <div class="public-profile__summary">
-      <div class="public-profile__summary-name">
-        <div class="public-profile__avatar">
-          <% if @member.avatar_image.attached? %>
-            <%= image_tag @member.avatar_image, class: "public-profile__avatar-image", alt: "#{@member.name}のプロフィール画像" %>
+  <div class="requests-feed-body">
+    <% if user_signed_in? && (current_user.member? || current_user.trainer?) %>
+      <% sidebar_partial = current_user.member? ? "requests/member_sidebar" : "requests/trainer_sidebar" %>
+      <div class="requests-trainer-layout">
+        <%= render sidebar_partial %>
+
+        <div class="requests-trainer-main">
+          <div class="requests-feed-stage requests-feed-stage--profile public-profile public-profile--layout-feed">
+            <div class="public-profile__header public-profile__header--feed-span">
+              <% if @member.header_image.attached? %>
+                <%= image_tag @member.header_image, class: "public-profile__header-image", alt: "#{@member.name}のヘッダー画像" %>
+              <% else %>
+                <div class="public-profile__header-placeholder"></div>
+              <% end %>
+            </div>
+
+            <div class="requests-feed-column requests-feed-column--stream">
+              <div class="public-profile__body public-profile__body--member-layout">
+                <%= render "public_details", member: @member %>
+                <section class="public-profile__member-requests" aria-label="<%= @member.name %>のリクエスト">
+                  <%= render "requests/feed_list",
+                        requests: @member_requests,
+                        empty_copy: @member_request_feed_empty_copy,
+                        empty_title: "まだ投稿がありません",
+                        empty_subcopy: "リクエストを投稿すると、ここに表示されます。",
+                        empty_class: "public-profile__member-requests-empty" %>
+                </section>
+              </div>
+            </div>
+            <%= render "profile_side_rail", member: @member %>
+          </div>
+          <%= render "shared/requests_feed_aside" %>
+        </div>
+      </div>
+    <% else %>
+      <div class="public-profile public-profile--guest">
+        <div class="public-profile__header">
+          <% if @member.header_image.attached? %>
+            <%= image_tag @member.header_image, class: "public-profile__header-image", alt: "#{@member.name}のヘッダー画像" %>
           <% else %>
-            <%= render "shared/user_avatar_icon", variant: :card %>
+            <div class="public-profile__header-placeholder"></div>
           <% end %>
         </div>
-        <p class="public-profile__last-seen">
-          最終アクセス:
-          <% if @member.last_seen_at.present? %>
-            <span title="<%= l(@member.last_seen_at, format: :long) %>"><%= @member.last_seen_label %></span>
-          <% else %>
-            未記録
-          <% end %>
-        </p>
 
-        <h1 class="public-profile__name"><%= @member.name %></h1>
-        <% if user_signed_in? && current_user == @member %>
-          <p class="public-profile__edit-link">
-            <%= link_to "プロフィールを編集", edit_member_path(@member), class: "menu-btn menu-btn--ghost" %>
-          </p>
-        <% end %>
+        <div class="public-profile__body public-profile__body--member-layout">
+          <%= render "public_details", member: @member %>
+          <section class="public-profile__member-requests" aria-label="<%= @member.name %>のリクエスト">
+            <%= render "requests/feed_list",
+                  requests: @member_requests,
+                  empty_copy: @member_request_feed_empty_copy,
+                  empty_title: "まだ投稿がありません",
+                  empty_subcopy: "リクエストを投稿すると、ここに表示されます。",
+                  empty_class: "public-profile__member-requests-empty" %>
+          </section>
+          <%= render "profile_side_rail", member: @member, stacked: true %>
+        </div>
       </div>
-
-      <div class="public-profile__summary-meta">
-        <p class="public-profile__meta">所属: <%= @member.profile_affiliation.presence || "未設定" %></p>
-        <p class="public-profile__meta">地域: <%= [@member.profile_prefecture, @member.profile_area_detail].compact_blank.join(" ").presence || "未設定" %></p>
-        <p class="public-profile__meta">ボクシング歴: <%= @member.boxing_experience_label %></p>
-        <p class="public-profile__meta">年齢: <%= @member.age_label %></p>
-        <p class="public-profile__meta">スタンス: <%= @member.stance.presence || "未設定" %></p>
-        <p class="public-profile__meta">階級: <%= @member.weight_class.presence || "未設定" %></p>
-      </div>
-    </div>
-
-    <h2 class="public-profile__section-title">プロフィール</h2>
-    <div class="public-profile__bio-box">
-      <p class="public-profile__bio"><%= @member.profile_bio.presence || "未設定" %></p>
-    </div>
-
-    <div class="public-profile__bottom-actions">
-      <% back_path = user_signed_in? ? requests_path : root_path %>
-      <% back_label = user_signed_in? ? "一覧に戻る" : "トップに戻る" %>
-      <%= link_to back_label, back_path, class: "menu-btn menu-btn--ghost" %>
-    </div>
+    <% end %>
   </div>
 </div>

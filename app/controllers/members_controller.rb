@@ -5,6 +5,13 @@ class MembersController < ApplicationController
 
   # プロフィール閲覧（公開）
   def show
+    @member_requests = member_profile_requests
+    @member_request_feed_empty_copy =
+      if user_signed_in? && current_user == @member
+        "まだリクエストを投稿していません"
+      else
+        "表示できる公開リクエストはまだありません"
+      end
   end
 
   def edit
@@ -21,6 +28,18 @@ class MembersController < ApplicationController
   end
 
   private
+
+  # 本人閲覧時は指定トレーナー宛も含む。それ以外は公開フィード相当のみ。
+  def member_profile_requests
+    rel = @member.requests
+                 .includes(:user, video_attachment: :blob, video_thumbnail_attachment: :blob)
+                 .order(created_at: :desc)
+    if user_signed_in? && current_user == @member
+      rel
+    else
+      rel.on_public_feed
+    end
+  end
 
   def set_member
     @member = User.member.find_by(slug: params[:slug])
@@ -39,7 +58,6 @@ class MembersController < ApplicationController
     params.require(:user).permit(
       :profile_affiliation,
       :profile_prefecture,
-      :profile_area_detail,
       :boxing_started_on,
       :birth_date,
       :stance,

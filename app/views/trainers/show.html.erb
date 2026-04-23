@@ -1,10 +1,10 @@
-<div class="public-profile">
-  <header class="requests-header">
-    <%= link_to app_home_path, class: "requests-brand requests-brand--link" do %>
-      <span class="requests-brand__name">Re:RANGE</span>
+<div class="requests-page layout-feed page-trainers-show">
+  <div class="requests-feed-chrome">
+    <%= link_to app_home_path, class: "requests-feed-chrome__brand" do %>
+      <span class="requests-feed-chrome__brand-name">Re:RANGE</span>
     <% end %>
 
-    <div class="requests-account">
+    <div class="requests-feed-chrome__actions">
       <% if user_signed_in? %>
         <%= render "shared/notification_bell_link" %>
         <%= render "shared/account_menu" %>
@@ -13,131 +13,63 @@
         <%= link_to "ログイン", new_user_session_path, class: "menu-btn menu-btn--ghost" %>
       <% end %>
     </div>
-  </header>
-
-  <%# ヘッダー画像（未設定ならプレースホルダ） %>
-  <div class="public-profile__header">
-    <% if @trainer.header_image.attached? %>
-      <%= image_tag @trainer.header_image, class: "public-profile__header-image", alt: "#{@trainer.name}のヘッダー画像" %>
-    <% else %>
-      <div class="public-profile__header-placeholder"></div>
-    <% end %>
   </div>
 
-  <div class="public-profile__body">
-    <div class="public-profile__summary">
-      <div class="public-profile__summary-name">
-        <%# アイコン画像（未設定なら既存の汎用アイコン） %>
-        <div class="public-profile__avatar">
-          <% if @trainer.avatar_image.attached? %>
-            <%= image_tag @trainer.avatar_image, class: "public-profile__avatar-image", alt: "#{@trainer.name}のプロフィール画像" %>
+  <div class="requests-feed-body">
+    <% if user_signed_in? && (current_user.member? || current_user.trainer?) %>
+      <% sidebar_partial = current_user.member? ? "requests/member_sidebar" : "requests/trainer_sidebar" %>
+      <div class="requests-trainer-layout">
+        <%= render sidebar_partial %>
+
+        <div class="requests-trainer-main">
+          <div class="requests-feed-stage requests-feed-stage--profile public-profile public-profile--layout-feed">
+            <div class="public-profile__header public-profile__header--feed-span">
+              <% if @trainer.header_image.attached? %>
+                <%= image_tag @trainer.header_image, class: "public-profile__header-image", alt: "#{@trainer.name}のヘッダー画像" %>
+              <% else %>
+                <div class="public-profile__header-placeholder"></div>
+              <% end %>
+            </div>
+
+            <div class="requests-feed-column requests-feed-column--stream">
+              <div class="public-profile__body public-profile__body--member-layout">
+                <%= render "public_details", trainer: @trainer %>
+                <section class="public-profile__member-requests" aria-label="<%= @trainer.name %>がアドバイスしたリクエスト">
+                  <%= render "requests/feed_list",
+                        requests: @trainer_advised_requests,
+                        empty_title: "まだ投稿がありません",
+                        empty_subcopy: @trainer_advised_feed_empty_subcopy,
+                        empty_class: "public-profile__member-requests-empty" %>
+                </section>
+              </div>
+            </div>
+            <%= render "profile_side_rail", trainer: @trainer %>
+          </div>
+          <%= render "shared/requests_feed_aside" %>
+        </div>
+      </div>
+    <% else %>
+      <div class="public-profile public-profile--guest">
+        <div class="public-profile__header">
+          <% if @trainer.header_image.attached? %>
+            <%= image_tag @trainer.header_image, class: "public-profile__header-image", alt: "#{@trainer.name}のヘッダー画像" %>
           <% else %>
-            <%= render "shared/user_avatar_icon", variant: :card %>
+            <div class="public-profile__header-placeholder"></div>
           <% end %>
         </div>
-        <p class="public-profile__last-seen">
-          最終アクセス:
-          <% if @trainer.last_seen_at.present? %>
-            <%# 見やすさ優先で「○分前」を表示し、title に絶対時刻を保持 %>
-            <span title="<%= l(@trainer.last_seen_at, format: :long) %>">
-              <%= @trainer.last_seen_label %>
-            </span>
-          <% else %>
-            未記録
-          <% end %>
-        </p>
 
-        <h1 class="public-profile__name"><%= @trainer.name %></h1>
-        <% if user_signed_in? && current_user == @trainer %>
-          <p class="public-profile__edit-link">
-            <%= link_to "プロフィールを編集", edit_trainer_path(@trainer), class: "menu-btn menu-btn--ghost" %>
-          </p>
-        <% end %>
+        <div class="public-profile__body public-profile__body--member-layout">
+          <%= render "public_details", trainer: @trainer %>
+          <section class="public-profile__member-requests" aria-label="<%= @trainer.name %>がアドバイスしたリクエスト">
+            <%= render "requests/feed_list",
+                  requests: @trainer_advised_requests,
+                  empty_title: "まだ投稿がありません",
+                  empty_subcopy: @trainer_advised_feed_empty_subcopy,
+                  empty_class: "public-profile__member-requests-empty" %>
+          </section>
+          <%= render "profile_side_rail", trainer: @trainer, stacked: true %>
+        </div>
       </div>
-
-      <div class="public-profile__summary-meta">
-        <p class="public-profile__meta">所属: <%= @trainer.profile_affiliation.presence || "未設定" %></p>
-        <p class="public-profile__meta">地域: <%= [@trainer.profile_prefecture, @trainer.profile_area_detail].compact_blank.join(" ").presence || "未設定" %></p>
-
-        <%# 開始日から自動計算した「◯年◯ヶ月」を表示 %>
-        <p class="public-profile__meta">選手歴: <%= @trainer.boxing_experience_label %></p>
-        <p class="public-profile__meta">指導歴: <%= @trainer.instruction_experience_label %></p>
-      </div>
-
-      <%# 6軸レーダー（右側） %>
-      <section class="public-profile__radar">
-        <h2 class="public-profile__section-title">トレーナースタイル</h2>
-      <%# チャート描画順（上→右上→右下→下→左下→左上）に合わせる %>
-      <% radar_values = [
-        @trainer.radar_attack,
-        @trainer.radar_technique,
-        @trainer.radar_speed,
-        @trainer.radar_defense,
-        @trainer.radar_strategy,
-        @trainer.radar_physical
-      ] %>
-      <% center = 110.0 %>
-      <% max_radius = 76.0 %>
-      <% value_points = radar_values.each_with_index.map do |value, index|
-           angle = (-90 + index * 60) * Math::PI / 180
-           radius = max_radius * (value.to_f / 5.0)
-           x = center + radius * Math.cos(angle)
-           y = center + radius * Math.sin(angle)
-           "#{x.round(2)},#{y.round(2)}"
-         end.join(" ") %>
-
-      <div class="public-profile__radar-chart-wrap">
-        <svg viewBox="0 0 220 220" class="public-profile__radar-chart" aria-label="6軸レーダーチャート">
-          <% 1.upto(5) do |level| %>
-            <% ring_points = 6.times.map do |index|
-                 angle = (-90 + index * 60) * Math::PI / 180
-                 radius = max_radius * (level / 5.0)
-                 x = center + radius * Math.cos(angle)
-                 y = center + radius * Math.sin(angle)
-                 "#{x.round(2)},#{y.round(2)}"
-               end.join(" ") %>
-            <polygon points="<%= ring_points %>" class="public-profile__radar-ring"></polygon>
-          <% end %>
-
-          <% 6.times do |index| %>
-            <% angle = (-90 + index * 60) * Math::PI / 180 %>
-            <% x = center + max_radius * Math.cos(angle) %>
-            <% y = center + max_radius * Math.sin(angle) %>
-            <line x1="<%= center %>" y1="<%= center %>" x2="<%= x.round(2) %>" y2="<%= y.round(2) %>" class="public-profile__radar-axis"></line>
-          <% end %>
-
-          <polygon points="<%= value_points %>" class="public-profile__radar-shape"></polygon>
-
-          <%# 6つの角ラベル（数値は出さず名称のみ） %>
-          <% label_positions = [
-            [110, 14],   # 上: オフェンス
-            [184, 56],   # 右上: テクニック
-            [184, 164],  # 右下: スピード
-            [110, 206],  # 下: ディフェンス
-            [36, 164],   # 左下: 戦術
-            [36, 56]     # 左上: フィジカル
-          ] %>
-          <% axis_names = ["オフェンス", "テクニック", "スピード", "ディフェンス", "戦術", "フィジカル"] %>
-          <% axis_names.each_with_index do |name, index| %>
-            <% lx, ly = label_positions[index] %>
-            <text x="<%= lx %>" y="<%= ly %>" class="public-profile__radar-label"><%= name %></text>
-          <% end %>
-        </svg>
-      </div>
-      </section>
-    </div>
-
-    <h2 class="public-profile__section-title">トレーナーについて</h2>
-    <%# 自己紹介文を表示するグレーボックス %>
-    <div class="public-profile__bio-box">
-      <p class="public-profile__bio"><%= @trainer.profile_bio.presence || "未設定" %></p>
-    </div>
-
-    <div class="public-profile__bottom-actions">
-      <%# 未ログイン公開ページでも迷わないよう、戻り先を出し分ける %>
-      <% back_path = user_signed_in? ? requests_path : root_path %>
-      <% back_label = user_signed_in? ? "一覧に戻る" : "トップに戻る" %>
-      <%= link_to back_label, back_path, class: "menu-btn menu-btn--ghost" %>
-    </div>
+    <% end %>
   </div>
 </div>

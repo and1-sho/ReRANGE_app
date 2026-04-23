@@ -1,86 +1,128 @@
-<div class="requests-page">
-  <header class="requests-header">
-    <%= link_to app_home_path, class: "requests-brand requests-brand--link" do %>
-      <span class="requests-brand__name">Re:RANGE</span>
+<div class="requests-page layout-feed page-requests-show">
+  <div class="requests-feed-chrome">
+    <%= link_to app_home_path, class: "requests-feed-chrome__brand" do %>
+      <span class="requests-feed-chrome__brand-name">Re:RANGE</span>
     <% end %>
-
-    <div class="requests-account">
+    <div class="requests-feed-chrome__actions">
       <%= render "shared/notification_bell_link" %>
       <%= render "shared/account_menu" %>
     </div>
-  </header>
+  </div>
 
-  <main class="request-show">
-    <article class="request-show__post">
-      <div class="request-show__meta">
-        <div class="request-show__identity">
-          <%= link_to profile_path_for(@request.user), class: "request-show__avatar-link", aria: { label: "#{@request.user.name}のプロフィールへ移動" } do %>
-            <%= render "shared/user_avatar_icon", variant: :header %>
-          <% end %>
-          <span class="request-show__author"><%= link_to @request.user.name, profile_path_for(@request.user) %></span>
-        </div>
-        <span class="request-show__dot">・</span>
-        <time class="request-show__date" datetime="<%= @request.created_at.iso8601 %>">
-          <%= @request.created_at.strftime("%Y/%m/%d %H:%M") %>
-        </time>
-      </div>
+  <div class="requests-feed-body">
+    <% if current_user.member? || current_user.trainer? %>
+      <% sidebar_partial = current_user.member? ? "member_sidebar" : "trainer_sidebar" %>
+      <div class="requests-trainer-layout">
+        <%= render sidebar_partial %>
 
-      <h1 class="request-show__title"><%= @request.title %></h1>
-      <div class="request-show__body">
-        <%= simple_format(@request.body) %>
-      </div>
-
-      <% if @request.video.attached? %>
-        <div class="request-show__video-wrap">
-          <%= render "shared/video_aspect", url: url_for(@request.video), wrapper_class: "video-aspect--request-show" %>
-        </div>
-      <% end %>
-
-      <% if current_user.member? && @request.user_id == current_user.id %>
-        <div class="request-show__actions">
-          <%= link_to "編集", edit_request_path(@request), class: "menu-btn menu-btn--ghost" %>
-          <%= link_to "削除", request_path(@request), class: "menu-btn menu-btn--ghost",
-                data: { turbo_method: :delete, turbo_confirm: "このリクエストを削除しますか？" } %>
-        </div>
-      <% end %>
-    </article>
-
-    <section class="request-show__advice" aria-labelledby="advice-heading">
-      <% if @request.advice.present? %>
-        <h2 id="advice-heading" class="request-show__advice-heading">アドバイス</h2>
-        <div class="request-show__advice-meta">
-          <%= link_to profile_path_for(@request.advice.user), class: "request-show__avatar-link", aria: { label: "#{@request.advice.user.name}のプロフィールへ移動" } do %>
-            <%= render "shared/user_avatar_icon", variant: :header %>
-          <% end %>
-          <span class="request-show__advice-author"><%= link_to @request.advice.user.name, profile_path_for(@request.advice.user) %></span>
-        </div>
-        <div class="request-show__advice-body">
-          <%= simple_format(@request.advice.body) %>
-        </div>
-        <% if @request.advice.video.attached? %>
-          <div class="request-show__video-wrap request-show__video-wrap--advice">
-            <%= render "shared/video_aspect", url: url_for(@request.advice.video), wrapper_class: "video-aspect--request-show" %>
+        <div class="requests-trainer-main">
+          <div class="requests-feed-stage">
+            <div class="requests-feed-column requests-feed-column--stream">
+              <main class="request-show request-show--detail">
+      <article class="request-show__post">
+        <div class="request-show__detail-layout">
+          <div class="request-show__back-slot">
+            <%= link_to requests_path, class: "request-show__back-pill", aria: { label: "投稿一覧に戻る" } do %>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="request-show__back-arrow" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+              </svg>
+            <% end %>
           </div>
-        <% end %>
-        <% if current_user.trainer? && @request.advice.user_id == current_user.id %>
-          <div class="request-show__actions">
-            <%= link_to "編集", edit_request_advice_path(@request), class: "menu-btn menu-btn--ghost" %>
-            <%= link_to "削除", request_advice_path(@request), class: "menu-btn menu-btn--ghost",
-                  data: { turbo_method: :delete, turbo_confirm: "このアドバイスを削除しますか？" } %>
-          </div>
-        <% end %>
-      <% else %>
-        <p class="request-show__advice-empty">まだアドバイスはありません</p>
-        <% if current_user.trainer? %>
-          <p class="request-show__advice-action">
-            <%= link_to "アドバイスを書く", new_request_advice_path(@request), class: "menu-btn menu-btn--primary" %>
-          </p>
-        <% end %>
-      <% end %>
-    </section>
 
-    <p class="request-show__back">
-      <%= link_to "一覧に戻る", requests_path, class: "menu-btn menu-btn--ghost" %>
-    </p>
-  </main>
+          <div class="request-show__head-row">
+            <div class="request-show__identity-line">
+              <%= link_to profile_path_for(@request.user), class: "request-show__avatar-link", aria: { label: "#{@request.user.name}のプロフィールへ移動" } do %>
+                <%= render "shared/user_avatar_icon", variant: :card %>
+              <% end %>
+              <span class="request-show__author"><%= link_to @request.user.name, profile_path_for(@request.user) %></span>
+              <span class="request-show__dot">·</span>
+              <time class="request-show__date" datetime="<%= @request.created_at.iso8601 %>" title="<%= social_time_title(@request.created_at) %>">
+                <%= social_time_ago(@request.created_at) %>
+              </time>
+            </div>
+
+            <% if current_user.member? && @request.user_id == current_user.id %>
+              <details class="request-show__overflow" data-controller="details-dismiss">
+                <summary class="request-show__overflow-trigger" aria-label="投稿のメニュー">
+                  <span class="request-show__overflow-dots" aria-hidden="true">⋯</span>
+                </summary>
+                <div class="request-show__overflow-panel">
+                  <%= link_to "編集", edit_request_path(@request), class: "request-show__overflow-item" %>
+                  <%= link_to "削除", request_path(@request), class: "request-show__overflow-item request-show__overflow-item--danger",
+                        data: { turbo_method: :delete, turbo_confirm: "このリクエストを削除しますか？" } %>
+                </div>
+              </details>
+            <% end %>
+          </div>
+
+          <div class="request-show__detail-body">
+            <h1 class="request-show__title"><%= @request.title %></h1>
+
+            <% if @request.video.attached? %>
+              <div class="request-show__video-wrap">
+                <%= render "shared/video_aspect", url: url_for(@request.video), wrapper_class: "video-aspect--request-show" %>
+              </div>
+            <% end %>
+
+            <div class="request-show__body">
+              <%= simple_format(@request.body) %>
+            </div>
+
+            <div class="request-show__engagement" role="group" aria-label="アドバイス件数">
+              <span class="request-show__comment-pill">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="request-show__comment-pill-icon" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 0 1-.923 1.785A5.969 5.969 0 0 0 6 21c1.282 0 2.47-.402 3.445-1.087.81.22 1.668.337 2.555.337Z" />
+                </svg>
+                <span class="request-show__comment-pill-count"><%= @request.advice_count %></span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <hr class="request-show__split" />
+
+      <section class="request-show__advice" id="request-advice" aria-labelledby="advice-region-label">
+        <span id="advice-region-label" class="request-show__sr-only">アドバイス</span>
+        <% if @request.advice.present? %>
+          <div class="request-show__advice-meta">
+            <div class="request-show__identity-line">
+              <%= link_to profile_path_for(@request.advice.user), class: "request-show__avatar-link", aria: { label: "#{@request.advice.user.name}のプロフィールへ移動" } do %>
+                <%= render "shared/user_avatar_icon", variant: :card %>
+              <% end %>
+              <span class="request-show__author"><%= link_to @request.advice.user.name, profile_path_for(@request.advice.user) %></span>
+              <span class="request-show__dot">·</span>
+              <time class="request-show__date" datetime="<%= @request.advice.created_at.iso8601 %>" title="<%= social_time_title(@request.advice.created_at) %>">
+                <%= social_time_ago(@request.advice.created_at) %>
+              </time>
+            </div>
+          </div>
+          <div class="request-show__advice-body">
+            <%= simple_format(@request.advice.body) %>
+          </div>
+          <% if @request.advice.video.attached? %>
+            <div class="request-show__video-wrap request-show__video-wrap--advice">
+              <%= render "shared/video_aspect", url: url_for(@request.advice.video), wrapper_class: "video-aspect--request-show" %>
+            </div>
+          <% end %>
+          <% if current_user.trainer? && @request.advice.user_id == current_user.id %>
+            <div class="request-show__actions">
+              <%= link_to "編集", edit_request_advice_path(@request), class: "menu-btn menu-btn--ghost" %>
+              <%= link_to "削除", request_advice_path(@request), class: "menu-btn menu-btn--ghost",
+                    data: { turbo_method: :delete, turbo_confirm: "このアドバイスを削除しますか？" } %>
+            </div>
+          <% end %>
+        <% else %>
+          <p class="request-show__advice-empty">まだアドバイスはありません</p>
+        <% end %>
+      </section>
+              </main>
+            </div>
+            <div class="requests-feed-aside-spacer" aria-hidden="true"></div>
+          </div>
+          <%= render "shared/requests_feed_aside" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
 </div>

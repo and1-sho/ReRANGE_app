@@ -4,7 +4,6 @@ Rails.application.routes.draw do
   get 'advices/create'
   devise_for :users
 
-  get :dashboard, to: "dashboard#index"
   get "messages", to: "messages#index", as: :messages
 
   # トレーナープロフィール（公開ページ）

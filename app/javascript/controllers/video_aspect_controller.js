@@ -1,6 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 
-// メタデータから横・縦を判定し、16:9 または 9:16 の枠で object-fit: contain 表示にする
+// メタデータで横縦を判定し、横は 16:9 枠に cover、縦は contain（左右余白）
 export default class extends Controller {
   static targets = ["video"]
 

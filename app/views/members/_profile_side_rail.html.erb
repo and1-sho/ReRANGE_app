@@ -1,0 +1,36 @@
+<%# メンバー公開プロフィール: 右列（またはゲスト時は本文下）のグレー枠パネル %>
+<aside class="public-profile__side-rail<%= " public-profile__side-rail--stacked" if local_assigns[:stacked] %>" aria-label="プロフィール概要">
+  <div class="public-profile__side-rail-box">
+    <div class="public-profile__side-rail-bio">
+      <div class="public-profile__side-rail-bio-inner">
+        <%= simple_format(member.profile_bio.presence || "未設定") %>
+      </div>
+    </div>
+    <dl class="public-profile__side-rail-meta">
+      <div class="public-profile__side-rail-row">
+        <dt class="public-profile__side-rail-dt">年齢</dt>
+        <dd class="public-profile__side-rail-dd"><%= member.age_label %></dd>
+      </div>
+      <div class="public-profile__side-rail-row">
+        <dt class="public-profile__side-rail-dt">スタンス</dt>
+        <dd class="public-profile__side-rail-dd"><%= member.stance.presence || "未設定" %></dd>
+      </div>
+      <div class="public-profile__side-rail-row">
+        <dt class="public-profile__side-rail-dt">階級</dt>
+        <dd class="public-profile__side-rail-dd"><%= member.weight_class.presence || "未設定" %></dd>
+      </div>
+      <div class="public-profile__side-rail-row">
+        <dt class="public-profile__side-rail-dt">地域</dt>
+        <dd class="public-profile__side-rail-dd"><%= member.profile_prefecture.presence || "未設定" %></dd>
+      </div>
+      <div class="public-profile__side-rail-row">
+        <dt class="public-profile__side-rail-dt">所属</dt>
+        <dd class="public-profile__side-rail-dd"><%= member.profile_affiliation.presence || "未設定" %></dd>
+      </div>
+      <div class="public-profile__side-rail-row">
+        <dt class="public-profile__side-rail-dt">ボクシング歴</dt>
+        <dd class="public-profile__side-rail-dd"><%= member.boxing_experience_label %></dd>
+      </div>
+    </dl>
+  </div>
+</aside>

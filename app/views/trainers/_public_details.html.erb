@@ -1,0 +1,25 @@
+<%# メンバー公開プロフィールと同型: 左ストリームはヒーロー（アバター＋名前）のみ %>
+<div class="public-profile__summary public-profile__summary--member-main">
+  <div class="public-profile__member-hero">
+    <div class="public-profile__member-avatar-col">
+      <div class="public-profile__avatar">
+        <% if trainer.avatar_image.attached? %>
+          <%= image_tag trainer.avatar_image, class: "public-profile__avatar-image", alt: "#{trainer.name}のプロフィール画像" %>
+        <% else %>
+          <%= render "shared/user_avatar_icon", variant: :card %>
+        <% end %>
+      </div>
+      <p class="public-profile__last-seen public-profile__last-seen--under-avatar">
+        最終アクセス:
+        <% if trainer.last_seen_at.present? %>
+          <span title="<%= l(trainer.last_seen_at, format: :long) %>"><%= trainer.last_seen_label %></span>
+        <% else %>
+          未記録
+        <% end %>
+      </p>
+    </div>
+    <div class="public-profile__member-title-col">
+      <h1 class="public-profile__name public-profile__name--member-hero"><%= trainer.name %></h1>
+    </div>
+  </div>
+</div>

@@ -1,9 +1,8 @@
 import { Controller } from "@hotwired/stimulus"
 
-// 動画ファイル選択後にブラウザ内でプレビュー（アップロード前）
-// 任意の dropzone ターゲットがあればドラッグ＆ドロップとクリックでファイル選択
+// プロフィール編集など: 画像のドラッグ＆ドロップ／クリック選択とブラウザ内プレビュー
 export default class extends Controller {
-  static targets = ["input", "player", "box", "dropzone"]
+  static targets = ["input", "dropzone", "preview", "thumb"]
 
   connect() {
     this._url = null
@@ -38,11 +37,8 @@ export default class extends Controller {
     event.stopPropagation()
     this.dropzoneTarget.classList.remove("is-dragover")
 
-    const files = event.dataTransfer?.files
-    if (!files || !files.length) return
-
-    const file = files[0]
-    if (!file.type.startsWith("video/")) return
+    const file = event.dataTransfer?.files?.[0]
+    if (!file || !file.type.startsWith("image/")) return
 
     const dt = new DataTransfer()
     dt.items.add(file)
@@ -62,15 +58,19 @@ export default class extends Controller {
     this.revoke()
     const file = this.inputTarget.files && this.inputTarget.files[0]
 
-    if (!file || !file.type.startsWith("video/")) {
-      this.boxTarget.hidden = true
-      this.playerTarget.removeAttribute("src")
+    if (!file || !file.type.startsWith("image/")) {
+      if (this.hasPreviewTarget) this.previewTarget.hidden = true
+      if (this.hasThumbTarget) this.thumbTarget.removeAttribute("src")
       return
     }
 
     this._url = URL.createObjectURL(file)
-    this.playerTarget.src = this._url
-    this.boxTarget.hidden = false
+    if (this.hasThumbTarget) {
+      this.thumbTarget.src = this._url
+    }
+    if (this.hasPreviewTarget) {
+      this.previewTarget.hidden = false
+    }
   }
 
   revoke() {

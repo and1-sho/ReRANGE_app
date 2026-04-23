@@ -1,90 +1,41 @@
-<div class="requests-page">
-  <header class="requests-header">
-    <%= link_to app_home_path, class: "requests-brand requests-brand--link" do %>
-      <span class="requests-brand__name">Re:RANGE</span>
+<div class="requests-page layout-feed page-requests-index">
+  <div class="requests-feed-chrome">
+    <%= link_to app_home_path, class: "requests-feed-chrome__brand" do %>
+      <span class="requests-feed-chrome__brand-name">Re:RANGE</span>
     <% end %>
-
-    <div class="requests-account">
+    <div class="requests-feed-chrome__actions">
       <%= render "shared/notification_bell_link" %>
       <%= render "shared/account_menu" %>
     </div>
-  </header>
+  </div>
 
-  <% if current_user.member? %>
-    <% unless current_user.member_profile_completed? %>
-      <div class="profile-reminder">
-        <p class="profile-reminder__text">プロフィールを設定すると、トレーナーがあなたの状況を理解しやすくなります。</p>
-        <%= link_to "プロフィールを設定する", edit_member_path(current_user), class: "menu-btn menu-btn--primary" %>
-      </div>
-    <% end %>
-    <div class="requests-actions">
-      <%= link_to "新規リクエストを作成する", new_request_path, class: "menu-btn menu-btn--primary" %>
-    </div>
-  <% end %>
-  <% if current_user.trainer? %>
-    <% unless current_user.trainer_profile_completed? %>
-      <div class="profile-reminder">
-        <p class="profile-reminder__text">プロフィールを設定すると、メンバーがあなたの指導スタイルを把握しやすくなります。</p>
-        <%= link_to "プロフィールを設定する", edit_trainer_path(current_user), class: "menu-btn menu-btn--primary" %>
-      </div>
-    <% end %>
-    <div class="requests-actions">
-      <%= link_to "すべて", requests_path,
-            class: "menu-btn #{params[:filter] == "advised_by_me" ? "menu-btn--ghost" : "menu-btn--primary"}" %>
-      <%= link_to "自分がアドバイスしたもの", requests_path(filter: "advised_by_me"),
-            class: "menu-btn #{params[:filter] == "advised_by_me" ? "menu-btn--primary" : "menu-btn--ghost"}" %>
-    </div>
-  <% end %>
+  <div class="requests-feed-body">
+  <% if current_user.member? || current_user.trainer? %>
+    <% sidebar_partial = current_user.member? ? "member_sidebar" : "trainer_sidebar" %>
+    <% profile_ok = current_user.member? ? current_user.member_profile_completed? : current_user.trainer_profile_completed? %>
+    <% profile_edit = current_user.member? ? edit_member_path(current_user) : edit_trainer_path(current_user) %>
+    <% profile_lead = current_user.member? ? "プロフィールを設定すると、トレーナーがあなたの状況を理解しやすくなります。" : "プロフィールを設定すると、メンバーがあなたの指導スタイルを把握しやすくなります。" %>
 
-  <% if @requests.any? %>
-    <div class="requests-list">
-      <% @requests.each do |request| %>
-        <article class="request-card">
-          <%= link_to profile_path_for(request.user), class: "request-card__avatar-link", aria: { label: "#{request.user.name}のプロフィールへ移動" } do %>
-            <%= render "shared/user_avatar_icon", variant: :card %>
-          <% end %>
-          <div class="request-card__body">
-            <div class="request-card__header">
-              <span class="request-card__name"><%= link_to request.user.name, profile_path_for(request.user) %></span>
-              <span class="request-card__dot">・</span>
-              <span class="request-card__date">
-                <%= request.created_at.strftime("%Y/%m/%d %H:%M") %>
-              </span>
-              <p class="request-card__status <%= request.advice.present? ? "request-card__status--answered" : "request-card__status--pending" %>">
-                <%= request.advice.present? ? "回答済み" : "未回答" %>
-              </p>
-            </div>
+    <div class="requests-trainer-layout">
+      <%= render sidebar_partial %>
 
-            <h2 class="request-card__title">
-              <%= link_to request.title, request_path(request) %>
-            </h2>
-
-            <% if request.video.attached? %>
-              <div class="request-card__thumb-wrap" data-controller="request-card-thumb">
-                <%= link_to request_path(request), class: "request-card__thumb-link", aria: { label: "動画付きリクエスト「#{request.title}」の詳細へ" } do %>
-                  <% if request.video_thumbnail.attached? %>
-                    <%= image_tag url_for(request.video_thumbnail),
-                          alt: "",
-                          loading: "lazy",
-                          class: "request-card__thumb-img",
-                          data: {
-                            "request-card-thumb-target" => "image",
-                            action: "load->request-card-thumb#onLoad"
-                          } %>
-                  <% else %>
-                    <span class="request-card__thumb-placeholder">
-                      <span class="request-card__thumb-placeholder-text">動画</span>
-                      <span class="request-card__thumb-placeholder-sub">サムネ準備中</span>
-                    </span>
-                  <% end %>
-                <% end %>
+      <div class="requests-trainer-main">
+        <div class="requests-feed-stage">
+          <div class="requests-feed-column requests-feed-column--stream">
+            <% unless profile_ok %>
+              <div class="profile-reminder">
+                <p class="profile-reminder__text"><%= profile_lead %></p>
+                <%= link_to "プロフィールを設定する", profile_edit, class: "menu-btn menu-btn--primary" %>
               </div>
             <% end %>
+
+            <%= render "requests/feed_list" %>
           </div>
-        </article>
-      <% end %>
+          <div class="requests-feed-aside-spacer" aria-hidden="true"></div>
+        </div>
+        <%= render "shared/requests_feed_aside" %>
+      </div>
     </div>
-  <% else %>
-    <p class="requests-empty">公開のリクエストはまだありません</p>
   <% end %>
+  </div>
 </div>
