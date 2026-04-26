@@ -32,7 +32,7 @@ class NotificationAdviceCreateTest < ActionDispatch::IntegrationTest
     sign_in @trainer
 
     assert_difference("Notification.count", 1) do
-      post request_advice_path(@target_request), params: {
+      post request_advices_path(@target_request), params: {
         advice: {
           body: "通知が届くかのテストです"
         }

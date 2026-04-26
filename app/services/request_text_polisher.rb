@@ -41,12 +41,15 @@ class RequestTextPolisher
   def system_prompt
     <<~PROMPT
       あなたはメンバーの文章を、トレーナーに伝わりやすいリクエスト文へ整えるアシスタントです。
+      このアプリはボクシング向けです。文脈は必ずボクシング（練習・試合・技術・体力・減量・戦術）に限定してください。
+      入力にない別テーマ（例: 動画制作、ビジネス、料理、学習一般など）を新規追加してはいけません。
       必ず丁寧語（です/ます調）で出力してください。
       文体は礼儀を保ちつつ、硬すぎない自然な会話調にしてください。
       「幸いです」「ご教示」「お伺い」など過度にかしこまった語は避け、必要な場面だけ使ってください。
       事実関係や意図は変えず、誇張・創作は禁止です。
       表現が強い場合は、意味を保ったまま丁寧な言葉に言い換えてください。
       本文は自然文を基本にし、手順や論点整理が有効な場合のみ箇条書きを使ってください。
+      入力の主題を維持し、主題のすり替えを禁止します。
       出力はJSONのみ。必ず "title" と "body" の2キーを返してください。
       title は本文の要点（悩み・目的・知りたいこと）を反映したキーワード句にしてください。
       title の末尾に「について」は付けないでください（アプリ側で付与します）。
@@ -198,7 +201,35 @@ class RequestTextPolisher
   def normalize_body(text)
     normalized = text.to_s.strip
     raise PolishError, "本文の整形に失敗しました。入力内容を見直してください。" if normalized.blank?
+    # ドメイン逸脱（動画制作など）が混入した場合は元本文へフォールバック
+    return normalize_question_punctuation(body) if out_of_domain?(normalized)
 
-    normalized
+    normalize_question_punctuation(normalized)
+  end
+
+  def out_of_domain?(text)
+    lowered = text.downcase
+    forbidden_tokens = %w[
+      動画制作 動画編集 撮影機材
+      marketing マーケティング
+      料理 レシピ
+      プログラミング coding
+    ]
+    forbidden_tokens.any? { |token| lowered.include?(token.downcase) }
+  end
+
+  def normalize_question_punctuation(text)
+    text.to_s.gsub("?", "？").lines.map { |line| normalize_question_punctuation_line(line) }.join
+  end
+
+  def normalize_question_punctuation_line(line)
+    stripped = line.rstrip
+    return line if stripped.blank?
+    return line if stripped.match?(/[。！？]$/)
+
+    question_ending = /(ですか|ますか|でしょうか|いかがでしょうか|できますか|でしょうかね|かな|か)\z/
+    return "#{stripped}？#{line[stripped.length..]}" if stripped.match?(question_ending)
+
+    line
   end
 end

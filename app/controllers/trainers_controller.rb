@@ -16,12 +16,7 @@ class TrainersController < ApplicationController
   # プロフィール閲覧は公開（未ログインでもアクセス可）
   def show
     @trainer_advised_requests = trainer_profile_advised_requests
-    @trainer_advised_feed_empty_subcopy =
-      if user_signed_in? && current_user == @trainer
-        "メンバーからの依頼へアドバイスすると、ここに表示されます。"
-      else
-        "公開リクエストへアドバイスすると、ここに表示されます。"
-      end
+    @trainer_advised_feed_empty_subcopy = "公開リクエストへアドバイスすると、ここに表示されます。"
   end
 
   # トレーナー本人がプロフィール編集
@@ -41,18 +36,14 @@ class TrainersController < ApplicationController
 
   private
 
-  # 本人閲覧時は限定公開を含む。それ以外は公開フィード相当のアドバイスのみ。
+  # トレーナープロフィールには公開リクエストへのアドバイスのみ表示する。
   def trainer_profile_advised_requests
-    rel = Request.joins(:advice)
+    rel = Request.joins(:advices)
                  .where(advices: { user_id: @trainer.id })
-                 .includes(:user, :advice, video_attachment: :blob, video_thumbnail_attachment: :blob)
+                 .includes(:user, :advices, video_attachment: :blob, video_thumbnail_attachment: :blob)
                  .distinct
                  .order(created_at: :desc)
-    if user_signed_in? && current_user == @trainer
-      rel
-    else
-      rel.merge(Request.on_public_feed)
-    end
+    rel.merge(Request.on_public_feed)
   end
 
   def set_trainer

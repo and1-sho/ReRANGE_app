@@ -15,8 +15,8 @@ class Request < ApplicationRecord
   belongs_to :user
   # 指定トレーナー宛（一覧には出さない）。未設定ならログイン全員向けの公開リクエスト
   belongs_to :directed_to_trainer, class_name: "User", optional: true
-  # requestは一つのadviceを持つ（リクエスト削除時はアドバイスも消す）
-  has_one :advice, dependent: :destroy
+  # requestは複数のadviceを持つ（リクエスト削除時はアドバイスも消す）
+  has_many :advices, dependent: :destroy
   # このリクエストに紐づく通知（リクエスト削除時は通知も消す）
   has_many :notifications, dependent: :destroy
 
@@ -41,9 +41,8 @@ class Request < ApplicationRecord
     directed_to_trainer_id.blank?
   end
 
-  # 現状 has_one :advice のため 0 または 1。将来複数化したらここを件数集計に差し替える。
   def advice_count
-    advice.present? ? 1 : 0
+    advices.size
   end
 
   private
