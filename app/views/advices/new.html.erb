@@ -1,90 +1,111 @@
-<div class="requests-page">
-  <header class="requests-header">
-    <%= link_to app_home_path, class: "requests-brand requests-brand--link" do %>
-      <span class="requests-brand__name">Re:RANGE</span>
+<div class="requests-page layout-feed page-advices-new">
+  <div class="requests-feed-chrome">
+    <%= link_to app_home_path, class: "requests-feed-chrome__brand" do %>
+      <span class="requests-feed-chrome__brand-name">Re:RANGE</span>
     <% end %>
-
-    <div class="requests-account">
+    <div class="requests-feed-chrome__actions">
       <%= render "shared/notification_bell_link" %>
       <%= render "shared/account_menu" %>
     </div>
-  </header>
+  </div>
 
-  <main class="request-compose">
-    <%= render "compose_request_context", request: @request %>
+  <div class="requests-feed-body">
+    <div class="requests-trainer-layout">
+      <%= render "requests/trainer_sidebar" %>
 
-    <% if @advice.errors.any? %>
-      <div class="request-compose__errors" role="alert">
-        <ul>
-          <% @advice.errors.full_messages.each do |message| %>
-            <li><%= message %></li>
-          <% end %>
-        </ul>
-      </div>
-    <% end %>
-
-    <%= form_with model: @advice, url: request_advice_path(@request), local: true, html: { class: "request-compose__form", multipart: true }, data: {
-      controller: "request-polish",
-      "request-polish-endpoint-value": polish_request_advice_path(@request),
-      "request-polish-max-attempts-value": 2,
-      "request-polish-remaining-attempts-value": @remaining_polish_attempts,
-      "request-polish-draft-token-value": @advice_polish_draft_token,
-      "request-polish-min-body-length-value": 8,
-      "request-polish-body-only-value": true
-    } do |f| %>
-      <%= hidden_field_tag :advice_polish_draft_token, @advice_polish_draft_token %>
-      <div class="request-compose__row">
-        <div class="request-compose__avatar-slot" aria-hidden="true">
-          <%= render "shared/user_avatar_icon", variant: :card %>
-        </div>
-
-        <div class="request-compose__fields">
-          <%= f.text_area :body, placeholder: "アドバイスを書いてください...", rows: 10, class: "request-compose__body request-compose__body--advice", data: { "request-polish-target": "body", action: "input->request-polish#onBodyInput" } %>
-
-          <div class="request-compose__video request-compose__video--advice" data-controller="video-upload-preview">
-            <%= f.label :video, "動画（任意）", class: "request-compose__video-label" %>
-            <p class="request-compose__video-hint">MP4 / MOV・1本あたり100MBまで。アドバイスに動画を添付できます。</p>
-            <%= f.file_field :video,
-                  accept: "video/mp4,video/quicktime,.mp4,.mov",
-                  class: "request-compose__video-input",
-                  data: {
-                    "video-upload-preview-target" => "input",
-                    action: "change->video-upload-preview#preview"
-                  } %>
-            <div class="request-compose__video-preview" data-video-upload-preview-target="box" hidden>
-              <p class="request-compose__video-preview-label">選択中の動画</p>
-              <div class="video-aspect video-aspect--compose-preview" data-controller="video-aspect">
-                <video data-video-upload-preview-target="player" data-video-aspect-target="video" data-action="loadedmetadata->video-aspect#layout" controls playsinline class="video-aspect__media"></video>
+      <div class="requests-trainer-main">
+        <div class="requests-feed-stage requests-feed-stage--compose-gap">
+          <div class="requests-feed-column requests-feed-column--stream">
+            <% unless current_user.trainer_profile_completed? %>
+              <div class="profile-reminder">
+                <p class="profile-reminder__text">プロフィールを設定すると、メンバーがあなたの指導スタイルを把握しやすくなります。</p>
+                <%= link_to "プロフィールを設定", edit_trainer_path(current_user), class: "menu-btn menu-btn--primary" %>
               </div>
-            </div>
-          </div>
+            <% end %>
 
-          <div class="request-compose__polish">
-            <div class="request-compose__polish-actions">
-              <button type="button" class="menu-btn menu-btn--ghost request-compose__polish-button" data-request-polish-target="polishButton" data-action="request-polish#polish" disabled>文章を整える</button>
-              <p class="request-compose__polish-meta">残り <span data-request-polish-target="attempts"><%= @remaining_polish_attempts %></span> 回</p>
-            </div>
-            <p class="request-compose__polish-error" data-request-polish-target="error" hidden></p>
+            <main class="request-compose request-compose--modern">
+              <h1 class="request-compose__page-heading">アドバイスを書く</h1>
+              <%= render "compose_request_context", request: @request %>
 
-            <div class="request-compose__proposal" data-request-polish-target="proposal" hidden>
-              <p class="request-compose__proposal-label">AIからの提案</p>
-              <p class="request-compose__proposal-body" data-request-polish-target="proposalBody"></p>
-              <div class="request-compose__proposal-actions">
-                <button type="button" class="menu-btn menu-btn--primary" data-action="request-polish#adopt">提案を反映する</button>
-              </div>
-            </div>
+              <% if @advice.errors.any? %>
+                <div class="request-compose__errors" role="alert">
+                  <ul>
+                    <% @advice.errors.full_messages.each do |message| %>
+                      <li><%= message %></li>
+                    <% end %>
+                  </ul>
+                </div>
+              <% end %>
+
+              <%= form_with model: @advice, url: request_advices_path(@request), local: true, html: { class: "request-compose__form request-compose__form--modern", multipart: true }, data: {
+                controller: "request-polish",
+                "request-polish-endpoint-value": polish_request_advices_path(@request),
+                "request-polish-max-attempts-value": 2,
+                "request-polish-remaining-attempts-value": @remaining_polish_attempts,
+                "request-polish-draft-token-value": @advice_polish_draft_token,
+                "request-polish-min-body-length-value": 8,
+                "request-polish-body-only-value": true
+              } do |f| %>
+                <%= hidden_field_tag :advice_polish_draft_token, @advice_polish_draft_token %>
+                <div class="request-compose__row">
+                  <div class="request-compose__avatar-slot" aria-hidden="true">
+                    <%= render "shared/user_avatar_icon", variant: :card %>
+                  </div>
+
+                  <div class="request-compose__fields">
+                    <%= f.text_area :body, placeholder: "アドバイスを書いてください...", rows: 10, class: "request-compose__body request-compose__body--advice", data: { "request-polish-target": "body", action: "input->request-polish#onBodyInput" } %>
+
+                    <div class="request-compose__video request-compose__video--advice" data-controller="video-upload-preview">
+                      <%= f.label :video, "動画（任意）", class: "request-compose__video-label" %>
+                      <p class="request-compose__video-hint">MP4 / MOV・1本あたり100MBまで。アドバイスに動画を添付できます。</p>
+                      <%= f.file_field :video,
+                            accept: "video/mp4,video/quicktime,.mp4,.mov",
+                            class: "request-compose__video-input",
+                            data: {
+                              "video-upload-preview-target" => "input",
+                              action: "change->video-upload-preview#preview"
+                            } %>
+                      <div class="request-compose__video-preview" data-video-upload-preview-target="box" hidden>
+                        <p class="request-compose__video-preview-label">選択中の動画</p>
+                        <div class="video-aspect video-aspect--compose-preview" data-controller="video-aspect">
+                          <video data-video-upload-preview-target="player" data-video-aspect-target="video" data-action="loadedmetadata->video-aspect#layout" controls playsinline class="video-aspect__media"></video>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="request-compose__polish">
+                      <div class="request-compose__polish-actions">
+                        <button type="button" class="menu-btn menu-btn--ghost request-compose__polish-button" data-request-polish-target="polishButton" data-action="request-polish#polish" disabled>文章を整える</button>
+                        
+                      </div>
+                      <p class="request-compose__polish-error" data-request-polish-target="error" hidden></p>
+
+                      <div class="request-compose__proposal" data-request-polish-target="proposal" hidden>
+                        <p class="request-compose__proposal-label">AIからの提案</p>
+                        <p class="request-compose__proposal-body" data-request-polish-target="proposalBody"></p>
+                        <div class="request-compose__proposal-actions">
+                          <button type="button" class="menu-btn menu-btn--primary" data-action="request-polish#adopt">提案を反映する</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="request-compose__toolbar">
+                  <%= link_to "キャンセル", request_path(@request), class: "request-compose__cancel" %>
+                  <%= f.submit "送信する", class: "menu-btn menu-btn--primary request-compose__submit" %>
+                </div>
+              <% end %>
+
+              <p class="request-compose__footer-link">
+                <%= link_to "リクエスト詳細に戻る", request_path(@request), class: "menu-btn menu-btn--ghost" %>
+              </p>
+            </main>
           </div>
+          <div class="requests-feed-aside-spacer" aria-hidden="true"></div>
         </div>
+        <%= render "shared/requests_feed_aside" %>
       </div>
-
-      <div class="request-compose__toolbar">
-        <%= link_to "キャンセル", request_path(@request), class: "request-compose__cancel" %>
-        <%= f.submit "送信する", class: "menu-btn menu-btn--primary request-compose__submit" %>
-      </div>
-    <% end %>
-
-    <p class="request-compose__footer-link">
-      <%= link_to "リクエスト詳細に戻る", request_path(@request), class: "menu-btn menu-btn--ghost" %>
-    </p>
-  </main>
+    </div>
+  </div>
 </div>

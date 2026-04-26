@@ -7,7 +7,7 @@ class AdvicesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "未ログインでadvice作成するとログイン画面へリダイレクトされる" do
-    post request_advice_path(requests(:one)), params: { advice: { body: "test" } }
+    post request_advices_path(requests(:one)), params: { advice: { body: "test" } }
     assert_redirected_to new_user_session_path
   end
 end

@@ -10,8 +10,8 @@ class AdvicesController < ApplicationController
   before_action :authorize_advice_polish!, only: [:polish]
   # 指定トレーナー宛はそのトレーナーのみアドバイス可能
   before_action :authorize_designated_trainer_for_direct_request!, only: [:new, :create]
-  # まだアドバイスが無いリクエストだけ new / create できる（二重投稿を防ぐ）
-  before_action :ensure_no_advice_yet!, only: [:new, :create]
+  # 同一トレーナーの二重投稿を防ぐ（1リクエストにつき1件）
+  before_action :ensure_not_already_advised_by_current_trainer!, only: [:new, :create]
   # アドバイスを @advice にセットする設定（edit / update / destroy）
   before_action :set_advice, only: [:edit, :update, :destroy]
   # 編集・削除はアドバイスを書いたトレーナー本人のみ
@@ -24,7 +24,7 @@ class AdvicesController < ApplicationController
   end
 
   def create
-    @advice = @request.build_advice(advice_params)
+    @advice = @request.advices.build(advice_params)
     @advice.user = current_user
     draft_token = params[:advice_polish_draft_token].to_s
 
@@ -34,30 +34,33 @@ class AdvicesController < ApplicationController
       notify_request_owner_advice_received!
       redirect_to request_path(@request), notice: "アドバイスを投稿しました"
     else
-      @advice_polish_draft_token = params[:advice_polish_draft_token].presence || SecureRandom.uuid
-      @remaining_polish_attempts = remaining_advice_polish_attempts(@advice_polish_draft_token)
-      render :new, status: :unprocessable_entity
+      @inline_advice = @advice
+      render "requests/show", status: :unprocessable_entity
     end
   end
 
   def edit
-    @advice_polish_draft_token = SecureRandom.uuid
+    @advice_polish_draft_token = advice_edit_polish_token(@advice)
     @remaining_polish_attempts = remaining_advice_polish_attempts(@advice_polish_draft_token)
   end
 
   def update
     old_video_key = @advice.video.attached? ? @advice.video.blob.key : nil
+    video_removed_by_user = params.dig(:advice, :remove_video) == "1" && params.dig(:advice, :video).blank? && @advice.video.attached?
     handle_advice_video_removal_on_update!
-    draft_token = params[:advice_polish_draft_token].to_s
+    draft_token = params[:advice_polish_draft_token].presence || advice_edit_polish_token(@advice)
 
     if @advice.update(advice_params)
-      clear_advice_polish_attempts!(draft_token)
+      mark_advice_as_edited_if_needed!(old_video_key, video_removed_by_user)
       sync_advice_video_thumbnail_after_update!(old_video_key)
       redirect_to request_path(@request), notice: "アドバイスを更新しました"
     else
-      @advice_polish_draft_token = params[:advice_polish_draft_token].presence || SecureRandom.uuid
+      @advice_polish_draft_token = advice_edit_polish_token(@advice)
       @remaining_polish_attempts = remaining_advice_polish_attempts(@advice_polish_draft_token)
-      render :edit, status: :unprocessable_entity
+      @editing_advice = true
+      @advice_edit_form = @advice
+      @remaining_advice_polish_attempts = @remaining_polish_attempts
+      render "requests/show", status: :unprocessable_entity
     end
   end
 
@@ -98,12 +101,12 @@ class AdvicesController < ApplicationController
   end
 
   def set_request
-    @request = Request.includes(:user, video_attachment: :blob, video_thumbnail_attachment: :blob).find(params[:request_id])
+    @request = Request.includes(:user, { advices: [:user, { video_attachment: :blob }] }, video_attachment: :blob, video_thumbnail_attachment: :blob).find(params[:request_id])
   end
 
   # アドバイスが無ければ詳細へ戻す
   def set_advice
-    @advice = @request.advice
+    @advice = @request.advices.find_by(id: params[:id])
     return if @advice
 
     redirect_to request_path(@request), alert: "アドバイスがありません"
@@ -116,11 +119,11 @@ class AdvicesController < ApplicationController
     redirect_to request_path(@request), alert: "このアドバイスを編集・削除する権限がありません"
   end
 
-  # すでにアドバイスがあるリクエストには新規投稿させない
-  def ensure_no_advice_yet!
-    return if @request.advice.blank?
+  # 同一トレーナーは同じリクエストに1回のみ投稿可能
+  def ensure_not_already_advised_by_current_trainer!
+    return if @request.advices.where(user_id: current_user.id).blank?
 
-    redirect_to request_path(@request), alert: "すでにアドバイスが投稿されています"
+    redirect_to request_path(@request), alert: "このリクエストにはすでにアドバイスを投稿しています"
   end
 
   def advice_params
@@ -130,13 +133,6 @@ class AdvicesController < ApplicationController
   def authorize_advice_polish!
     unless current_user.trainer?
       render json: { error: "トレーナーのみアドバイスできます" }, status: :forbidden
-      return
-    end
-
-    if @request.advice.present?
-      return if @request.advice.user_id == current_user.id
-
-      render json: { error: "このアドバイスを整形する権限がありません" }, status: :forbidden
       return
     end
 
@@ -170,6 +166,10 @@ class AdvicesController < ApplicationController
     advice_polish_attempts_store.delete(draft_token)
   end
 
+  def advice_edit_polish_token(advice)
+    "advice-edit-#{advice.id}-user-#{current_user.id}"
+  end
+
   def handle_advice_video_removal_on_update!
     return unless params.dig(:advice, :remove_video) == "1"
     return if params.dig(:advice, :video).present?
@@ -190,6 +190,13 @@ class AdvicesController < ApplicationController
 
     new_key = @advice.video.blob.key
     VideoThumbnailJob.perform_later("Advice", @advice.id) if old_video_key != new_key
+  end
+
+  def mark_advice_as_edited_if_needed!(old_video_key, video_removed_by_user)
+    video_changed = old_video_key != (@advice.video.attached? ? @advice.video.blob.key : nil)
+    return unless @advice.saved_change_to_body? || video_removed_by_user || video_changed
+
+    @advice.update_column(:edited, true) unless @advice.edited?
   end
 
   def ensure_trainer!

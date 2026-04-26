@@ -16,106 +16,176 @@
       <div class="requests-trainer-main">
         <div class="requests-feed-stage requests-feed-stage--compose-gap">
           <div class="requests-feed-column requests-feed-column--stream">
-            <div class="public-profile-edit public-profile-edit--in-feed">
-              <div class="public-profile-edit__body">
-                <h1 class="public-profile-edit__title">プロフィール編集</h1>
+            <main class="request-compose request-compose--modern">
+              <h1 class="request-compose__page-heading">プロフィール編集</h1>
 
-                <% if @trainer.errors.any? %>
-                  <div class="public-profile-edit__errors">
-                    <p class="public-profile-edit__errors-title">入力内容を確認してください</p>
-                    <ul>
-                      <% @trainer.errors.full_messages.each do |message| %>
-                        <li><%= message %></li>
-                      <% end %>
-                    </ul>
-                  </div>
-                <% end %>
-
-                <%= form_with model: @trainer, url: trainer_path(@trainer), method: :patch, local: true, class: "public-profile-edit__form" do |f| %>
-                  <div class="public-profile-edit__field">
-                    <%= f.label :header_image, "ヘッダー画像", class: "auth-label" %>
-                    <% if @trainer.header_image.attached? %>
-                      <p class="public-profile-edit__current-file">
-                        現在の画像: <%= @trainer.header_image.filename.to_s %>
-                      </p>
-                      <label class="public-profile-edit__remove-check">
-                        <%= check_box_tag "user[remove_header_image]", "1", false %>
-                        ヘッダー画像を削除する
-                      </label>
-                    <% else %>
-                      <p class="public-profile-edit__current-file">現在の画像: 未設定</p>
+              <% if @trainer.errors.any? %>
+                <div class="request-compose__errors" role="alert">
+                  <ul>
+                    <% @trainer.errors.full_messages.each do |message| %>
+                      <li><%= message %></li>
                     <% end %>
-                    <%= f.file_field :header_image, class: "auth-input" %>
-                  </div>
+                  </ul>
+                </div>
+              <% end %>
 
-                  <div class="public-profile-edit__field">
-                    <%= f.label :avatar_image, "プロフィール画像", class: "auth-label" %>
-                    <% if @trainer.avatar_image.attached? %>
-                      <p class="public-profile-edit__current-file">
-                        現在の画像: <%= @trainer.avatar_image.filename.to_s %>
-                      </p>
-                      <label class="public-profile-edit__remove-check">
-                        <%= check_box_tag "user[remove_avatar_image]", "1", false %>
-                        プロフィール画像を削除する
-                      </label>
-                    <% else %>
-                      <p class="public-profile-edit__current-file">現在の画像: 未設定</p>
-                    <% end %>
-                    <%= f.file_field :avatar_image, class: "auth-input" %>
-                  </div>
-
-                  <div class="public-profile-edit__field">
-                    <%= f.label :profile_affiliation, "所属", class: "auth-label" %>
-                    <%= f.text_field :profile_affiliation, class: "auth-input" %>
-                  </div>
-
-                  <div class="public-profile-edit__field">
-                    <%= f.label :profile_prefecture, "都道府県", class: "auth-label" %>
-                    <%= f.select :profile_prefecture, User::PREFECTURES, { include_blank: "選択してください" }, class: "auth-input auth-select" %>
-                  </div>
-
-                  <div class="public-profile-edit__field">
-                    <%= f.label :profile_area_detail, "地域（市区町村など）", class: "auth-label" %>
-                    <%= f.text_field :profile_area_detail, class: "auth-input" %>
-                  </div>
-
-                  <div class="public-profile-edit__field">
-                    <%= f.label :boxing_started_on, "選手開始日", class: "auth-label" %>
-                    <%= f.date_field :boxing_started_on, class: "auth-input" %>
-                  </div>
-
-                  <div class="public-profile-edit__field">
-                    <%= f.label :instruction_started_on, "指導開始日", class: "auth-label" %>
-                    <%= f.date_field :instruction_started_on, class: "auth-input" %>
-                  </div>
-
-                  <div class="public-profile-edit__field">
-                    <%= f.label :profile_bio, "自己紹介", class: "auth-label" %>
-                    <%= f.text_area :profile_bio, rows: 6, class: "auth-input" %>
-                  </div>
-
-                  <div class="public-profile-edit__radar" data-controller="radar-points">
-                    <p class="public-profile-edit__radar-remaining">
-                      残りポイント:
-                      <strong data-radar-points-target="remaining"></strong>
-                    </p>
-                    <div class="public-profile-edit__grid">
-                      <div class="public-profile-edit__field"><%= f.label :radar_attack, "攻撃", class: "auth-label" %><%= f.number_field :radar_attack, in: 0..5, class: "auth-input", data: { "radar-points-target": "input", action: "input->radar-points#update" } %></div>
-                      <div class="public-profile-edit__field"><%= f.label :radar_technique, "テクニック", class: "auth-label" %><%= f.number_field :radar_technique, in: 0..5, class: "auth-input", data: { "radar-points-target": "input", action: "input->radar-points#update" } %></div>
-                      <div class="public-profile-edit__field"><%= f.label :radar_physical, "フィジカル", class: "auth-label" %><%= f.number_field :radar_physical, in: 0..5, class: "auth-input", data: { "radar-points-target": "input", action: "input->radar-points#update" } %></div>
-                      <div class="public-profile-edit__field"><%= f.label :radar_speed, "スピード", class: "auth-label" %><%= f.number_field :radar_speed, in: 0..5, class: "auth-input", data: { "radar-points-target": "input", action: "input->radar-points#update" } %></div>
-                      <div class="public-profile-edit__field"><%= f.label :radar_strategy, "戦術", class: "auth-label" %><%= f.number_field :radar_strategy, in: 0..5, class: "auth-input", data: { "radar-points-target": "input", action: "input->radar-points#update" } %></div>
-                      <div class="public-profile-edit__field"><%= f.label :radar_defense, "守備", class: "auth-label" %><%= f.number_field :radar_defense, in: 0..5, class: "auth-input", data: { "radar-points-target": "input", action: "input->radar-points#update" } %></div>
+              <%= form_with model: @trainer, url: trainer_path(@trainer), method: :patch, local: true,
+                    html: { class: "request-compose__form request-compose__form--modern request-compose__form--profile-edit" } do |f| %>
+                <div class="request-compose__body-block">
+                  <%= f.label :header_image, "ヘッダー画像", class: "request-compose__field-label", for: "user_header_image" %>
+                  <% if @trainer.header_image.attached? %>
+                    <p class="request-compose__video-hint--modern request-compose__hint--left">設定中: <%= @trainer.header_image.filename.to_s %></p>
+                    <label class="request-compose__remove-opt">
+                      <%= check_box_tag "user[remove_header_image]", "1", false %>
+                      <span>ヘッダー画像を削除する</span>
+                    </label>
+                  <% end %>
+                  <div class="request-compose__video-block" data-controller="image-upload-preview">
+                    <%= f.file_field :header_image,
+                          accept: "image/jpeg,image/png,image/webp,image/gif,.jpg,.jpeg,.png,.webp,.gif",
+                          class: "request-compose__video-input-hidden",
+                          id: "user_header_image",
+                          data: {
+                            image_upload_preview_target: "input",
+                            action: "change->image-upload-preview#preview"
+                          } %>
+                    <div
+                      class="request-compose__video-drop"
+                      data-image-upload-preview-target="dropzone"
+                      data-action="click->image-upload-preview#openFilePicker keydown->image-upload-preview#onDropzoneKeydown dragover->image-upload-preview#onDragOver:prevent dragleave->image-upload-preview#onDragLeave drop->image-upload-preview#onDrop:prevent"
+                      role="button"
+                      tabindex="0"
+                      aria-controls="user_header_image"
+                    >
+                      <p class="request-compose__video-drop-text">画像をドラッグ＆ドロップするか、クリックしてアップロード</p>
+                      <div class="request-compose__video-drop-icon" aria-hidden="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="request-compose__video-drop-svg" width="28" height="28">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0 3 3m-3-3-3 3M6.75 19.5a4.5 4.5 0 0 1-1.41-8.775 5.25 5.25 0 0 1 10.233-2.33 3 3 0 0 1 3.758 3.848A3.752 3.752 0 0 1 18 19.5H6.75Z" />
+                        </svg>
+                      </div>
+                    </div>
+                    <p class="request-compose__video-hint request-compose__video-hint--modern">JPEG / PNG / WebP など（任意）</p>
+                    <div class="request-compose__video-preview request-compose__video-preview--modern" data-image-upload-preview-target="preview" hidden>
+                      <p class="request-compose__video-preview-label">選択中の画像</p>
+                      <img data-image-upload-preview-target="thumb" class="request-compose__image-preview-thumb" alt="選択中のヘッダー画像のプレビュー" />
                     </div>
                   </div>
+                </div>
 
-                  <div class="public-profile-edit__actions">
-                    <%= link_to "戻る", trainer_path(@trainer), class: "menu-btn menu-btn--ghost" %>
-                    <%= f.submit "保存する", class: "menu-btn menu-btn--primary" %>
+                <div class="request-compose__body-block">
+                  <%= f.label :avatar_image, "プロフィール画像", class: "request-compose__field-label", for: "user_avatar_image" %>
+                  <% if @trainer.avatar_image.attached? %>
+                    <p class="request-compose__video-hint--modern request-compose__hint--left">設定中: <%= @trainer.avatar_image.filename.to_s %></p>
+                    <label class="request-compose__remove-opt">
+                      <%= check_box_tag "user[remove_avatar_image]", "1", false %>
+                      <span>プロフィール画像を削除する</span>
+                    </label>
+                  <% end %>
+                  <div class="request-compose__video-block" data-controller="image-upload-preview">
+                    <%= f.file_field :avatar_image,
+                          accept: "image/jpeg,image/png,image/webp,image/gif,.jpg,.jpeg,.png,.webp,.gif",
+                          class: "request-compose__video-input-hidden",
+                          id: "user_avatar_image",
+                          data: {
+                            image_upload_preview_target: "input",
+                            action: "change->image-upload-preview#preview"
+                          } %>
+                    <div
+                      class="request-compose__video-drop"
+                      data-image-upload-preview-target="dropzone"
+                      data-action="click->image-upload-preview#openFilePicker keydown->image-upload-preview#onDropzoneKeydown dragover->image-upload-preview#onDragOver:prevent dragleave->image-upload-preview#onDragLeave drop->image-upload-preview#onDrop:prevent"
+                      role="button"
+                      tabindex="0"
+                      aria-controls="user_avatar_image"
+                    >
+                      <p class="request-compose__video-drop-text">画像をドラッグ＆ドロップするか、クリックしてアップロード</p>
+                      <div class="request-compose__video-drop-icon" aria-hidden="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="request-compose__video-drop-svg" width="28" height="28">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0 3 3m-3-3-3 3M6.75 19.5a4.5 4.5 0 0 1-1.41-8.775 5.25 5.25 0 0 1 10.233-2.33 3 3 0 0 1 3.758 3.848A3.752 3.752 0 0 1 18 19.5H6.75Z" />
+                        </svg>
+                      </div>
+                    </div>
+                    <p class="request-compose__video-hint request-compose__video-hint--modern">JPEG / PNG / WebP など（任意）</p>
+                    <div class="request-compose__video-preview request-compose__video-preview--modern" data-image-upload-preview-target="preview" hidden>
+                      <p class="request-compose__video-preview-label">選択中の画像</p>
+                      <img data-image-upload-preview-target="thumb" class="request-compose__image-preview-thumb" alt="選択中のプロフィール画像のプレビュー" />
+                    </div>
                   </div>
-                <% end %>
-              </div>
-            </div>
+                </div>
+
+                <div class="request-compose__body-block">
+                  <%= f.label :profile_affiliation, "所属", class: "request-compose__field-label", for: "user_profile_affiliation" %>
+                  <div class="request-compose__title-pill">
+                    <%= f.text_field :profile_affiliation,
+                          class: "request-compose__title-input",
+                          id: "user_profile_affiliation",
+                          autocomplete: "organization",
+                          placeholder: "例）○○ボクシングジム" %>
+                  </div>
+                </div>
+
+                <div class="request-compose__body-block">
+                  <%= f.label :profile_prefecture, "都道府県", class: "request-compose__field-label", for: "user_profile_prefecture" %>
+                  <div class="request-compose__title-pill">
+                    <%= f.select :profile_prefecture, User::PREFECTURES, { include_blank: "選択してください" },
+                          class: "request-compose__select-in-pill", id: "user_profile_prefecture" %>
+                  </div>
+                </div>
+
+                <div class="request-compose__body-block">
+                  <%= f.label :profile_area_detail, "地域（市区町村など）", class: "request-compose__field-label", for: "user_profile_area_detail" %>
+                  <div class="request-compose__title-pill">
+                    <%= f.text_field :profile_area_detail,
+                          class: "request-compose__title-input",
+                          id: "user_profile_area_detail",
+                          autocomplete: "address-level2",
+                          placeholder: "例）渋谷区・横浜市 など" %>
+                  </div>
+                </div>
+
+                <div class="request-compose__body-block">
+                  <%= f.label :boxing_started_on, "選手開始日", class: "request-compose__field-label", for: "user_boxing_started_on" %>
+                  <div class="request-compose__title-pill">
+                    <%= f.date_field :boxing_started_on, class: "request-compose__date-in-pill", id: "user_boxing_started_on" %>
+                  </div>
+                </div>
+
+                <div class="request-compose__body-block">
+                  <%= f.label :instruction_started_on, "指導開始日", class: "request-compose__field-label", for: "user_instruction_started_on" %>
+                  <div class="request-compose__title-pill">
+                    <%= f.date_field :instruction_started_on, class: "request-compose__date-in-pill", id: "user_instruction_started_on" %>
+                  </div>
+                </div>
+
+                <div class="request-compose__body-block">
+                  <%= f.label :profile_bio, "自己紹介", class: "request-compose__field-label", for: "user_profile_bio" %>
+                  <%= f.text_area :profile_bio,
+                        rows: 8,
+                        class: "request-compose__body request-compose__body--modern",
+                        id: "user_profile_bio",
+                        placeholder: "例）ミット中心で基礎から丁寧に指導しています。" %>
+                </div>
+
+                <div class="request-compose__body-block request-compose__body-block--radar" data-controller="radar-points">
+                  <p class="request-compose__field-label request-compose__field-label--inline">
+                    レーダー評価（残りポイント: <strong data-radar-points-target="remaining"></strong>）
+                  </p>
+                  <div class="public-profile-edit__grid">
+                    <div class="request-compose__title-pill"><%= f.label :radar_attack, "攻撃", class: "request-compose__field-label request-compose__field-label--compact" %><%= f.number_field :radar_attack, in: 0..5, class: "request-compose__number-in-pill", data: { "radar-points-target": "input", action: "input->radar-points#update" } %></div>
+                    <div class="request-compose__title-pill"><%= f.label :radar_technique, "テクニック", class: "request-compose__field-label request-compose__field-label--compact" %><%= f.number_field :radar_technique, in: 0..5, class: "request-compose__number-in-pill", data: { "radar-points-target": "input", action: "input->radar-points#update" } %></div>
+                    <div class="request-compose__title-pill"><%= f.label :radar_physical, "フィジカル", class: "request-compose__field-label request-compose__field-label--compact" %><%= f.number_field :radar_physical, in: 0..5, class: "request-compose__number-in-pill", data: { "radar-points-target": "input", action: "input->radar-points#update" } %></div>
+                    <div class="request-compose__title-pill"><%= f.label :radar_speed, "スピード", class: "request-compose__field-label request-compose__field-label--compact" %><%= f.number_field :radar_speed, in: 0..5, class: "request-compose__number-in-pill", data: { "radar-points-target": "input", action: "input->radar-points#update" } %></div>
+                    <div class="request-compose__title-pill"><%= f.label :radar_strategy, "戦術", class: "request-compose__field-label request-compose__field-label--compact" %><%= f.number_field :radar_strategy, in: 0..5, class: "request-compose__number-in-pill", data: { "radar-points-target": "input", action: "input->radar-points#update" } %></div>
+                    <div class="request-compose__title-pill"><%= f.label :radar_defense, "守備", class: "request-compose__field-label request-compose__field-label--compact" %><%= f.number_field :radar_defense, in: 0..5, class: "request-compose__number-in-pill", data: { "radar-points-target": "input", action: "input->radar-points#update" } %></div>
+                  </div>
+                </div>
+
+                <div class="request-compose__toolbar request-compose__toolbar--modern">
+                  <%= link_to "キャンセル", trainer_path(@trainer), class: "request-compose__cancel request-compose__cancel--pill" %>
+                  <%= f.submit "保存する", class: "menu-btn menu-btn--primary request-compose__submit request-compose__submit--pill" %>
+                </div>
+              <% end %>
+            </main>
           </div>
           <div class="requests-feed-aside-spacer" aria-hidden="true"></div>
         </div>

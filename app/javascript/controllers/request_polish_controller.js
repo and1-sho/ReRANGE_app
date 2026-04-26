@@ -5,7 +5,6 @@ export default class extends Controller {
     "title",
     "body",
     "polishButton",
-    "attempts",
     "error",
     "proposal",
     "proposalTitle",
@@ -103,7 +102,9 @@ export default class extends Controller {
 
   updatePolishButtonState() {
     this.polishButtonTarget.disabled = !this.canPolish()
-    this.polishButtonTarget.textContent = this.isLoading ? "整えています..." : "文章を整える"
+    this.polishButtonTarget.textContent = this.isLoading
+      ? "整えています..."
+      : `文章を整える（残り${this.remainingAttempts}回）`
 
     const bodyMin =
       this.bodyTarget.value.trim().length >= this.minBodyLengthValue
@@ -113,7 +114,7 @@ export default class extends Controller {
   }
 
   renderAttempts() {
-    this.attemptsTarget.textContent = this.remainingAttempts
+    // count is now displayed in button label
   }
 
   showError(message) {

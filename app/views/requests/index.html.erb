@@ -14,7 +14,7 @@
     <% sidebar_partial = current_user.member? ? "member_sidebar" : "trainer_sidebar" %>
     <% profile_ok = current_user.member? ? current_user.member_profile_completed? : current_user.trainer_profile_completed? %>
     <% profile_edit = current_user.member? ? edit_member_path(current_user) : edit_trainer_path(current_user) %>
-    <% profile_lead = current_user.member? ? "プロフィールを設定すると、トレーナーがあなたの状況を理解しやすくなります。" : "プロフィールを設定すると、メンバーがあなたの指導スタイルを把握しやすくなります。" %>
+    <% profile_lead = current_user.member? ? "プロフィールを設定と、トレーナーがあなたの状況を理解しやすくなります。" : "プロフィールを設定と、メンバーがあなたの指導スタイルを把握しやすくなります。" %>
 
     <div class="requests-trainer-layout">
       <%= render sidebar_partial %>
@@ -25,7 +25,26 @@
             <% unless profile_ok %>
               <div class="profile-reminder">
                 <p class="profile-reminder__text"><%= profile_lead %></p>
-                <%= link_to "プロフィールを設定する", profile_edit, class: "menu-btn menu-btn--primary" %>
+                <%= link_to "プロフィールを設定", profile_edit, class: "menu-btn menu-btn--primary" %>
+              </div>
+            <% end %>
+
+            <% if current_user.trainer? && params[:filter] != "advised_by_me" %>
+              <div class="requests-home-tabs" role="tablist" aria-label="ホーム表示切り替え">
+                <%= link_to "すべて",
+                      requests_path,
+                      class: "requests-home-tabs__tab#{@request_feed_tab != "direct" ? " is-active" : ""}",
+                      role: "tab",
+                      aria: { selected: (@request_feed_tab != "direct").to_s } %>
+                <%= link_to requests_path(feed: "direct"),
+                      class: "requests-home-tabs__tab#{@request_feed_tab == "direct" ? " is-active" : ""}",
+                      role: "tab",
+                      aria: { selected: (@request_feed_tab == "direct").to_s } do %>
+                  <span>あなた宛（非公開）</span>
+                  <% if @has_unadvised_direct_requests %>
+                    <span class="requests-home-tabs__dot" aria-label="未対応の非公開リクエストがあります"></span>
+                  <% end %>
+                <% end %>
               </div>
             <% end %>
 

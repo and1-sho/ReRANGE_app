@@ -47,7 +47,7 @@ class AdvicePolishTest < ActionDispatch::IntegrationTest
     original_new = AdviceTextPolisher.method(:new)
     AdviceTextPolisher.define_singleton_method(:new) { |**_kwargs| fake_polisher }
     begin
-      post polish_request_advice_path(@open_request), params: { body: "下書きが荒いです 直して", draft_token: "adv-draft-1" }, as: :json
+      post polish_request_advices_path(@open_request), params: { body: "下書きが荒いです 直して", draft_token: "adv-draft-1" }, as: :json
     ensure
       AdviceTextPolisher.define_singleton_method(:new, original_new)
     end
@@ -62,7 +62,7 @@ class AdvicePolishTest < ActionDispatch::IntegrationTest
   test "member cannot use advice polish endpoint" do
     sign_in @member
 
-    post polish_request_advice_path(@open_request), params: { body: "十分な長さの本文です", draft_token: "draft-1" }, as: :json
+    post polish_request_advices_path(@open_request), params: { body: "十分な長さの本文です", draft_token: "draft-1" }, as: :json
 
     assert_response :forbidden
     json = JSON.parse(response.body)
@@ -81,15 +81,15 @@ class AdvicePolishTest < ActionDispatch::IntegrationTest
     AdviceTextPolisher.define_singleton_method(:new) { |**_kwargs| fake_polisher }
     begin
       token = "adv-same-draft"
-      post polish_request_advice_path(@open_request), params: { body: "1回目の整形です十分な長さ", draft_token: token }, as: :json
+      post polish_request_advices_path(@open_request), params: { body: "1回目の整形です十分な長さ", draft_token: token }, as: :json
       assert_response :success
       assert_equal 1, JSON.parse(response.body)["remaining_attempts"]
 
-      post polish_request_advice_path(@open_request), params: { body: "2回目の整形です十分な長さ", draft_token: token }, as: :json
+      post polish_request_advices_path(@open_request), params: { body: "2回目の整形です十分な長さ", draft_token: token }, as: :json
       assert_response :success
       assert_equal 0, JSON.parse(response.body)["remaining_attempts"]
 
-      post polish_request_advice_path(@open_request), params: { body: "3回目は失敗するはず十分な長さ", draft_token: token }, as: :json
+      post polish_request_advices_path(@open_request), params: { body: "3回目は失敗するはず十分な長さ", draft_token: token }, as: :json
       assert_response :unprocessable_entity
       json = JSON.parse(response.body)
       assert_equal "文章を整える操作は2回までです", json["error"]
@@ -108,7 +108,7 @@ class AdvicePolishTest < ActionDispatch::IntegrationTest
     )
 
     sign_in @trainer
-    post polish_request_advice_path(direct), params: { body: "十分な長さの本文です", draft_token: "d-1" }, as: :json
+    post polish_request_advices_path(direct), params: { body: "十分な長さの本文です", draft_token: "d-1" }, as: :json
     assert_response :forbidden
 
     sign_in @other_trainer
@@ -121,7 +121,7 @@ class AdvicePolishTest < ActionDispatch::IntegrationTest
     original_new = AdviceTextPolisher.method(:new)
     AdviceTextPolisher.define_singleton_method(:new) { |**_kwargs| fake_polisher }
     begin
-      post polish_request_advice_path(direct), params: { body: "十分な長さの本文です", draft_token: "d-2" }, as: :json
+      post polish_request_advices_path(direct), params: { body: "十分な長さの本文です", draft_token: "d-2" }, as: :json
       assert_response :success
     ensure
       AdviceTextPolisher.define_singleton_method(:new, original_new)
@@ -141,7 +141,7 @@ class AdvicePolishTest < ActionDispatch::IntegrationTest
     original_new = AdviceTextPolisher.method(:new)
     AdviceTextPolisher.define_singleton_method(:new) { |**_kwargs| fake_polisher }
     begin
-      post polish_request_advice_path(@open_request), params: { body: "編集中下書きで十分な長さ", draft_token: "edit-draft" }, as: :json
+      post polish_request_advices_path(@open_request), params: { body: "編集中下書きで十分な長さ", draft_token: "edit-draft" }, as: :json
     ensure
       AdviceTextPolisher.define_singleton_method(:new, original_new)
     end
@@ -154,7 +154,7 @@ class AdvicePolishTest < ActionDispatch::IntegrationTest
     Advice.create!(request: @open_request, user: @trainer, body: "既存のアドバイス")
 
     sign_in @other_trainer
-    post polish_request_advice_path(@open_request), params: { body: "奪おうとする十分な長さの本文", draft_token: "x" }, as: :json
+    post polish_request_advices_path(@open_request), params: { body: "奪おうとする十分な長さの本文", draft_token: "x" }, as: :json
     assert_response :forbidden
   end
 end

@@ -13,4 +13,6 @@ class Advice < ApplicationRecord
 
   # adviceはトレーナー（User）に属する
   belongs_to :user
+
+  validates :user_id, uniqueness: { scope: :request_id }
 end

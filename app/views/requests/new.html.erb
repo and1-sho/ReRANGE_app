@@ -18,13 +18,15 @@
           <div class="requests-feed-column requests-feed-column--stream">
             <% unless current_user.member_profile_completed? %>
               <div class="profile-reminder">
-                <p class="profile-reminder__text">プロフィールを設定すると、トレーナーがあなたの状況を理解しやすくなります。</p>
-                <%= link_to "プロフィールを設定する", edit_member_path(current_user), class: "menu-btn menu-btn--primary" %>
+                <p class="profile-reminder__text">プロフィールを設定と、トレーナーがあなたの状況を理解しやすくなります。</p>
+                <%= link_to "プロフィールを設定", edit_member_path(current_user), class: "menu-btn menu-btn--primary" %>
               </div>
             <% end %>
 
             <main class="request-compose request-compose--modern">
               <h1 class="request-compose__page-heading">新規リクエスト</h1>
+              <% request_visibility = params[:request_visibility].presence || "public" %>
+              <% is_private_visibility = request_visibility == "private" %>
 
               <% if @request.errors.any? %>
                 <div class="request-compose__errors" role="alert">
@@ -37,7 +39,7 @@
               <% end %>
 
               <%= form_with model: @request, local: true, html: { class: "request-compose__form request-compose__form--modern" }, data: {
-                controller: "request-polish",
+                controller: "request-polish request-visibility",
                 "request-polish-endpoint-value": polish_requests_path,
                 "request-polish-max-attempts-value": 2,
                 "request-polish-remaining-attempts-value": @remaining_polish_attempts,
@@ -45,6 +47,40 @@
                 "request-polish-min-body-length-value": 8
               } do |f| %>
                 <%= hidden_field_tag :request_polish_draft_token, @request_polish_draft_token %>
+
+                <div class="request-compose__visibility--modern" data-action="change->request-visibility#sync">
+                  <div class="request-compose__visibility-options">
+                    <label class="request-compose__visibility-option">
+                      <%= radio_button_tag :request_visibility, "public", !is_private_visibility, id: "request_visibility_public" %>
+                      <span class="request-compose__visibility-option-text">
+                        <span class="request-compose__visibility-option-title">公開</span>
+                        <span class="request-compose__visibility-option-desc">全員のリクエスト一覧に表示されます</span>
+                      </span>
+                    </label>
+                    <label class="request-compose__visibility-option">
+                      <%= radio_button_tag :request_visibility, "private", is_private_visibility,
+                            id: "request_visibility_private",
+                            data: { request_visibility_target: "privateRadio" } %>
+                      <span class="request-compose__visibility-option-text">
+                        <span class="request-compose__visibility-option-title">非公開</span>
+                        <span class="request-compose__visibility-option-desc">選択したトレーナーだけが内容を閲覧できます</span>
+                      </span>
+                    </label>
+                  </div>
+                  <div
+                    class="request-compose__visibility-trainer<%= " request-compose__visibility-trainer--hidden" unless is_private_visibility %>"
+                    data-request-visibility-target="trainerWrapper"
+                  >
+                    <%= f.label :directed_to_trainer_id, "トレーナーを選択してください", class: "request-compose__field-label", for: "request_directed_to_trainer_id" %>
+                    <%= f.select :directed_to_trainer_id,
+                          options_from_collection_for_select(@trainers, :id, :name, @request.directed_to_trainer_id),
+                          { include_blank: "選択してください" },
+                          id: "request_directed_to_trainer_id",
+                          class: "request-compose__visibility-select",
+                          disabled: !is_private_visibility,
+                          data: { request_visibility_target: "trainerSelect" } %>
+                  </div>
+                </div>
 
                 <div
                   class="request-compose__title-block"
@@ -95,7 +131,7 @@
                 <div class="request-compose__polish-panel">
                   <div class="request-compose__polish-actions">
                     <button type="button" class="request-compose__polish-pill" data-request-polish-target="polishButton" data-action="request-polish#polish" disabled>文章を整える</button>
-                    <p class="request-compose__polish-meta">残り <span data-request-polish-target="attempts"><%= @remaining_polish_attempts %></span> 回</p>
+                    
                   </div>
                   <p class="request-compose__polish-error" data-request-polish-target="error" hidden></p>
 
