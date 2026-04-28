@@ -143,4 +143,5 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_27_113100) do
   add_foreign_key "paid_advice_requests", "users", column: "trainer_id"
   add_foreign_key "requests", "users"
   add_foreign_key "requests", "users", column: "directed_to_trainer_id"
+  add_foreign_key "requests", "users", column: "directed_to_trainer_id"
 end

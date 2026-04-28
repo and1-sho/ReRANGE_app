@@ -1,3 +1,12 @@
+/* cssファイルの読み込み */
+/*
+ *= require base
+ *= require layout
+ *= require components
+ *= require pages/requests
+ *= require pages/auth
+ */
+
 :root {
   --accent-color: #0967ff;
   --accent-color-soft: rgba(9, 103, 255, 0.08);
