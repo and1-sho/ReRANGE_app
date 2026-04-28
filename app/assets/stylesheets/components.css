@@ -1,0 +1,16 @@
+button,
+input[type="submit"],
+input[type="button"],
+input[type="reset"],
+[role="button"],
+.menu-btn,
+summary {
+  cursor: pointer;
+}
+
+button:disabled,
+input[type="submit"]:disabled,
+input[type="button"]:disabled,
+input[type="reset"]:disabled {
+  cursor: default;
+}

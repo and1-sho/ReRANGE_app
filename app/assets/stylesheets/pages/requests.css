@@ -1,0 +1,15 @@
+.requests-page-content {
+  min-height: 100vh;
+  background: var(--color-white);
+  color: #021b15;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  padding: 0;
+}
+
+.requests-page-content .request-card {
+  grid-template-columns: 40px 1fr;
+  column-gap: 6px;
+  padding: 16px 8px 22px;
+  cursor: pointer;
+  border-bottom: none;
+}

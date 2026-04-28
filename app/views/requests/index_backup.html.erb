@@ -1,37 +1,36 @@
-<div class="requests-page-content">
-
-  <div class="site-header">
+<div class="requests-page layout-feed page-requests-index">
+  <div class="requests-feed-chrome">
     <%= link_to app_home_path, class: "requests-feed-chrome__brand" do %>
-      <span class="site-header__brand-logo">Re:RANGE</span>
+      <span class="requests-feed-chrome__brand-name">Re:RANGE</span>
     <% end %>
-
+    <div class="requests-feed-chrome__actions">
       <%= render "shared/notification_bell_link" %>
       <%= render "shared/account_menu" %>
+    </div>
   </div>
 
-
-
+  <div class="requests-feed-body">
   <% if current_user.member? || current_user.trainer? %>
     <% sidebar_partial = current_user.member? ? "member_sidebar" : "trainer_sidebar" %>
     <% profile_ok = current_user.member? ? current_user.member_profile_completed? : current_user.trainer_profile_completed? %>
     <% profile_edit = current_user.member? ? edit_member_path(current_user) : edit_trainer_path(current_user) %>
     <% profile_lead = current_user.member? ? "プロフィールを設定と、トレーナーがあなたの状況を理解しやすくなります。" : "プロフィールを設定と、メンバーがあなたの指導スタイルを把握しやすくなります。" %>
 
-
+    <div class="requests-trainer-layout">
       <%= render sidebar_partial %>
 
-
-
-
+      <div class="requests-trainer-main">
+        <div class="requests-feed-stage">
+          <div class="requests-feed-column requests-feed-column--stream">
             <% unless profile_ok %>
-
-                <p><%= profile_lead %></p>
+              <div class="profile-reminder">
+                <p class="profile-reminder__text"><%= profile_lead %></p>
                 <%= link_to "プロフィールを設定", profile_edit, class: "menu-btn menu-btn--primary" %>
-
+              </div>
             <% end %>
 
             <% if current_user.trainer? && params[:filter] != "advised_by_me" %>
-              <div role="tablist" aria-label="ホーム表示切り替え">
+              <div class="requests-home-tabs" role="tablist" aria-label="ホーム表示切り替え">
                 <%= link_to "すべて",
                       requests_path,
                       class: "requests-home-tabs__tab#{@request_feed_tab != "direct" ? " is-active" : ""}",
@@ -43,20 +42,20 @@
                       aria: { selected: (@request_feed_tab == "direct").to_s } do %>
                   <span>あなた宛（非公開）</span>
                   <% if @has_unadvised_direct_requests %>
-                    <span aria-label="未対応の非公開リクエストがあります"></span>
+                    <span class="requests-home-tabs__dot" aria-label="未対応の非公開リクエストがあります"></span>
                   <% end %>
                 <% end %>
               </div>
             <% end %>
 
             <%= render "requests/feed_list" %>
-
+          </div>
           <div class="requests-feed-aside-spacer" aria-hidden="true"></div>
-
+        </div>
         <%= render "shared/requests_feed_aside" %>
-
-
+      </div>
+    </div>
   <% end %>
-
+  </div>
 </div>
 
