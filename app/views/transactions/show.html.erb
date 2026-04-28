@@ -1,0 +1,187 @@
+<div class="requests-page layout-feed page-transactions-show">
+  <div class="requests-feed-chrome">
+    <%= link_to app_home_path, class: "requests-feed-chrome__brand" do %>
+      <span class="requests-feed-chrome__brand-name">Re:RANGE</span>
+    <% end %>
+    <div class="requests-feed-chrome__actions">
+      <%= render "shared/notification_bell_link" %>
+      <%= render "shared/account_menu" %>
+    </div>
+  </div>
+
+  <div class="requests-feed-body">
+    <% if current_user.member? || current_user.trainer? %>
+      <% sidebar_partial = current_user.member? ? "requests/member_sidebar" : "requests/trainer_sidebar" %>
+      <div class="requests-trainer-layout">
+        <%= render sidebar_partial %>
+
+        <div class="requests-trainer-main">
+          <div class="requests-feed-stage">
+            <div class="requests-feed-column requests-feed-column--stream">
+              <main class="request-show request-show--detail">
+                <article class="request-show__post">
+                  <div class="request-show__detail-layout">
+                    <div class="request-show__back-slot">
+                      <%= link_to transactions_path, class: "request-show__back-pill", aria: { label: "取引一覧に戻る" } do %>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="request-show__back-arrow" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+                        </svg>
+                      <% end %>
+                    </div>
+
+                    <div class="request-show__head-row">
+                      <div class="request-show__identity-line">
+                        <%= link_to profile_path_for(@paid_advice_request.request.user), class: "request-show__avatar-link", aria: { label: "#{@paid_advice_request.request.user.name}のプロフィールへ移動" } do %>
+                          <%= render "shared/user_avatar_icon", variant: :card %>
+                        <% end %>
+                        <span class="request-show__author"><%= link_to @paid_advice_request.request.user.name, profile_path_for(@paid_advice_request.request.user) %></span>
+                        <span class="request-show__dot">·</span>
+                        <time class="request-show__date" datetime="<%= @paid_advice_request.request.created_at.iso8601 %>" title="<%= social_time_title(@paid_advice_request.request.created_at) %>">
+                          <%= social_time_ago(@paid_advice_request.request.created_at) %>
+                        </time>
+                      </div>
+                    </div>
+
+                    <div class="request-show__detail-body">
+                      <h1 class="request-show__title">
+                        <% if @paid_advice_request.request.directed_to_trainer_id.present? %>
+                          <span class="request-show__visibility-icon" aria-label="非公開リクエスト" title="非公開リクエスト">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16" aria-hidden="true">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+                            </svg>
+                          </span>
+                        <% end %>
+                        <span><%= @paid_advice_request.request.title %></span>
+                      </h1>
+                      <% if @paid_advice_request.request.video.attached? %>
+                        <div class="request-show__video-wrap">
+                          <%= render "shared/video_aspect", url: url_for(@paid_advice_request.request.video), wrapper_class: "video-aspect--request-show" %>
+                        </div>
+                      <% end %>
+                      <div class="request-show__body">
+                        <%= simple_format(@paid_advice_request.request.body) %>
+                        <% if @paid_advice_request.request.edited? %>
+                          <p class="request-show__edited-mark">（編集済み）</p>
+                        <% end %>
+                      </div>
+                      <div class="request-show__engagement" role="group" aria-label="アドバイス件数">
+                        <span class="request-show__comment-pill">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="request-show__comment-pill-icon" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 0 1-.923 1.785A5.969 5.969 0 0 0 6 21c1.282 0 2.47-.402 3.445-1.087.81.22 1.668.337 2.555.337Z" />
+                          </svg>
+                          <span class="request-show__comment-pill-count"><%= @paid_advice_request.request.advice_count %></span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+
+                <hr class="request-show__split" />
+
+                <section class="request-show__advice" aria-label="通常アドバイス">
+                  <% advice_list = @paid_advice_request.request.advices.sort_by(&:created_at).reverse %>
+                  <% advice_list.each do |advice| %>
+                    <article class="request-show__advice-item">
+                      <div class="request-show__advice-meta">
+                        <div class="request-show__identity-line">
+                          <%= link_to profile_path_for(advice.user), class: "request-show__avatar-link", aria: { label: "#{advice.user.name}のプロフィールへ移動" } do %>
+                            <%= render "shared/user_avatar_icon", variant: :card %>
+                          <% end %>
+                          <span class="request-show__author"><%= link_to advice.user.name, profile_path_for(advice.user) %></span>
+                          <span class="request-show__dot">·</span>
+                          <time class="request-show__date" datetime="<%= advice.created_at.iso8601 %>" title="<%= social_time_title(advice.created_at) %>">
+                            <%= social_time_ago(advice.created_at) %>
+                          </time>
+                        </div>
+                      </div>
+                      <div class="request-show__advice-body">
+                        <%= simple_format(advice.body) %>
+                        <% if advice.edited? %>
+                          <p class="request-show__edited-mark">（編集済み）</p>
+                        <% end %>
+                      </div>
+                      <% if advice.video.attached? %>
+                        <div class="request-show__video-wrap request-show__video-wrap--advice">
+                          <%= render "shared/video_aspect", url: url_for(advice.video), wrapper_class: "video-aspect--request-show" %>
+                        </div>
+                      <% end %>
+                    </article>
+                  <% end %>
+                </section>
+
+                <hr class="request-show__split" />
+
+                <section class="request-show__advice" aria-label="納品内容">
+                  <article class="request-show__advice-item">
+                    <div class="request-show__advice-meta">
+                      <div class="request-show__identity-line">
+                        <span class="request-show__avatar-link" aria-hidden="true">
+                          <%= render "shared/user_avatar_icon", variant: :card %>
+                        </span>
+                        <span class="request-show__author">Re:RANGE</span>
+                        <span class="request-show__dot">·</span>
+                        <% t = @paid_advice_request.payment_confirmed_at %>
+                        <time class="request-show__date" datetime="<%= t.iso8601 %>" title="<%= social_time_title(t) %>">
+                          <%= social_time_ago(t) %>
+                        </time>
+                      </div>
+                    </div>
+                    <div class="request-show__advice-body">
+                      <p><%= @paid_advice_request.purchase_notice_message %></p>
+                    </div>
+
+                    <% if @paid_advice_request.delivery_body.present? %>
+                      <div class="request-show__advice-body">
+                        <%= simple_format(@paid_advice_request.delivery_body) %>
+                      </div>
+                    <% end %>
+
+                    <% if @paid_advice_request.delivery_video.attached? %>
+                      <div class="request-show__video-wrap request-show__video-wrap--advice">
+                        <%= render "shared/video_aspect", url: url_for(@paid_advice_request.delivery_video), wrapper_class: "video-aspect--request-show" %>
+                      </div>
+                    <% end %>
+
+                    <% unless @paid_advice_request.delivery_body.present? || @paid_advice_request.delivery_video.attached? %>
+                      <hr class="request-show__split" />
+                      <p class="request-show__advice-empty">まだアドバイスは届いていません。</p>
+                    <% end %>
+                  </article>
+
+                  <% if current_user.id == @paid_advice_request.trainer_id && @paid_advice_request.in_progress? %>
+                    <div class="request-show__advice-editor">
+                      <%= form_with url: deliver_transaction_path(@paid_advice_request), method: :patch, local: true, html: { class: "request-show__advice-editor-form", multipart: true } do |f| %>
+                        <%= text_area_tag :delivery_body, nil, rows: 4, class: "request-show__advice-editor-body", placeholder: "詳しいアドバイスを入力してください" %>
+                        <div class="request-show__advice-editor-actions request-show__advice-editor-actions--with-tools">
+                          <div class="request-show__advice-editor-tools">
+                            <%= f.file_field :delivery_video, accept: "video/mp4,video/quicktime,.mp4,.mov", class: "request-show__inline-file-input", id: "transaction_delivery_video_input" %>
+                            <label class="request-show__inline-media advice-editor__media-icon" for="transaction_delivery_video_input" aria-label="動画をアップロード">
+                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z" />
+                              </svg>
+                            </label>
+                          </div>
+                          <div class="request-show__advice-editor-submit-actions">
+                            <%= f.submit "納品する", class: "request-show__inline-submit" %>
+                          </div>
+                        </div>
+                      <% end %>
+                    </div>
+                  <% end %>
+
+                  <% if current_user.id == @paid_advice_request.member_id && @paid_advice_request.delivered? %>
+                    <div class="request-show__advice-editor-actions">
+                      <%= button_to "確認しました", complete_transaction_path(@paid_advice_request), method: :patch, class: "request-show__inline-submit" %>
+                    </div>
+                  <% end %>
+                </section>
+              </main>
+            </div>
+            <div class="requests-feed-aside-spacer" aria-hidden="true"></div>
+          </div>
+          <%= render "shared/requests_feed_aside" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

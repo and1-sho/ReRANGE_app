@@ -1,0 +1,69 @@
+<div class="requests-page layout-feed page-transactions-index">
+  <div class="requests-feed-chrome">
+    <%= link_to app_home_path, class: "requests-feed-chrome__brand" do %>
+      <span class="requests-feed-chrome__brand-name">Re:RANGE</span>
+    <% end %>
+    <div class="requests-feed-chrome__actions">
+      <%= render "shared/notification_bell_link" %>
+      <%= render "shared/account_menu" %>
+    </div>
+  </div>
+
+  <div class="requests-feed-body">
+    <% if current_user.member? || current_user.trainer? %>
+      <% sidebar_partial = current_user.member? ? "requests/member_sidebar" : "requests/trainer_sidebar" %>
+      <div class="requests-trainer-layout">
+        <%= render sidebar_partial %>
+
+        <div class="requests-trainer-main">
+          <div class="requests-feed-stage">
+            <div class="requests-feed-column requests-feed-column--stream">
+              <main class="notifications-main">
+                <h1 class="notifications-heading">取引</h1>
+                <% if @transactions.any? %>
+                  <table class="request-show__table">
+                    <thead>
+                      <tr>
+                        <th>内容</th>
+                        <th>支払い金額</th>
+                        <th>ステータス</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% @transactions.each do |transaction| %>
+                        <tr class="transactions-table__row">
+                          <td>
+                            <%= link_to "", transaction_path(transaction), class: "transactions-table__row-link", aria: { label: "#{transaction.request.title}の取引詳細へ" } %>
+                            <p class="request-card__name">
+                              <%= link_to transaction.request.title, transaction_path(transaction), class: "transactions-table__primary-link" %>
+                            </p>
+                            <p class="request-card__meta">
+                              <%= link_to transaction.trainer.name, profile_path_for(transaction.trainer), class: "transactions-table__trainer-link" %>
+                              <span class="request-card__dot">・</span>
+                              <time datetime="<%= transaction.created_at.to_date.iso8601 %>"><%= transaction.created_at.strftime("%Y/%m/%d") %></time>
+                            </p>
+                          </td>
+                          <td>
+                            <p class="request-card__name"><%= number_with_delimiter(transaction.amount_jpy) %>円</p>
+                            <p class="request-card__meta"><%= transaction.menu_label %></p>
+                          </td>
+                          <td>
+                            <p class="request-card__name"><%= transaction.status_label %></p>
+                          </td>
+                        </tr>
+                      <% end %>
+                    </tbody>
+                  </table>
+                <% else %>
+                  <p class="requests-empty">取引はまだありません</p>
+                <% end %>
+              </main>
+            </div>
+            <div class="requests-feed-aside-spacer" aria-hidden="true"></div>
+          </div>
+          <%= render "shared/requests_feed_aside" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

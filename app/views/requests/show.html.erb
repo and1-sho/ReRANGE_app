@@ -217,31 +217,38 @@
                 <% end %>
               </div>
               <% if current_user.member? && @request.user_id == current_user.id && advice.accepts_paid_advice_enabled? && advice.paid_menu_options.any? %>
-                <div class="request-show__paid-advice" data-controller="paid-advice-request-modal">
-                  <button type="button" class="request-show__paid-advice-button" data-action="paid-advice-request-modal#open">
-                    詳しくアドバイスを聞く
-                  </button>
-                  <div class="request-show__modal-backdrop" data-paid-advice-request-modal-target="backdrop" hidden>
-                    <div class="request-show__modal">
-                      <h3 class="request-show__modal-title">詳しいアドバイスを依頼</h3>
-                      <p class="request-show__modal-subtitle">希望するメニューを選んでください</p>
-                      <%= form_with url: request_advice_paid_advice_requests_path(@request, advice_id: advice.id), method: :post, local: true, data: { turbo: false } do |f| %>
-                        <div class="request-show__paid-advice-menu-list">
-                          <% advice.paid_menu_options.each_with_index do |menu, index| %>
-                            <label class="request-show__paid-advice-menu-item">
-                              <%= radio_button_tag :menu_code, menu[:code], index.zero?, id: "paid_menu_#{advice.id}_#{menu[:code]}" %>
-                              <span><%= "#{menu[:price_jpy]}円：#{menu[:label]}" %></span>
-                            </label>
-                          <% end %>
-                        </div>
-                        <div class="request-show__modal-actions">
-                          <button type="button" class="request-show__inline-cancel" data-action="paid-advice-request-modal#close">キャンセル</button>
-                          <%= f.submit "確定して決済へ", class: "request-show__inline-submit" %>
-                        </div>
-                      <% end %>
+                <% existing_transaction = @request.paid_advice_requests.where(member_id: current_user.id).where.not(status: PaidAdviceRequest::STATUS_CHECKOUT_STARTED).order(created_at: :desc).first %>
+                <% if existing_transaction.present? %>
+                  <div class="request-show__paid-advice">
+                    <%= link_to "取引を確認する（#{existing_transaction.status_label}）", transaction_path(existing_transaction), class: "request-show__paid-advice-button" %>
+                  </div>
+                <% else %>
+                  <div class="request-show__paid-advice" data-controller="paid-advice-request-modal">
+                    <button type="button" class="request-show__paid-advice-button" data-action="paid-advice-request-modal#open">
+                      詳しくアドバイスを聞く
+                    </button>
+                    <div class="request-show__modal-backdrop" data-paid-advice-request-modal-target="backdrop" hidden>
+                      <div class="request-show__modal">
+                        <h3 class="request-show__modal-title">詳しいアドバイスを依頼</h3>
+                        <p class="request-show__modal-subtitle">希望するメニューを選んでください</p>
+                        <%= form_with url: request_advice_paid_advice_requests_path(@request, advice_id: advice.id), method: :post, local: true, data: { turbo: false } do |f| %>
+                          <div class="request-show__paid-advice-menu-list">
+                            <% advice.paid_menu_options.each_with_index do |menu, index| %>
+                              <label class="request-show__paid-advice-menu-item">
+                                <%= radio_button_tag :menu_code, menu[:code], index.zero?, id: "paid_menu_#{advice.id}_#{menu[:code]}" %>
+                                <span><%= "#{menu[:price_jpy]}円：#{menu[:label]}" %></span>
+                              </label>
+                            <% end %>
+                          </div>
+                          <div class="request-show__modal-actions">
+                            <button type="button" class="request-show__inline-cancel" data-action="paid-advice-request-modal#close">キャンセル</button>
+                            <%= f.submit "確定して決済へ", class: "request-show__inline-submit" %>
+                          </div>
+                        <% end %>
+                      </div>
                     </div>
                   </div>
-                </div>
+                <% end %>
               <% end %>
             <% end %>
             <% if advice.video.attached? %>

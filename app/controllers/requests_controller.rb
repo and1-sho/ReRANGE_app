@@ -234,6 +234,7 @@ class RequestsController < ApplicationController
     if action_name == "show"
       scope = Request.includes(
         :user,
+        :paid_advice_requests,
         video_attachment: :blob,
         advices: [:user, video_attachment: :blob]
       )

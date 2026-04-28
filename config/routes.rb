@@ -4,8 +4,6 @@ Rails.application.routes.draw do
   get 'advices/create'
   devise_for :users
 
-  get "messages", to: "messages#index", as: :messages
-
   # トレーナープロフィール（公開ページ）
   resources :trainers, only: [:index, :show, :edit, :update], param: :slug
   # メンバープロフィール
@@ -25,6 +23,12 @@ Rails.application.routes.draw do
 
   get "paid_advice_requests/success", to: "paid_advice_requests#success", as: :paid_advice_requests_success
   get "paid_advice_requests/cancel", to: "paid_advice_requests#cancel", as: :paid_advice_requests_cancel
+  resources :transactions, only: [:index, :show] do
+    member do
+      patch :deliver
+      patch :complete
+    end
+  end
 
   resources :notifications, only: [:index]
 

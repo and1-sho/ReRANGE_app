@@ -2,6 +2,7 @@
 <% feed_index = controller_name == "requests" && action_name == "index" %>
 <% compose_request = controller_name == "requests" && %w[new create].include?(action_name) %>
 <% trainers_index = controller_name == "trainers" && action_name == "index" %>
+<% transactions_active = controller_name == "transactions" %>
 <% profile_show_active = current_page?(member_path(current_user)) %>
 <% profile_edit_active = current_page?(edit_member_path(current_user)) %>
 <aside class="requests-sidebar" aria-label="メインメニュー">
@@ -29,6 +30,14 @@
         <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
       </svg>
       <span class="requests-sidebar__link-label">トレーナーを探す</span>
+    <% end %>
+    <%= link_to transactions_path,
+          class: "requests-sidebar__link #{"requests-sidebar__link--active" if transactions_active}",
+          aria: (transactions_active ? { current: "page" } : {}) do %>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="requests-sidebar__link-icon" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 7.5h7.5m-7.5 4.5h7.5m-7.5 4.5h4.5m-8.25 2.25h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15A2.25 2.25 0 0 0 2.25 6.75v10.5A2.25 2.25 0 0 0 4.5 19.5Z" />
+      </svg>
+      <span class="requests-sidebar__link-label">取引</span>
     <% end %>
     <%= link_to member_path(current_user),
           class: "requests-sidebar__link #{"requests-sidebar__link--active" if profile_show_active}",

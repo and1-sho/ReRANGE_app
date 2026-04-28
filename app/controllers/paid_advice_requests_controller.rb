@@ -14,8 +14,10 @@ class PaidAdviceRequestsController < ApplicationController
       return redirect_to request_path(@request), alert: "金額の取得に失敗しました。もう一度お試しください"
     end
 
-    if PaidAdviceRequest.exists?(advice: @advice, member: current_user, menu_code: menu_code, status: "paid")
-      return redirect_to request_path(@request), alert: "このメニューはすでに依頼済みです"
+    if PaidAdviceRequest.where(request: @request, member: current_user)
+                        .where(status: [PaidAdviceRequest::STATUS_IN_PROGRESS, PaidAdviceRequest::STATUS_DELIVERED, PaidAdviceRequest::STATUS_COMPLETED])
+                        .exists?
+      return redirect_to request_path(@request), alert: "このリクエストの取引はすでに作成されています"
     end
 
     if ENV["STRIPE_SECRET_KEY"].blank?
@@ -72,7 +74,7 @@ class PaidAdviceRequestsController < ApplicationController
       checkout = Stripe::Checkout::Session.retrieve(session_id)
       if checkout.payment_status == "paid"
         paid_request.update!(
-          status: "paid",
+          status: PaidAdviceRequest::STATUS_IN_PROGRESS,
           stripe_payment_intent_id: checkout.payment_intent.to_s,
           paid_at: Time.current
         )

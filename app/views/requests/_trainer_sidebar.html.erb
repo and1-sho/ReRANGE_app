@@ -2,6 +2,7 @@
 <% requests_index = controller_name == "requests" && action_name == "index" %>
 <% home_feed_active = requests_index && params[:filter].blank? %>
 <% advised_feed_active = requests_index && params[:filter] == "advised_by_me" %>
+<% transactions_active = controller_name == "transactions" %>
 <% profile_show_active = current_page?(trainer_path(current_user)) %>
 <% profile_edit_active = current_page?(edit_trainer_path(current_user)) %>
 <aside class="requests-sidebar" aria-label="メインメニュー">
@@ -21,6 +22,14 @@
         <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
       </svg>
       <span class="requests-sidebar__link-label">フィードバック</span>
+    <% end %>
+    <%= link_to transactions_path,
+          class: "requests-sidebar__link #{"requests-sidebar__link--active" if transactions_active}",
+          aria: (transactions_active ? { current: "page" } : {}) do %>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="requests-sidebar__link-icon" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 7.5h7.5m-7.5 4.5h7.5m-7.5 4.5h4.5m-8.25 2.25h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15A2.25 2.25 0 0 0 2.25 6.75v10.5A2.25 2.25 0 0 0 4.5 19.5Z" />
+      </svg>
+      <span class="requests-sidebar__link-label">取引</span>
     <% end %>
     <%= link_to trainer_path(current_user),
           class: "requests-sidebar__link #{"requests-sidebar__link--active" if profile_show_active}",

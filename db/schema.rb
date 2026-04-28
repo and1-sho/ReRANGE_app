@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_04_27_113100) do
+ActiveRecord::Schema[7.1].define(version: 2026_04_27_150000) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -80,6 +80,9 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_27_113100) do
     t.datetime "paid_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "delivery_body"
+    t.datetime "delivered_at"
+    t.datetime "completed_at"
     t.index ["advice_id"], name: "index_paid_advice_requests_on_advice_id"
     t.index ["member_id"], name: "index_paid_advice_requests_on_member_id"
     t.index ["request_id"], name: "index_paid_advice_requests_on_request_id"
@@ -142,5 +145,6 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_27_113100) do
   add_foreign_key "paid_advice_requests", "users", column: "member_id"
   add_foreign_key "paid_advice_requests", "users", column: "trainer_id"
   add_foreign_key "requests", "users"
+  add_foreign_key "requests", "users", column: "directed_to_trainer_id"
   add_foreign_key "requests", "users", column: "directed_to_trainer_id"
 end
