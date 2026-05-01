@@ -1,0 +1,270 @@
+/* ページ全体の骨組み。ヘッダー、フッター、メイン幅、ナビゲーションなど。 */
+/* ヘッダー */
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 55px;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: calc(10px + env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right)) 10px max(16px, env(safe-area-inset-left));
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(51, 61, 66, 0.14);
+  box-sizing: border-box;
+}
+
+.requests-feed-chrome__brand {
+  text-decoration: none;
+  color: inherit;
+  flex-shrink: 0;
+}
+
+.site-header__brand-logo {
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--color-black);
+}
+
+.account-menu {
+  position: relative;
+}
+
+.account-menu__summary {
+  list-style: none;
+  cursor: pointer;
+}
+
+.account-menu__summary::-webkit-details-marker {
+  display: none;
+}
+
+.account-menu__identity {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 6px;
+  border-radius: 10px;
+}
+
+.account-menu__summary:hover .account-menu__identity {
+  background: rgba(2, 27, 21, 0.06);
+}
+
+.account-menu__panel {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  min-width: 200px;
+  background: #fff;
+  border: 1px solid rgba(2, 27, 21, 0.14);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(2, 27, 21, 0.12);
+  padding: 8px;
+  z-index: 20;
+}
+
+.account-menu__item {
+  display: block;
+  padding: 8px 10px;
+  border-radius: 8px;
+  color: #021b15;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.account-menu__item:hover {
+  background: rgba(2, 27, 21, 0.06);
+}
+
+.account-menu__item--danger {
+  color: #b91c1c;
+}
+
+.requests-account__user {
+  font-size: 0.85rem;
+  color: rgba(2, 27, 21, 0.72);
+}
+
+.notification-bell-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  margin: -6px 0 -6px 2px;
+  color: #000;
+  border-radius: 10px;
+  text-decoration: none;
+}
+
+.notification-bell-link:hover {
+  background: rgba(2, 27, 21, 0.08);
+  color: #000;
+}
+
+.notification-bell-link__inner {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notification-bell-link__icon {
+  width: 22px;
+  height: 22px;
+}
+
+.notification-bell-link__badge {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  box-sizing: border-box;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 18px;
+  text-align: center;
+  color: #fff;
+  background: #dc2626;
+  border-radius: 9999px;
+}
+
+.site-header__account-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.menu-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.menu-btn--primary {
+  color: #fff;
+  background: var(--color-accent);
+  border: 1px solid var(--color-accent);
+}
+
+.menu-btn--primary:hover {
+  opacity: 0.92;
+}
+
+
+
+/* メニューバー */
+.requests-sidebar {
+  width: 240px;
+  flex-shrink: 0;
+  position: sticky;
+  top: calc(52px + env(safe-area-inset-top, 0px));
+  padding-top: 16px;
+  margin-left: 0px;
+  align-self: flex-start;
+}
+
+/* サイドバー右縦線: ナビの高さに依存せずビューポート全高（デスクトップのみ） */
+@media (min-width: 960px) {
+  .requests-sidebar::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: calc(max(12px, env(safe-area-inset-left)) + 240px);
+    width: 1px;
+    background: rgba(51, 61, 66, 0.14);
+    pointer-events: none;
+    z-index: 40;
+  }
+}
+
+.requests-sidebar__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.requests-sidebar__link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 34px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #021b15;
+  font-size: 0.95rem;
+  font-weight: 500;
+  line-height: 1.35;
+  transition: background 0.12s ease;
+}
+
+.requests-sidebar__link-icon {
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  display: block;
+  color: inherit;
+}
+
+.requests-sidebar__link:hover {
+  background: rgba(2, 27, 21, 0.06);
+}
+
+.requests-sidebar__link--active {
+  background: rgba(2, 27, 21, 0.1);
+}
+
+.requests-sidebar__link-label {
+  display: block;
+}
+
+.aside {
+  display: block;
+  unicode-bidi: isolate;
+}
+
+/* 右列はビューポート下端に固定（sticky bottom は親高さ次第で効かないため fixed） */
+.requests-feed-aside-spacer {
+  width: 320px;
+  flex-shrink: 0;
+  pointer-events: none;
+}
+
+.requests-feed-aside {
+  width: 320px;
+  flex-shrink: 0;
+  padding-top: 0;
+  padding-bottom: 4px;
+}
+
+
+/* フッター */
+.site-footer {
+  position: fixed;
+  margin-left: 800px;
+  bottom: max(16px, env(safe-area-inset-bottom));
+  width: 320px;
+  z-index: 35;
+}
+
+.site-footer__copy {
+  margin: 0;
+  font-size: 0.75rem;
+  line-height: 1.55;
+  color: rgba(2, 27, 21, 0.42);
+}

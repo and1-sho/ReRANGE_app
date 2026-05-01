@@ -1,0 +1,13 @@
+/* 全体の基本設定。body、文字、背景色、リンク、リセット系、共通カラーなど。 */
+:root {
+  --color-accent: #0967ff;
+  --accent-color-soft: rgba(9, 103, 255, 0.08);
+  --color-black: #000000;
+  --color-white: #ffffff;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
