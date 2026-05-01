@@ -23,8 +23,7 @@
   width: 100%;
   max-width: none;
   margin: 0;
-  /* padding: 0 max(16px, env(safe-area-inset-right)) 40px max(12px, env(safe-area-inset-left)); */
-  padding: 0 4px 40px;
+  padding: 0 16px 40px 12px;
   box-sizing: border-box;
 }
 
@@ -42,8 +41,7 @@
   align-items: flex-start;
   gap: 24px;
   width: 100%;
-  /* max-width: 1120px; */
-  max-width: 763px;
+  max-width: 1120px;
   box-sizing: border-box;
 }
 
@@ -73,6 +71,12 @@
 }
 
 /*=========== ホームタブ（トレーナー用） ===========*/
+.requests-home-tabs {
+  display: flex;
+  align-items: center;
+  margin: 14px 0 12px;
+  border-bottom: 1px solid rgba(2, 27, 21, 0.18);
+}
 
 .requests-home-tabs__tab {
   flex: 1 1 0;
@@ -89,7 +93,7 @@
   border-bottom: 2px solid transparent;
 }
 
-.tabs__tab.is-active {
+.requests-home-tabs__tab.is-active {
   color: #021b15;
   border-bottom-color: #021b15;
 }
@@ -145,6 +149,18 @@
 }
 
 /* フィード内インライン動画（16:9 枠、横 cover / 縦 contain） */
+.request-card__thumb-wrap {
+  position: relative;
+  margin: 8px 0 0;
+  width: 100%;
+  min-width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 10px;
+  overflow: hidden;
+  border: none;
+  background: #0e1412;
+}
+
 .request-card__thumb-video {
   position: absolute;
   inset: 0;

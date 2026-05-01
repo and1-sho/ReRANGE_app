@@ -71,6 +71,11 @@ input[type="reset"]:disabled {
   grid-column: 1 / -1;
 }
 
+.request-card__name a:-webkit-any-link:hover,
+.request-card__title a:-webkit-any-link:hover {
+  text-decoration: none;
+}
+
 .request-card .request-card__thumb-wrap {
   grid-column: 1 / -1;
   justify-self: start;
@@ -95,13 +100,6 @@ input[type="reset"]:disabled {
   text-decoration: none;
 }
 
-.request-card__name a:hover,
-.request-show__author a:hover,
-.advice-compose__context-author-name a:hover {
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-
 .request-card__dot {
   opacity: 0.6;
 }
@@ -120,5 +118,35 @@ input[type="reset"]:disabled {
   overflow: hidden;
   border: none;
   background: #0e1412;
+}
+
+.request-card__overflow {
+  position: relative;
+}
+
+.request-card__overflow-panel {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  z-index: 20;
+  min-width: 140px;
+  padding: 6px 0;
+  border-radius: 10px;
+  background: #fff;
+  border: 1px solid rgba(2, 27, 21, 0.12);
+  box-shadow: 0 8px 24px rgba(2, 27, 21, 0.12);
+}
+
+.request-show__overflow-item, .request-card__overflow-item {
+  display: block;
+  padding: 10px 14px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #021b15;
+  text-decoration: none;
+}
+
+.request-show__overflow-item--danger, .request-card__overflow-item--danger {
+  color: #b91c1c;
 }
 

@@ -237,3 +237,34 @@
   display: block;
   unicode-bidi: isolate;
 }
+
+/* 右列はビューポート下端に固定（sticky bottom は親高さ次第で効かないため fixed） */
+.requests-feed-aside-spacer {
+  width: 320px;
+  flex-shrink: 0;
+  pointer-events: none;
+}
+
+.requests-feed-aside {
+  width: 320px;
+  flex-shrink: 0;
+  padding-top: 0;
+  padding-bottom: 4px;
+}
+
+
+/* フッター */
+.site-footer {
+  position: fixed;
+  margin-left: 800px;
+  bottom: max(16px, env(safe-area-inset-bottom));
+  width: 320px;
+  z-index: 35;
+}
+
+.site-footer__copy {
+  margin: 0;
+  font-size: 0.75rem;
+  line-height: 1.55;
+  color: rgba(2, 27, 21, 0.42);
+}
