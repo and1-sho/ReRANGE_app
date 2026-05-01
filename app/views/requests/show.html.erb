@@ -1,448 +1,163 @@
-<div class="requests-page layout-feed page-requests-show">
-  <div class="requests-feed-chrome">
-    <%= link_to app_home_path, class: "requests-feed-chrome__brand" do %>
-      <span class="requests-feed-chrome__brand-name">Re:RANGE</span>
+<div class="requests-page-content requests-show">
+
+  <header class="site-header">
+    <%= link_to app_home_path, class: "site-header__brand" do %>
+      <span class="site-header__logo">Re:RANGE</span>
     <% end %>
-    <div class="requests-feed-chrome__actions">
+
+    <div class="site-header__actions">
       <%= render "shared/notification_bell_link" %>
       <%= render "shared/account_menu" %>
     </div>
-  </div>
+  </header>
 
-  <div class="requests-feed-body">
+  <main class="layout">
     <% if current_user.member? || current_user.trainer? %>
       <% sidebar_partial = current_user.member? ? "member_sidebar" : "trainer_sidebar" %>
-      <div class="requests-trainer-layout">
-        <%= render sidebar_partial %>
+      <%= render sidebar_partial %>
 
-        <div class="requests-trainer-main">
-          <div class="requests-feed-stage">
-            <div class="requests-feed-column requests-feed-column--stream">
-              <main class="request-show request-show--detail">
-      <article class="request-show__post">
-        <div class="request-show__detail-layout">
-          <div class="request-show__back-slot">
+      <div class="layout__inner">
+        <%= render(current_user.member? ? "member_sidebar" : "trainer_sidebar") %>
+
+        <div class="layout__main">
+
+          <!-- 投稿 -->
+          <article class="request">
+
+            <!-- 投稿一覧に戻る -->
             <%= link_to requests_path, class: "request-show__back-pill", aria: { label: "投稿一覧に戻る" } do %>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="request-show__back-arrow" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
               </svg>
             <% end %>
-          </div>
 
-          <div class="request-show__head-row">
-            <div class="request-show__identity-line">
-              <%= link_to profile_path_for(@request.user), class: "request-show__avatar-link", aria: { label: "#{@request.user.name}のプロフィールへ移動" } do %>
-                <%= render "shared/user_avatar_icon", variant: :card %>
-              <% end %>
-              <span class="request-show__author"><%= link_to @request.user.name, profile_path_for(@request.user) %></span>
-              <span class="request-show__dot">·</span>
-              <time class="request-show__date" datetime="<%= @request.created_at.iso8601 %>" title="<%= social_time_title(@request.created_at) %>">
-                <%= social_time_ago(@request.created_at) %>
-              </time>
-            </div>
-
-            <% if current_user.member? && @request.user_id == current_user.id && !@editing_request %>
-              <details class="request-show__overflow" data-controller="details-dismiss">
-                <summary class="request-show__overflow-trigger" aria-label="投稿のメニュー">
-                  <span class="request-show__overflow-dots" aria-hidden="true">⋯</span>
-                </summary>
-                <div class="request-show__overflow-panel">
-                  <%= link_to "編集", request_path(@request, edit_request: "1", anchor: "request-edit"), class: "request-show__overflow-item" %>
-                  <%= link_to "削除", request_path(@request), class: "request-show__overflow-item request-show__overflow-item--danger",
-                        data: { turbo_method: :delete, turbo_confirm: "このリクエストを削除しますか？" } %>
-                </div>
-              </details>
-            <% end %>
-          </div>
-
-          <div class="request-show__detail-body<%= " request-show__detail-body--editing" if @editing_request %>"<%= " data-controller=\"request-edit-media\"" if @editing_request %>>
-            <h1 class="request-show__title">
-              <% if @request.directed_to_trainer_id.present? %>
-                <span class="request-show__visibility-icon" aria-label="非公開リクエスト" title="非公開リクエスト">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
-                  </svg>
-                </span>
-              <% end %>
-              <span><%= @request.title %></span>
-            </h1>
-
-            <% if @request.video.attached? %>
-              <div class="request-show__video-wrap<%= " request-show__request-video-wrap--editable" if @editing_request %>"<%= " data-request-edit-media-target=\"videoWrap\"" if @editing_request %>>
-                <%= render "shared/video_aspect", url: url_for(@request.video), wrapper_class: "video-aspect--request-show" %>
-                <% if @editing_request %>
-                  <button type="button"
-                          class="request-show__request-video-remove"
-                          data-action="click->request-edit-media#remove"
-                          onclick="(function(btn){var input=document.getElementById('request_show_remove_video'); if(input){input.checked=true; input.dispatchEvent(new Event('change',{bubbles:true}));} var wrap=btn.closest('.request-show__video-wrap'); if(wrap){wrap.style.display='none';}})(this)"
-                          aria-label="動画を削除">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" aria-hidden="true">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                    </svg>
-                  </button>
-                <% end %>
-              </div>
-            <% end %>
-
-            <% unless @editing_request %>
-              <div class="request-show__body">
-                <%= simple_format(@request.body) %>
-                <% if @request.edited? %>
-                  <p class="request-show__edited-mark">（編集済み）</p>
-                <% end %>
-              </div>
-
-              <div class="request-show__engagement" role="group" aria-label="アドバイス件数">
-                <span class="request-show__comment-pill">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="request-show__comment-pill-icon" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 0 1-.923 1.785A5.969 5.969 0 0 0 6 21c1.282 0 2.47-.402 3.445-1.087.81.22 1.668.337 2.555.337Z" />
-                  </svg>
-                  <span class="request-show__comment-pill-count"><%= @request.advice_count %></span>
-                </span>
-              </div>
-            <% end %>
-
-            <% if @editing_request %>
-              <% edit_request_form = @request_edit_form || @request %>
-              <div class="request-show__advice-editor request-show__request-editor" id="request-edit">
-                <% if edit_request_form.errors.any? %>
-                  <div class="request-compose__errors" role="alert">
-                    <ul>
-                      <% edit_request_form.errors.full_messages.each do |message| %>
-                        <li><%= message %></li>
-                      <% end %>
-                    </ul>
-                  </div>
-                <% end %>
-
-                <%= form_with model: edit_request_form, local: true, html: { class: "request-show__advice-editor-form", multipart: true }, data: {
-                  controller: "request-polish",
-                  "request-polish-endpoint-value": polish_requests_path,
-                  "request-polish-max-attempts-value": 2,
-                  "request-polish-remaining-attempts-value": @remaining_request_polish_attempts || 2,
-                  "request-polish-draft-token-value": @request_polish_draft_token,
-                  "request-polish-min-body-length-value": 8,
-                  "request-polish-body-only-value": true
-                } do |f| %>
-                  <%= hidden_field_tag :request_polish_draft_token, @request_polish_draft_token %>
-                  <%= check_box_tag "request[remove_video]", "1", false, class: "request-show__inline-file-input", id: "request_show_remove_video", data: { request_edit_media_target: "removeInput" } if @request.video.attached? %>
-
-                  <%= f.text_area :body,
-                        rows: 3,
-                        maxlength: 300,
-                        class: "request-show__advice-editor-body",
-                        data: { request_polish_target: "body", action: "input->request-polish#onBodyInput" } %>
-
-                  <p class="request-compose__polish-error" data-request-polish-target="error" hidden></p>
-                  <div class="request-compose__proposal request-compose__proposal--modern" data-request-polish-target="proposal" hidden>
-                    <p class="request-compose__proposal-label">AIからの提案</p>
-                    <p class="request-compose__proposal-body" data-request-polish-target="proposalBody"></p>
-                    <div class="request-compose__proposal-actions">
-                      <button type="button" class="menu-btn menu-btn--primary" data-action="request-polish#adopt">提案を反映する</button>
-                    </div>
-                  </div>
-
-                  <div class="request-show__advice-editor-actions request-show__advice-editor-actions--with-tools">
-                    <div class="request-show__advice-editor-tools">
-                      <%= f.file_field :video,
-                            accept: "video/mp4,video/quicktime,.mp4,.mov",
-                            class: "request-show__inline-file-input",
-                            id: "request_show_edit_video_input" %>
-                      <label class="request-show__inline-media advice-editor__media-icon" for="request_show_edit_video_input" aria-label="動画をアップロード">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" aria-hidden="true">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z" />
-                        </svg>
-                      </label>
-                      <button type="button" class="request-show__advice-editor-polish" data-request-polish-target="polishButton" data-action="request-polish#polish" disabled>文章を整える</button>
-                    </div>
-                    <div class="request-show__advice-editor-submit-actions">
-                      <%= link_to "キャンセル", request_path(@request), class: "request-show__inline-cancel" %>
-                      <%= f.submit "保存", class: "request-show__inline-submit" %>
-                    </div>
-                  </div>
-                <% end %>
-              </div>
-
-              <div class="request-show__engagement request-show__engagement--editing" role="group" aria-label="アドバイス件数">
-                <span class="request-show__comment-pill">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="request-show__comment-pill-icon" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 0 1-.923 1.785A5.969 5.969 0 0 0 6 21c1.282 0 2.47-.402 3.445-1.087.81.22 1.668.337 2.555.337Z" />
-                  </svg>
-                  <span class="request-show__comment-pill-count"><%= @request.advice_count %></span>
-                </span>
-              </div>
-            <% end %>
-          </div>
-        </div>
-      </article>
-
-      <hr class="request-show__split" />
-
-      <section class="request-show__advice" id="request-advice" aria-labelledby="advice-region-label" data-controller="advice-edit-media">
-        <span id="advice-region-label" class="request-show__sr-only">アドバイス</span>
-        <% advice_list = @request.advices.sort_by(&:created_at).reverse %>
-        <% if advice_list.any? %>
-          <% advice_list.each do |advice| %>
-            <% editing_this_advice = @editing_advice && @advice_edit_form&.id == advice.id %>
-            <article class="request-show__advice-item">
-            <div class="request-show__advice-meta">
-              <div class="request-show__identity-line">
-                <%= link_to profile_path_for(advice.user), class: "request-show__avatar-link", aria: { label: "#{advice.user.name}のプロフィールへ移動" } do %>
+            <!-- 投稿ヘッダー -->
+            <header class="request__header">
+              <div class="request__author">
+                <%= link_to profile_path_for(@request.user), class: "request-show__avatar-link", aria: { label: "#{@request.user.name}のプロフィールへ移動" } do %>
                   <%= render "shared/user_avatar_icon", variant: :card %>
                 <% end %>
-                <span class="request-show__author"><%= link_to advice.user.name, profile_path_for(advice.user) %></span>
-                <span class="request-show__dot">·</span>
-                <time class="request-show__date" datetime="<%= advice.created_at.iso8601 %>" title="<%= social_time_title(advice.created_at) %>">
-                  <%= social_time_ago(advice.created_at) %>
+                <span class="request__name">
+                  <%= link_to @request.user.name, profile_path_for(@request.user) %>
+                </span>
+                <span class="request__dot">·</span>
+                <time class="request__date" datetime="<%= @request.created_at.iso8601 %>" title="<%= social_time_title(@request.created_at) %>">
+                  <%= social_time_ago(@request.created_at) %>
                 </time>
               </div>
-              <% if current_user.trainer? && advice.user_id == current_user.id && !editing_this_advice %>
-                <details class="request-show__overflow" data-controller="details-dismiss">
-                  <summary class="request-show__overflow-trigger" aria-label="アドバイスのメニュー">
-                    <span class="request-show__overflow-dots" aria-hidden="true">⋯</span>
+
+              <!-- 投稿のメニュー -->
+              <% if current_user.member? && @request.user_id == current_user.id && !@editing_request %>
+                <details class="request__menu" data-controller="details-dismiss">
+                  <summary class="request__menu-trigger" aria-label="投稿のメニュー">
+                    <span class="request__menu-dots" aria-hidden="true">⋯</span>
                   </summary>
-                  <div class="request-show__overflow-panel">
-                    <%= link_to "編集", request_path(@request, edit_advice: "1", anchor: "request-advice"), class: "request-show__overflow-item" %>
-                    <%= link_to "削除", request_advice_path(@request, advice), class: "request-show__overflow-item request-show__overflow-item--danger",
-                          data: { turbo_method: :delete, turbo_confirm: "このアドバイスを削除しますか？" } %>
+                  <div class="request__menu-panel">
+                    <%= link_to "編集", request_path(@request, edit_request: "1", anchor: "request-edit"), class: "request__menu-item" %>
+                    <%= link_to "削除", request_path(@request), class: "request__menu-item request__menu-item--danger",
+                      data: { turbo_method: :delete, turbo_confirm: "このリクエストを削除しますか？" } %>
                   </div>
                 </details>
               <% end %>
-            </div>
-            <% unless editing_this_advice %>
-              <div class="request-show__advice-body">
-                <%= simple_format(advice.body) %>
-                <% if advice.edited? %>
-                  <p class="request-show__edited-mark">（編集済み）</p>
+            </header>
+
+            <!-- 投稿本文 -->
+            <div class="request__body<%= " request__body--editing" if @editing_request %>"<%= " data-controller=\"request-edit-media\"" if @editing_request %>>
+              <h1 class="request__title">
+                <% if @request.directed_to_trainer_id.present? %>
+                  <span class="request__visibility-icon" aria-label="非公開リクエスト" title="非公開リクエスト">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+                    </svg>
+                  </span>
                 <% end %>
-              </div>
-              <% if current_user.member? && @request.user_id == current_user.id && advice.accepts_paid_advice_enabled? && advice.paid_menu_options.any? %>
-                <% existing_transaction = @request.paid_advice_requests.where(member_id: current_user.id).where.not(status: PaidAdviceRequest::STATUS_CHECKOUT_STARTED).order(created_at: :desc).first %>
-                <% if existing_transaction.present? && !existing_transaction.completed? %>
-                  <div class="request-show__paid-advice">
-                    <%= link_to "取引を確認する（#{existing_transaction.status_label}）", transaction_path(existing_transaction), class: "request-show__paid-advice-button" %>
-                  </div>
-                <% else %>
-                  <div class="request-show__paid-advice" data-controller="paid-advice-request-modal">
-                    <button type="button" class="request-show__paid-advice-button" data-action="paid-advice-request-modal#open">
-                      詳しくアドバイスを聞く
+                <span><%= @request.title %></span>
+              </h1>
+
+              <% if @request.video.attached? %>
+                <div class="request__video">
+                  <%= render "shared/video_aspect", url: url_for(@request.video), wrapper_class: "video-aspect--request-show" %>
+                  <% if @editing_request %>
+                    <button type="button" class="request__video-remove" data-action="click->request-edit-media#remove" onclick="(function(btn){var input=document.getElementById('request_remove_video'); if(input){input.checked=true; input.dispatchEvent(new Event('change',{bubbles:true}));} var wrap=btn.closest('.request__video'); if(wrap){wrap.style.display='none';}})(this)" aria-label="動画を削除">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                      </svg>
                     </button>
-                    <div class="request-show__modal-backdrop" data-paid-advice-request-modal-target="backdrop" hidden>
-                      <div class="request-show__modal">
-                        <h3 class="request-show__modal-title">詳しいアドバイスを依頼</h3>
-                        <p class="request-show__modal-subtitle">希望するメニューを選んでください</p>
-                        <%= form_with url: request_advice_paid_advice_requests_path(@request, advice_id: advice.id), method: :post, local: true, data: { turbo: false } do |f| %>
-                          <div class="request-show__paid-advice-menu-list">
-                            <% advice.paid_menu_options.each_with_index do |menu, index| %>
-                              <label class="request-show__paid-advice-menu-item">
-                                <%= radio_button_tag :menu_code, menu[:code], index.zero?, id: "paid_menu_#{advice.id}_#{menu[:code]}" %>
-                                <span><%= "#{menu[:price_jpy]}円：#{menu[:label]}" %></span>
-                              </label>
-                            <% end %>
-                          </div>
-                          <div class="request-show__modal-actions">
-                            <button type="button" class="request-show__inline-cancel" data-action="paid-advice-request-modal#close">キャンセル</button>
-                            <%= f.submit "確定して決済へ", class: "request-show__inline-submit" %>
-                          </div>
-                        <% end %>
-                      </div>
-                    </div>
-                  </div>
-                <% end %>
+                  <% end %>
+                </div>
               <% end %>
-            <% end %>
-            <% if advice.video.attached? %>
-              <div class="request-show__video-wrap request-show__video-wrap--advice<%= " request-show__advice-video-wrap--editable" if editing_this_advice %>" data-advice-edit-media-target="videoWrap">
-                <%= render "shared/video_aspect", url: url_for(advice.video), wrapper_class: "video-aspect--request-show" %>
-                <% if editing_this_advice %>
-                  <button type="button"
-                          class="request-show__advice-editor-video-remove"
-                          data-action="click->advice-edit-media#remove"
-                          onclick="(function(btn){var input=document.getElementById('request_show_edit_remove_video'); if(input){input.checked=true; input.dispatchEvent(new Event('change',{bubbles:true}));} var wrap=btn.closest('.request-show__video-wrap'); if(wrap){wrap.style.display='none';}})(this)"
-                          aria-label="動画を削除">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" aria-hidden="true">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                    </svg>
-                  </button>
-                <% end %>
+
+              <div class="request__text">
+                <%= simple_format(@request.body) %>
               </div>
-            <% end %>
-            <% if editing_this_advice %>
-              <% edit_form = @advice_edit_form || advice %>
-              <div class="request-show__advice-editor">
-                <% if edit_form.errors.any? %>
-                  <div class="request-compose__errors" role="alert">
-                    <ul>
-                      <% edit_form.errors.full_messages.each do |message| %>
-                        <li><%= message %></li>
-                      <% end %>
-                    </ul>
-                  </div>
-                <% end %>
-
-                <%= form_with model: edit_form, url: request_advice_path(@request, edit_form), method: :patch, local: true, html: { class: "request-show__advice-editor-form", multipart: true }, data: {
-                  controller: "request-polish",
-                  "request-polish-endpoint-value": polish_request_advices_path(@request),
-                  "request-polish-max-attempts-value": 2,
-                  "request-polish-remaining-attempts-value": @remaining_advice_polish_attempts || 2,
-                  "request-polish-draft-token-value": @advice_polish_draft_token,
-                  "request-polish-min-body-length-value": 8,
-                  "request-polish-body-only-value": true
-                } do |f| %>
-                  <%= hidden_field_tag :advice_polish_draft_token, @advice_polish_draft_token %>
-
-                  <%= check_box_tag "advice[remove_video]", "1", false, class: "request-show__inline-file-input", id: "request_show_edit_remove_video", data: { advice_edit_media_target: "removeInput" } if edit_form.video.attached? %>
-
-                  <%= f.text_area :body,
-                        rows: 3,
-                        class: "request-show__advice-editor-body",
-                        data: { "request-polish-target": "body", action: "input->request-polish#onBodyInput" } %>
-
-                  <p class="request-compose__polish-error" data-request-polish-target="error" hidden></p>
-                  <div class="request-compose__proposal request-compose__proposal--modern" data-request-polish-target="proposal" hidden>
-                    <p class="request-compose__proposal-label">AIからの提案</p>
-                    <p class="request-compose__proposal-body" data-request-polish-target="proposalBody"></p>
-                    <div class="request-compose__proposal-actions">
-                      <button type="button" class="menu-btn menu-btn--primary" data-action="request-polish#adopt">提案を反映する</button>
-                    </div>
-                  </div>
-
-                  <div class="request-show__advice-editor-actions request-show__advice-editor-actions--with-tools">
-                    <div class="request-show__advice-editor-tools">
-                      <%= f.file_field :video,
-                            accept: "video/mp4,video/quicktime,.mp4,.mov",
-                            class: "request-show__inline-file-input",
-                            id: "request_show_edit_advice_video_input" %>
-                      <label class="request-show__inline-media advice-editor__media-icon" for="request_show_edit_advice_video_input" aria-label="動画をアップロード">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" aria-hidden="true">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z" />
-                        </svg>
-                      </label>
-                      <button type="button" class="request-show__advice-editor-polish" data-request-polish-target="polishButton" data-action="request-polish#polish" disabled>文章を整える</button>
-                    </div>
-                    <div class="request-show__advice-editor-submit-actions">
-                      <%= link_to "キャンセル", request_path(@request, anchor: "request-advice"), class: "request-show__inline-cancel" %>
-                      <%= f.submit "保存", class: "request-show__inline-submit" %>
-                    </div>
-                  </div>
-                <% end %>
-              </div>
-            <% end %>
-            </article>
-          <% end %>
-        <% end %>
-        <% can_compose_inline = current_user.trainer? && (@request.directed_to_trainer_id.blank? || @request.directed_to_trainer_id == current_user.id) && @request.advices.none? { |advice| advice.user_id == current_user.id } %>
-        <% if can_compose_inline %>
-          <% advice_form = @inline_advice || Advice.new %>
-          <div class="request-show__inline-compose<%= " request-show__inline-compose--after-list" if advice_list.any? %>" data-controller="inline-compose advice-offer-modal">
-            <%= form_with model: advice_form, url: request_advices_path(@request), local: true, html: { class: "request-show__inline-compose-form", multipart: true }, data: {
-              controller: "request-polish",
-              "request-polish-endpoint-value": polish_request_advices_path(@request),
-              "request-polish-max-attempts-value": 2,
-              "request-polish-remaining-attempts-value": @remaining_inline_advice_polish_attempts || 2,
-              "request-polish-draft-token-value": @inline_advice_polish_draft_token,
-              "request-polish-min-body-length-value": 8,
-              "request-polish-body-only-value": true
-            } do |f| %>
-                <%= hidden_field_tag :advice_polish_draft_token, @inline_advice_polish_draft_token %>
-                <%= hidden_field_tag "advice[accepts_paid_advice]", "0", data: { advice_offer_modal_target: "acceptsInput" } %>
-                <%= hidden_field_tag "advice[paid_text_menu_enabled]", "0", data: { advice_offer_modal_target: "textMenuInput" } %>
-                <%= hidden_field_tag "advice[paid_text_video_menu_enabled]", "0", data: { advice_offer_modal_target: "textVideoMenuInput" } %>
-                <div class="request-show__inline-video-preview" data-inline-compose-target="preview" hidden>
-                  <video class="request-show__inline-video-preview-media" data-inline-compose-target="previewVideo" playsinline muted preload="metadata"></video>
-                  <span class="request-show__inline-video-duration" data-inline-compose-target="duration"></span>
-                  <button type="button" class="request-show__inline-video-remove" data-action="inline-compose#removeMedia" aria-label="動画を削除">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" aria-hidden="true">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                    </svg>
-                  </button>
-                </div>
-                <%= f.text_area :body,
-                      rows: 1,
-                      placeholder: "アドバイスをください",
-                      class: "request-show__inline-compose-field",
-                      data: {
-                        inline_compose_target: "field",
-                        "request-polish-target": "body",
-                        action: "focus->inline-compose#expand input->inline-compose#onInput input->request-polish#onBodyInput"
-                      } %>
-                <p class="request-compose__polish-error" data-request-polish-target="error" hidden></p>
-                <div class="request-compose__proposal request-compose__proposal--modern" data-request-polish-target="proposal" hidden>
-                  <p class="request-compose__proposal-label">AIからの提案</p>
-                  <p class="request-compose__proposal-body" data-request-polish-target="proposalBody"></p>
-                  <div class="request-compose__proposal-actions">
-                    <button type="button" class="menu-btn menu-btn--primary" data-action="request-polish#adopt">提案を反映する</button>
-                  </div>
-                </div>
-                <% if advice_form.errors.any? %>
-                  <div class="request-show__inline-compose-errors" role="alert">
-                    <ul>
-                      <% advice_form.errors.full_messages.each do |message| %>
-                        <li><%= message %></li>
-                      <% end %>
-                    </ul>
-                  </div>
-                <% end %>
-                <div class="request-show__inline-compose-actions" data-inline-compose-target="actions"<%= " hidden" unless advice_form.errors.any? %>>
-                  <%= f.file_field :video,
-                        accept: "video/mp4,video/quicktime,.mp4,.mov",
-                        class: "request-show__inline-file-input",
-                        id: "inline_advice_video_input",
-                        data: {
-                          inline_compose_target: "videoInput",
-                          action: "change->inline-compose#onMediaChange"
-                        } %>
-                  <label class="request-show__inline-media" for="inline_advice_video_input" aria-label="動画をアップロード">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" aria-hidden="true">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z" />
-                    </svg>
-                  </label>
-                  <button type="button" class="request-show__advice-editor-polish" data-request-polish-target="polishButton" data-action="request-polish#polish" disabled>文章を整える</button>
-                  <button type="button" class="request-show__inline-cancel" data-action="inline-compose#cancel">キャンセル</button>
-                  <button type="button" class="request-show__inline-submit" data-action="advice-offer-modal#open">コメント</button>
-                </div>
-                <div class="request-show__modal-backdrop" data-advice-offer-modal-target="backdrop" hidden>
-                  <div class="request-show__modal">
-                    <h3 class="request-show__modal-title">有料アドバイス設定</h3>
-                    <div class="request-show__paid-advice-switch">
-                      <label><input type="radio" name="paid_offer_toggle" value="off" checked data-action="advice-offer-modal#toggle"> OFF</label>
-                      <label><input type="radio" name="paid_offer_toggle" value="on" data-action="advice-offer-modal#toggle"> ON</label>
-                    </div>
-                    <div data-advice-offer-modal-target="menuArea" hidden>
-                      <p class="request-show__modal-subtitle">受け付ける内容（複数選択可）</p>
-                      <label class="request-show__paid-advice-menu-item">
-                        <input type="checkbox" data-advice-offer-modal-target="textMenuCheckbox" data-action="advice-offer-modal#syncMenus">
-                        <span>1,000円：詳しいテキストのみ</span>
-                      </label>
-                      <label class="request-show__paid-advice-menu-item">
-                        <input type="checkbox" data-advice-offer-modal-target="textVideoMenuCheckbox" data-action="advice-offer-modal#syncMenus">
-                        <span>2,000円：詳しいテキスト＋動画解説</span>
-                      </label>
-                    </div>
-                    <p class="request-compose__polish-error" data-advice-offer-modal-target="error" hidden></p>
-                    <div class="request-show__modal-actions">
-                      <button type="button" class="request-show__inline-cancel" data-action="advice-offer-modal#close">キャンセル</button>
-                      <button type="button" class="request-show__inline-submit" data-action="advice-offer-modal#submit">設定して投稿</button>
-                    </div>
-                  </div>
-                </div>
-            <% end %>
-          </div>
-        <% elsif advice_list.blank? %>
-          <p class="request-show__advice-empty">まだアドバイスはありません</p>
-        <% end %>
-      </section>
-              </main>
             </div>
-            <div class="requests-feed-aside-spacer" aria-hidden="true"></div>
-          </div>
+
+            <!-- エンゲージメント -->
+            <div class="request__meta">
+              <span class="request__comments">
+                <%= @request.advice_count %>件のアドバイス
+              </span>
+            </div>
+
+          </article>
+
+          <!-- アドバイス一覧 -->
+          <section class="advice-list">
+
+            <% @request.advices.each do |advice| %>
+              <article class="advice">
+
+                <!-- アドバイスヘッダー -->
+                <header class="advice__header">
+                  <%= link_to profile_path_for(advice.user), class: "advice__avatar" do %>
+                    <%= render "shared/user_avatar_icon", variant: :card %>
+                  <% end %>
+
+                  <span class="advice__name">
+                    <%= link_to advice.user.name, profile_path_for(advice.user) %>
+                  </span>
+
+                  <time class="advice__date" datetime="<%= advice.created_at.iso8601 %>">
+                    <%= social_time_ago(advice.created_at) %>
+                  </time>
+                </header>
+
+                <!-- 本文 -->
+                <div class="advice__body">
+                  <%= simple_format(advice.body) %>
+                </div>
+
+                <% if advice.video.attached? %>
+                  <div class="advice__media">
+                    <%= render "shared/video_aspect", url: url_for(advice.video) %>
+                  </div>
+                <% end %>
+
+              </article>
+            <% end %>
+
+          </section>
+
+          <!-- 投稿フォーム -->
           <% if current_user.trainer? %>
-            <%= render "shared/requests_feed_aside", my_advice_offer: @my_advice_offer %>
-          <% else %>
-            <%= render "shared/requests_feed_aside" %>
+            <section class="advice-form">
+              <%= form_with model: Advice.new, url: request_advices_path(@request) do |f| %>
+
+                <%= f.text_area :body, placeholder: "アドバイスを書く", class: "advice-form__field" %>
+
+                <div class="advice-form__actions">
+                  <%= f.file_field :video %>
+                  <%= f.submit "投稿" %>
+                </div>
+
+              <% end %>
+            </section>
           <% end %>
+
         </div>
       </div>
+
     <% end %>
-  </div>
+  </main>
+
 </div>
