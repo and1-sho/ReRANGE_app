@@ -1,0 +1,152 @@
+/* 使い回す部品。ボタン、カード、バッジ、フォーム部品、タブ、ラベルなど。 */
+button,
+input[type="submit"],
+input[type="button"],
+input[type="reset"],
+[role="button"],
+.menu-btn,
+summary {
+  cursor: pointer;
+}
+
+button:disabled,
+input[type="submit"]:disabled,
+input[type="button"]:disabled,
+input[type="reset"]:disabled {
+  cursor: default;
+}
+
+
+/* ==== ユーザーアイコン（一覧・ヘッダー・将来マイメニュー等で再利用） ==== */
+.user-avatar-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: rgba(2, 27, 21, 0.55);
+}
+
+.user-avatar-icon__svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.user-avatar-icon--card {
+  width: 40px;
+  height: 40px;
+}
+
+.user-avatar-icon--header {
+  width: 26px;
+  height: 26px;
+}
+
+.request-card > .request-card__body {
+  display: contents;
+}
+
+.request-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  grid-column: 2;
+  grid-row: 1;
+  align-self: center;
+  min-width: 0;
+  font-size: 0.85rem;
+  color: rgba(2, 27, 21, 0.7);
+}
+
+.request-card__header-main {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  flex: 1;
+}
+
+.request-card .request-card__title {
+  grid-column: 1 / -1;
+}
+
+.request-card__name a:-webkit-any-link:hover,
+.request-card__title a:-webkit-any-link:hover {
+  text-decoration: none;
+}
+
+.request-card .request-card__thumb-wrap {
+  grid-column: 1 / -1;
+  justify-self: start;
+}
+
+.request-card .request-card__actions {
+  grid-column: 1 / -1;
+  justify-self: start;
+  width: max-content;
+  max-width: 100%;
+}
+
+.request-card__name {
+  font-weight: 700;
+  color: #021b15;
+}
+
+.request-card__name a,
+.request-show__author a,
+.advice-compose__context-author-name a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.request-card__dot {
+  opacity: 0.6;
+}
+
+.request-card__date {
+  font-size: 0.8rem;
+}
+
+.request-card__thumb-wrap {
+  position: relative;
+  margin: 8px 0 0;
+  width: 100%;
+  max-width: 320px;
+  aspect-ratio: 16 / 9;
+  border-radius: 10px;
+  overflow: hidden;
+  border: none;
+  background: #0e1412;
+}
+
+.request-card__overflow {
+  position: relative;
+}
+
+.request-card__overflow-panel {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  z-index: 20;
+  min-width: 140px;
+  padding: 6px 0;
+  border-radius: 10px;
+  background: #fff;
+  border: 1px solid rgba(2, 27, 21, 0.12);
+  box-shadow: 0 8px 24px rgba(2, 27, 21, 0.12);
+}
+
+.request-show__overflow-item, .request-card__overflow-item {
+  display: block;
+  padding: 10px 14px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #021b15;
+  text-decoration: none;
+}
+
+.request-show__overflow-item--danger, .request-card__overflow-item--danger {
+  color: #b91c1c;
+}
+

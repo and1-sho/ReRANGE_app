@@ -1,0 +1,292 @@
+/* 相談・投稿まわり。投稿一覧、投稿詳細、相談フォーム、アドバイス表示など。 */
+/*==========================================================
+    　　投稿一覧
+==============================================================*/
+.requests-page-content {
+  min-height: 100vh;
+  background: var(--color-white);
+  color: #021b15;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  padding: 0;
+}
+
+.requests-feed-box {
+  padding-top: calc(48px + env(safe-area-inset-top, 0px));
+}
+
+/* 左ナビ + 中央「フィード＋右320px」合計 1120px（メンバー・トレーナー共通・Reddit 型） */
+.requests-layout {
+  display: flex;
+  gap: 48px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0 16px 40px 12px;
+  box-sizing: border-box;
+}
+
+.requests-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  justify-content: center;
+}
+
+/* フィード列 + 右列で最大 1120px */
+.requests-feed-main {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 24px;
+  width: 100%;
+  max-width: 1120px;
+  box-sizing: border-box;
+}
+
+.requests-feed-inner {
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: none;
+}
+
+
+/*=========== プロフィール設定 ===========*/
+
+.profile-setting {
+  max-width: 1200px;
+  margin: 4px auto 0;
+  padding: 8px 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.profile-setting__text {
+  margin: 0;
+  font-size: 0.9rem;
+  color: rgba(2, 27, 21, 0.72);
+}
+
+/*=========== ホームタブ（トレーナー用） ===========*/
+.requests-home-tabs {
+  display: flex;
+  align-items: center;
+  margin: 14px 0 12px;
+  border-bottom: 1px solid rgba(2, 27, 21, 0.18);
+}
+
+.requests-home-tabs__tab {
+  flex: 1 1 0;
+  text-align: center;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: rgba(2, 27, 21, 0.62);
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 10px 8px 11px;
+  border-bottom: 2px solid transparent;
+}
+
+.requests-home-tabs__tab.is-active {
+  color: #021b15;
+  border-bottom-color: #021b15;
+}
+
+
+/*=========== リクエストリスト ===========*/
+
+.requests-list-box {
+  max-width: 1200px;
+  margin: 12px auto 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.request-card {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  column-gap: 8px;
+  align-items: start;
+  padding: 12px 8px;
+  border-bottom: 1px solid rgba(2, 27, 21, 0.08);
+}
+
+.request-card__avatar-link,
+.request-show__avatar-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.request-card > .request-card__avatar-link {
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: start;
+  align-self: center;
+  width: max-content;
+}
+
+.request-card:hover  {
+  background: #f6f6f6;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.request-card__avatar-link .user-avatar-icon--card {
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.request-card__avatar-link:hover,
+.request-show__avatar-link:hover {
+  opacity: 0.85;
+}
+
+/* フィード内インライン動画（16:9 枠、横 cover / 縦 contain） */
+.request-card__thumb-wrap {
+  position: relative;
+  margin: 8px 0 0;
+  width: 100%;
+  min-width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 10px;
+  overflow: hidden;
+  border: none;
+  background: #0e1412;
+}
+
+.request-card__thumb-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  background: #0e1412;
+}
+
+.request-card__thumb-wrap--portrait .request-card__thumb-video {
+  object-fit: contain;
+}
+
+.request-card__thumb-wrap:hover .request-card__thumb-video {
+  opacity: 0.96;
+}
+
+.request-card__title {
+  margin: 2px 0 0;
+  font-size: 0.98rem;
+  font-weight: 400;
+  line-height: 1.45;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.request-card__title a {
+  color: #021b15;
+  text-decoration: none;
+}
+
+.request-card__visibility-icon {
+  display: inline-flex;
+  align-items: center;
+  color: rgba(2, 27, 21, 0.72);
+  flex-shrink: 0;
+}
+
+.request-card__title a:hover {
+  text-decoration: underline;
+}
+
+/* 動画下: Reddit 風アクション（アドバイス数・将来いいね等） */
+.request-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  max-width: 320px;
+}
+
+.layout-feed .request-card__actions {
+  max-width: 100%;
+  width: 100%;
+  justify-content: flex-start;
+}
+
+.request-card__action {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  background: rgba(2, 27, 21, 0.06);
+  color: rgba(2, 27, 21, 0.78);
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1;
+  transition: background 0.12s ease, color 0.12s ease;
+}
+
+.request-card__action:hover {
+  background: rgba(2, 27, 21, 0.1);
+  color: #021b15;
+}
+
+.request-card__action-icon {
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  display: block;
+}
+
+.request-card__action-count {
+  font-variant-numeric: tabular-nums;
+}
+
+.requests-empty {
+  max-width: 1200px;
+  margin: 24px auto;
+  padding: 0 32px;
+  color: rgba(2, 27, 21, 0.62);
+}
+
+
+.request-show__overflow-trigger, .request-card__overflow-trigger {
+  list-style: none;
+  appearance: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 9999px;
+  background: transparent;
+  color: #181c1f;
+  transition: background 0.12s ease, color 0.12s ease;
+}
+
+.request-show__overflow-trigger:hover, .request-card__overflow-trigger:hover {
+  background: rgba(2, 27, 21, 0.06);
+  color: #181c1f;
+}
+
+.request-card__overflow-dots {
+  font-size: 1.15rem;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  transform: translateY(-1px);
+  color: #181c1f;
+}
