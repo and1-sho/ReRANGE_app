@@ -1047,3 +1047,19 @@
   z-index: 35;
   margin-left: 800px;
 }
+
+
+/*==========================================================
+    　　新規リクエスト
+==============================================================*/
+.requests-new .layout__inner {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 24px;
+  width: 100%;
+  max-width: 1120px;
+  box-sizing: border-box;
+  justify-content: center;
+}
+
