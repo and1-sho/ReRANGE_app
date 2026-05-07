@@ -20,6 +20,7 @@
   box-sizing: border-box;
 }
 
+.site-header__brand,
 .requests-feed-chrome__brand {
   text-decoration: none;
   color: inherit;

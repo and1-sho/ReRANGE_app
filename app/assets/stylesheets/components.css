@@ -46,7 +46,9 @@ input[type="reset"]:disabled {
   display: contents;
 }
 
-.request-card__header {
+
+.request-card__header,
+.advice-card__header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -59,7 +61,8 @@ input[type="reset"]:disabled {
   color: rgba(2, 27, 21, 0.7);
 }
 
-.request-card__header-main {
+.request-card__header-main,
+.advice-card__header-main {
   display: flex;
   align-items: center;
   gap: 4px;
@@ -88,11 +91,13 @@ input[type="reset"]:disabled {
   max-width: 100%;
 }
 
-.request-card__name {
+.request-card__name,
+.advice-card__name {
   font-weight: 700;
   color: #021b15;
 }
 
+.advice-card__name a,
 .request-card__name a,
 .request-show__author a,
 .advice-compose__context-author-name a {
@@ -104,7 +109,8 @@ input[type="reset"]:disabled {
   opacity: 0.6;
 }
 
-.request-card__date {
+.request-card__date,
+.advice-card__date {
   font-size: 0.8rem;
 }
 
