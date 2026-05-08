@@ -12,11 +12,12 @@
   </header>
 
   <div class="layout">
-    <%= render "member_sidebar" %>
 
-      <div class="layout__inner">
+    <div class="layout__inner">
+      <%= render "member_sidebar" %>
 
-        <div class="layout__main">
+      <div class="layout__main">
+        <div class="layout__main-inner">
           <% unless current_user.member_profile_completed? %>
             <div class="profile-setting">
               <p class="profile-setting__text">プロフィールを設定と、トレーナーがあなたの状況を理解しやすくなります。</p>
@@ -74,7 +75,7 @@
                   class="request-new__visibility-trainer<%= " request-compose__visibility-trainer--hidden" unless is_private_visibility %>"
                   data-request-visibility-target="trainerWrapper"
                 >
-                  <%= f.label :directed_to_trainer_id, "トレーナーを選択してください", class: "request-new__field-label", for: "request_directed_to_trainer_id" %>
+                  <%= f.label :directed_to_trainer_id, "トレーナーを選択してください", class: "request-new__field-title", for: "request_directed_to_trainer_id" %>
                   <%= f.select :directed_to_trainer_id,
                     options_from_collection_for_select(@trainers, :id, :name, @request.directed_to_trainer_id),
                     { include_blank: "選択してください" },
@@ -87,26 +88,24 @@
 
               <!-- タイトル -->
               <div
-                class="request-new__form-block"
+                class="request-new__form-block title-block"
                 data-controller="compose-char-counter"
                 data-compose-char-counter-max-value="24"
               >
-                <label class="request-new__block-title title-block" for="request_title">タイトル</label>
-                <div class="request-new__field-hint">
-                  <%= f.text_field :title,
-                        maxlength: 24,
-                        id: "request_title",
-                        placeholder: "例）パンチ力について",
-                        class: "request-new__field-hint",
-                        autocomplete: "off",
-                        data: {
-                          compose_char_counter_target: "field",
-                          request_polish_target: "title",
-                          action: "input->compose-char-counter#sync"
-                        } %>
-                </div>
-                <p class="request-compose__title-meta" aria-live="polite">
-                  <span data-compose-char-counter-target="count">0</span><span class="request-compose__field-meta-max">/24</span>
+                <label class="request-new__field-title" for="request_title">タイトル</label>
+                <%= f.text_field :title,
+                  maxlength: 24,
+                  id: "request_title",
+                  placeholder: "例）パンチ力について",
+                  class: "request-new__field-input",
+                  autocomplete: "off",
+                  data: {
+                    compose_char_counter_target: "field",
+                    request_polish_target: "title",
+                    action: "input->compose-char-counter#sync"
+                  } %>
+                <p class="request-new__title-meta" aria-live="polite">
+                  <span data-compose-char-counter-target="count">0</span><span class="request-new__field-meta-max">/24</span>
                 </p>
               </div>
 
@@ -116,24 +115,24 @@
                 data-controller="compose-char-counter"
                 data-compose-char-counter-max-value="300"
               >
-                <label class="request-new__block-title" for="request_body">本文</label>
+                <label class="request-new__field-title" for="request_body">本文</label>
                 <%= f.text_area :body,
-                      id: "request_body",
-                      maxlength: 300,
-                      placeholder: "例）パンチ力を上げるにはどういうトレーニングをしたらいいですか？",
-                      rows: 8,
-                      class: "request-new__field-hint",
-                      data: {
-                        compose_char_counter_target: "field",
-                        request_polish_target: "body",
-                        action: "input->compose-char-counter#sync input->request-polish#onBodyInput"
-                      } %>
+                  id: "request_body",
+                  maxlength: 300,
+                  placeholder: "例）パンチ力を上げるにはどういうトレーニングをしたらいいですか？",
+                  rows: 8,
+                  class: "request-new__field-input",
+                  data: {
+                    compose_char_counter_target: "field",
+                    request_polish_target: "body",
+                    action: "input->compose-char-counter#sync input->request-polish#onBodyInput"
+                  } %>
                 <p class="request-new__body-meta" aria-live="polite">
                   <span data-compose-char-counter-target="count">0</span><span class="request-new__field-meta-max">/300</span>
                 </p>
               </div>
 
-              <div class="ai-suggestion_polish-text">
+              <div class="ai-suggestion_polish-block">
                 <div class="ai-suggestion__polish-actions">
                   <button type="button" class="ai-suggestion__polish-pill" data-request-polish-target="polishButton" data-action="request-polish#polish" disabled>文章を整える</button>
                 </div>
@@ -173,7 +172,7 @@
                     </svg>
                   </div>
                 </div>
-                <p class="request-new__video-hint request-new__video-hint--modern">MP4 / MOV・1本あたり100MBまで（任意）</p>
+                <p class="request-new__video-hint">MP4 / MOV・1本あたり100MBまで（任意）</p>
                 <div class="request-new__video-preview request-new__video-preview--modern" data-video-upload-preview-target="box" hidden>
                   <p class="request-new__video-preview-label">選択中の動画</p>
                   <div class="video-aspect__preview" data-controller="video-aspect">
@@ -190,7 +189,8 @@
           </main>
         </div>
         <div class="requests-feed-aside-spacer" aria-hidden="true"></div>
+        <%= render "shared/requests_feed_aside" %>
       </div>
-      <%= render "shared/requests_feed_aside" %>
+    </div>
   </div>
 </div>
