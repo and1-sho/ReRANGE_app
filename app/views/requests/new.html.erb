@@ -18,13 +18,16 @@
 
       <div class="layout__main">
         <div class="layout__main-inner">
+<%
+=begin%>
           <% unless current_user.member_profile_completed? %>
             <div class="profile-setting">
               <p class="profile-setting__text">プロフィールを設定と、トレーナーがあなたの状況を理解しやすくなります。</p>
               <%= link_to "プロフィールを設定", edit_member_path(current_user), class: "menu-btn menu-btn--primary" %>
             </div>
           <% end %>
-
+<%
+=end%>
           <!-- 新規リクエスト -->
           <main class="request-new__main">
             <h1 class="request-new__main-title">新規リクエスト</h1>
