@@ -15,6 +15,7 @@
       </svg>
       <span class="requests-sidebar__link-label">ホーム</span>
     <% end %>
+
     <%= link_to new_request_path,
           class: "requests-sidebar__link #{"requests-sidebar__link--active" if compose_request}",
           aria: (compose_request ? { current: "page" } : {}) do %>
@@ -23,14 +24,18 @@
       </svg>
       <span class="requests-sidebar__link-label">新規リクエスト</span>
     <% end %>
-    <%= link_to trainers_path,
-          class: "requests-sidebar__link #{"requests-sidebar__link--active" if trainers_index}",
-          aria: (trainers_index ? { current: "page" } : {}) do %>
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="requests-sidebar__link-icon" aria-hidden="true">
-        <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-      </svg>
-      <span class="requests-sidebar__link-label">トレーナーを探す</span>
-    <% end %>
+
+<%
+=begin%>
+      <%= link_to trainers_path,
+            class: "requests-sidebar__link #{"requests-sidebar__link--active" if trainers_index}",
+            aria: (trainers_index ? { current: "page" } : {}) do %>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="requests-sidebar__link-icon" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+        </svg>
+        <span class="requests-sidebar__link-label">トレーナーを探す</span>
+      <% end %>
+
     <%= link_to transactions_path,
           class: "requests-sidebar__link #{"requests-sidebar__link--active" if transactions_active}",
           aria: (transactions_active ? { current: "page" } : {}) do %>
@@ -39,6 +44,7 @@
       </svg>
       <span class="requests-sidebar__link-label">取引</span>
     <% end %>
+
     <%= link_to member_path(current_user),
           class: "requests-sidebar__link #{"requests-sidebar__link--active" if profile_show_active}",
           aria: (profile_show_active ? { current: "page" } : {}) do %>
@@ -47,6 +53,7 @@
       </svg>
       <span class="requests-sidebar__link-label">プロフィールを見る</span>
     <% end %>
+    
     <%= link_to edit_member_path(current_user),
           class: "requests-sidebar__link #{"requests-sidebar__link--active" if profile_edit_active}",
           aria: (profile_edit_active ? { current: "page" } : {}) do %>
@@ -55,5 +62,8 @@
       </svg>
       <span class="requests-sidebar__link-label">プロフィールを編集</span>
     <% end %>
+<%
+=end%>
+
   </nav>
 </aside>

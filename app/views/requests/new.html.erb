@@ -2,7 +2,7 @@
 
   <header class="site-header">
     <%= link_to app_home_path, class: "site-header__brand" do %>
-      <span class="site-header__brand-logo">Re:RANGE</span>
+      <span class="site-header__brand-logo">10K</span>
     <% end %>
 
     <div class="site-header__account-actions">
@@ -51,6 +51,9 @@
             } do |f| %>
               <%= hidden_field_tag :request_polish_draft_token, @request_polish_draft_token %>
 
+              <%# MVP ver.0.1.0では非表示：公開・非公開選択 %>
+<%
+=begin%>
               <!-- 公開・非公開 -->
               <div class="request-new__visibility" data-action="change->request-visibility#sync">
                 <div class="request-new__visibility-options">
@@ -85,7 +88,8 @@
                     data: { request_visibility_target: "trainerSelect" } %>
                 </div>
               </div>
-
+<%
+=end%>
               <!-- タイトル -->
               <div
                 class="request-new__form-block title-block"
