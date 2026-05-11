@@ -1,10 +1,6 @@
 <%# メンバー一覧用サイドバー（トレーナーとレイアウト共通・項目のみ差し替え） %>
 <% feed_index = controller_name == "requests" && action_name == "index" %>
 <% compose_request = controller_name == "requests" && %w[new create].include?(action_name) %>
-<% trainers_index = controller_name == "trainers" && action_name == "index" %>
-<% transactions_active = controller_name == "transactions" %>
-<% profile_show_active = current_page?(member_path(current_user)) %>
-<% profile_edit_active = current_page?(edit_member_path(current_user)) %>
 <aside class="requests-sidebar" aria-label="メインメニュー">
   <nav class="requests-sidebar__nav">
     <%= link_to requests_path,

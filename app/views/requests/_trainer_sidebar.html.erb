@@ -2,9 +2,6 @@
 <% requests_index = controller_name == "requests" && action_name == "index" %>
 <% home_feed_active = requests_index && params[:filter].blank? %>
 <% advised_feed_active = requests_index && params[:filter] == "advised_by_me" %>
-<% transactions_active = controller_name == "transactions" %>
-<% profile_show_active = current_page?(trainer_path(current_user)) %>
-<% profile_edit_active = current_page?(edit_trainer_path(current_user)) %>
 <aside class="requests-sidebar" aria-label="メインメニュー">
   <nav class="requests-sidebar__nav">
 
