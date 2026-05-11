@@ -3,6 +3,7 @@
  *= require base
  *= require layout
  *= require components
+ *= require pages/home
  *= require pages/requests
  *= require pages/auth
  */
