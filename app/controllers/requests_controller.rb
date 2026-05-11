@@ -13,7 +13,7 @@ class RequestsController < ApplicationController
   before_action :mark_request_notifications_as_read!, only: [:show]
   # 編集・削除はリクエストの投稿者本人のみ（member 同士のなりすまし防止）
   before_action :authorize_request_owner!, only: [:edit, :update, :destroy]
-  before_action :prepare_request_polish_session!, only: [:new, :create, :edit, :update]
+  before_action :prepare_request_polish_session!, only: [:new, :create]
 
   def index
     # MVP ver.0.1.0: 全リクエストは公開扱い。非公開/directタブは未使用。

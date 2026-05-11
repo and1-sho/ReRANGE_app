@@ -21,6 +21,8 @@ Rails.application.routes.draw do
     post "advices/:advice_id/paid_advice_requests", to: "paid_advice_requests#create", as: :advice_paid_advice_requests
   end
 
+  # MVP ver.0.1.0: Stripe コールバックも含め paid_advice_requests への直アクセスをブロック
+  get "paid_advice_requests", to: redirect("/requests")
   get "paid_advice_requests/success", to: "paid_advice_requests#success", as: :paid_advice_requests_success
   get "paid_advice_requests/cancel", to: "paid_advice_requests#cancel", as: :paid_advice_requests_cancel
   resources :transactions, only: [:index, :show] do

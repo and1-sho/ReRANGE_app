@@ -2,36 +2,19 @@ class TrainersController < ApplicationController
   before_action :authenticate_user!, only: [:edit, :update]
   before_action :set_trainer, only: [:show, :edit, :update]
   before_action :authorize_trainer_owner!, only: [:edit, :update]
+  # MVP ver.0.1.0: トレーナー一覧・プロフィール機能は未使用。URL直打ちを含めアクセス不可にする。
+  before_action -> { redirect_to requests_path }
 
   def index
-    @sort = params[:sort] == "all" ? "all" : "new"
-    @trainers = User.trainer
-    @trainers = if @sort == "all"
-                  @trainers.order(:name, :id)
-                else
-                  @trainers.order(created_at: :desc)
-                end
   end
 
-  # プロフィール閲覧は公開（未ログインでもアクセス可）
   def show
-    @trainer_advised_requests = trainer_profile_advised_requests
-    @trainer_advised_feed_empty_subcopy = "公開リクエストへアドバイスすると、ここに表示されます。"
   end
 
-  # トレーナー本人がプロフィール編集
   def edit
   end
 
   def update
-    # 新しい画像が選ばれていない時だけ、削除チェックに従って purge する
-    handle_image_removal_on_update!
-
-    if @trainer.update(trainer_profile_params)
-      redirect_to trainer_path(@trainer), notice: "プロフィールを更新しました"
-    else
-      render :edit, status: :unprocessable_entity
-    end
   end
 
   private

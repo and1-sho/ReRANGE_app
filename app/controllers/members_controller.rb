@@ -2,29 +2,16 @@ class MembersController < ApplicationController
   before_action :authenticate_user!, only: [:edit, :update]
   before_action :set_member
   before_action :authorize_member_owner!, only: [:edit, :update]
+  # MVP ver.0.1.0: プロフィール機能は未使用。URL直打ちを含めアクセス不可にする。
+  before_action -> { redirect_to requests_path }
 
-  # プロフィール閲覧（公開）
   def show
-    @member_requests = member_profile_requests
-    @member_request_feed_empty_copy =
-      if user_signed_in? && current_user == @member
-        "まだリクエストを投稿していません"
-      else
-        "表示できる公開リクエストはまだありません"
-      end
   end
 
   def edit
   end
 
   def update
-    handle_image_removal_on_update!
-
-    if @member.update(member_profile_params)
-      redirect_to member_path(@member), notice: "プロフィールを更新しました"
-    else
-      render :edit, status: :unprocessable_entity
-    end
   end
 
   private
