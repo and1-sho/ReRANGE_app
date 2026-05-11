@@ -1,23 +1,27 @@
-<div class="top-wrap">
-  <header class="top-header">
-    <%= link_to app_home_path, class: "logo logo--link" do %>
-      <span class="logo-name">10K</span>
+<div class="home">
+  <header class="home-header">
+    <%= link_to app_home_path, class: "home-header__brand-logo" do %>
+      <img class="logo-img" src="/images/logo/logo-main.png" alt="10K">
     <% end %>
-    <nav class="menu" aria-label="アカウント">
+    <nav class="home-header__menu" aria-label="アカウント">
       <% if user_signed_in? %>
         <%= link_to "リクエスト一覧", requests_path, class: "menu-btn menu-btn--primary" %>
         <%= link_to "ログアウト", destroy_user_session_path, class: "menu-btn menu-btn--ghost", data: { turbo_method: :delete } %>
       <% else %>
-        <%= link_to "無料ではじめる", new_user_registration_path, class: "menu-btn menu-btn--primary" %>
-        <%= link_to "ログイン", new_user_session_path, class: "menu-btn menu-btn--ghost" %>
+        <%= link_to "ログイン", new_user_session_path, class: "home__btn home__btn--ghost" %>
+        <%= link_to "トレーナーに無料で相談しよう", new_user_registration_path, class: "home__btn home__btn--primary" %>
       <% end %>
     </nav>
   </header>
-  <section class="hero">
-    <div>
-      <h1 class="hero-title">10K</h1>
-      <p>「強くなる」をアップデートする。</p>
+  <main class="home-main">
+    <div class="home-main-inner">
+      <h1 class="home-title">１本の動画があなたを、もっと強くする。</h1>
+      <p class="home-lead">動画を投稿するだけで、トレーナーが「課題」と「原因」、<br>あなただけの「練習方法」をアドバイスしてくれるボクシング動画コーチングサービスです。</p>
+      <%= link_to "トレーナーに無料で相談しよう", new_user_registration_path, class: "home__btn home__btn--primary" %>
+      <div class="soon"></div>
+      <p class="home-notes">※このアプリはβ版です。正式版に向けて改善を行なっております。</p>
     </div>
-  </section>
+    <p class="home-copy">©2026 10K. All rights reserved.</p>
+  </main>
 </div>
 
