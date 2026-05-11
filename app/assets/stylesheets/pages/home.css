@@ -1,0 +1,97 @@
+.home {
+  min-height: 100vh;
+  color: rgb(2, 27, 21);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--color-white);
+}
+
+.home-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: rgba(2, 27, 21, 0.18) 0px 8px 22px;
+  position: sticky;
+  top: 0px;
+  z-index: 10;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 16px 40px;
+  background: var(--color-white);
+}
+
+.home-header__brand-logo img {
+  width: 57px;
+  height: 57px;
+}
+
+/* ボタン */
+.home__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  padding: 14px 20px;
+  border-radius: 50px;
+  text-decoration: none;
+  letter-spacing: 0.05em;
+}
+
+.home__btn--primary {
+  font-size: 14px;
+  color: var(--color-white);
+  background: var(--color-accent);
+  border: 1px solid var(--color-accent);
+}
+
+.home__btn--ghost {
+  font-size: 14.5px;
+  color: #021b15;
+  background: transparent;
+  margin-right: 8px;
+}
+
+.home-main {
+  text-align: center;
+}
+
+.home-main-inner {
+  padding: 120px 40px;
+}
+
+.home-title {
+  font-size: 56px;
+  letter-spacing: 1px;
+  margin: 0;
+}
+
+.home-lead {
+  margin-top: 16px;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: #021b15;
+  line-height: 2.3;
+  margin-bottom: 48px;
+}
+
+.home-main .home__btn {
+  padding: 15px 24px;
+  font-size: 15px;
+}
+
+.home-main .soon {
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  max-width: 1314px;
+  height: 100%;
+  margin: 64px auto 32px;
+  background-color: #DEDEDE;
+  border-radius: 16px;
+  box-shadow: rgba(2, 27, 21, 0.18) 0px 8px 22px;
+}
+
+.home-notes {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
