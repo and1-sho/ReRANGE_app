@@ -3,10 +3,10 @@
   <p class="advice-compose__context-label">返信先のリクエスト</p>
   <p class="advice-compose__context-title"><%= request.title %></p>
   <div class="advice-compose__context-author">
-    <%= link_to profile_path_for(request.user), class: "request-show__avatar-link", aria: { label: "#{request.user.name}のプロフィールへ移動" } do %>
+    <span class="request-show__avatar-link">
       <%= render "shared/user_avatar_icon", variant: :header %>
-    <% end %>
-    <span class="advice-compose__context-author-name"><%= link_to request.user.name, profile_path_for(request.user) %></span>
+    </span>
+    <span class="advice-compose__context-author-name"><%= request.user.name %></span>
   </div>
   <% if request.body.present? %>
     <p class="advice-compose__context-body-label">リクエスト本文</p>

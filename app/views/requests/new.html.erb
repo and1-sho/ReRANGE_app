@@ -6,7 +6,6 @@
     <% end %>
 
     <div class="site-header__account-actions">
-      <%= render "shared/notification_bell_link" %>
       <%= render "shared/account_menu" %>
     </div>
   </header>
@@ -18,16 +17,6 @@
 
       <div class="layout__main">
         <div class="layout__main-inner">
-<%
-=begin%>
-          <% unless current_user.member_profile_completed? %>
-            <div class="profile-setting">
-              <p class="profile-setting__text">プロフィールを設定と、トレーナーがあなたの状況を理解しやすくなります。</p>
-              <%= link_to "プロフィールを設定", edit_member_path(current_user), class: "menu-btn menu-btn--primary" %>
-            </div>
-          <% end %>
-<%
-=end%>
           <!-- 新規リクエスト -->
           <main class="request-new__main">
             <h1 class="request-new__main-title">新規リクエスト</h1>
@@ -54,45 +43,6 @@
             } do |f| %>
               <%= hidden_field_tag :request_polish_draft_token, @request_polish_draft_token %>
 
-              <%# MVP ver.0.1.0では非表示：公開・非公開選択 %>
-<%
-=begin%>
-              <!-- 公開・非公開 -->
-              <div class="request-new__visibility" data-action="change->request-visibility#sync">
-                <div class="request-new__visibility-options">
-                  <label class="request-new__visibility-option">
-                    <%= radio_button_tag :request_visibility, "public", !is_private_visibility, id: "request_visibility_public" %>
-                    <span class="request-new__visibility-option-text">
-                      <span class="request-new__visibility-option-title">公開</span>
-                      <span class="request-new__visibility-option-desc">全員のリクエスト一覧に表示されます</span>
-                    </span>
-                  </label>
-                  <label class="request-new__visibility-option">
-                    <%= radio_button_tag :request_visibility, "private", is_private_visibility,
-                          id: "request_visibility_private",
-                          data: { request_visibility_target: "privateRadio" } %>
-                    <span class="request-new__visibility-option-text">
-                      <span class="request-new__visibility-option-title">非公開</span>
-                      <span class="request-new__visibility-option-desc">選択したトレーナーだけが内容を閲覧できます</span>
-                    </span>
-                  </label>
-                </div>
-                <div
-                  class="request-new__visibility-trainer<%= " request-compose__visibility-trainer--hidden" unless is_private_visibility %>"
-                  data-request-visibility-target="trainerWrapper"
-                >
-                  <%= f.label :directed_to_trainer_id, "トレーナーを選択してください", class: "request-new__field-title", for: "request_directed_to_trainer_id" %>
-                  <%= f.select :directed_to_trainer_id,
-                    options_from_collection_for_select(@trainers, :id, :name, @request.directed_to_trainer_id),
-                    { include_blank: "選択してください" },
-                    id: "request_directed_to_trainer_id",
-                    class: "request-new__visibility-select",
-                    disabled: !is_private_visibility,
-                    data: { request_visibility_target: "trainerSelect" } %>
-                </div>
-              </div>
-<%
-=end%>
               <!-- タイトル -->
               <div
                 class="request-new__form-block title-block"

@@ -32,29 +32,6 @@
             </div>
             <% end %>
 
-<%
-=begin%>
-            <%# MVP ver.0.1.0では非表示：トレーナー側のフィード切り替えタブ %>
-            <% if current_user.trainer? && params[:filter] != "advised_by_me" %>
-              <div class="requests-home-tabs"  role="tablist" aria-label="ホーム表示切り替え">
-                <%= link_to "すべて",
-                      requests_path,
-                      class: "requests-home-tabs__tab#{@request_feed_tab != "direct" ? " is-active" : ""}",
-                      role: "tab",
-                      aria: { selected: (@request_feed_tab != "direct").to_s } %>
-                <%= link_to requests_path(feed: "direct"),
-                      class: "requests-home-tabs__tab#{@request_feed_tab == "direct" ? " is-active" : ""}",
-                      role: "tab",
-                      aria: { selected: (@request_feed_tab == "direct").to_s } do %>
-                  <span>あなた宛（非公開）</span>
-                  <% if @has_unadvised_direct_requests %>
-                    <span aria-label="未対応の非公開リクエストがあります"></span>
-                  <% end %>
-                <% end %>
-              </div>
-            <% end %>
-<%
-=end%>
             <%= render "requests/feed_list" %>
           </div>
           <div class="requests-feed-aside-spacer" aria-hidden="true"></div>
