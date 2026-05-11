@@ -128,26 +128,16 @@ class AdvicesController < ApplicationController
   end
 
   def advice_params
-    params.require(:advice).permit(
-      :body,
-      :video,
-      :accepts_paid_advice,
-      :paid_text_menu_enabled,
-      :paid_text_video_menu_enabled
-    )
+    params.require(:advice).permit(:body, :video)
   end
 
   def apply_paid_offer_settings!(advice)
+    # MVP ver.0.1.0: 有料アドバイス機能は未使用。常に無効に固定。
     return unless Advice.column_names.include?("accepts_paid_advice")
 
-    enabled = params[:paid_offer_toggle].to_s == "on"
-    advice.accepts_paid_advice = enabled
-    advice.paid_text_menu_enabled = enabled && truthy_param?(params.dig(:advice, :paid_text_menu_enabled))
-    advice.paid_text_video_menu_enabled = enabled && truthy_param?(params.dig(:advice, :paid_text_video_menu_enabled))
-  end
-
-  def truthy_param?(value)
-    ActiveModel::Type::Boolean.new.cast(value)
+    advice.accepts_paid_advice = false
+    advice.paid_text_menu_enabled = false
+    advice.paid_text_video_menu_enabled = false
   end
 
   def authorize_advice_polish!

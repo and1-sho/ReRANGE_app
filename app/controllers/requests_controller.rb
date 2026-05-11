@@ -58,11 +58,6 @@ class RequestsController < ApplicationController
       @remaining_inline_advice_polish_attempts = remaining_advice_polish_attempts_for_show(@inline_advice_polish_draft_token)
     end
 
-    if current_user.trainer?
-      @my_advice_offer = @request.advices
-                                 .includes(:paid_advice_requests)
-                                 .find_by(user_id: current_user.id)
-    end
   end
 
   def new
@@ -72,20 +67,9 @@ class RequestsController < ApplicationController
 
   def create
     @request = current_user.requests.build(request_params)
-    # TODO: MVP ver.0.1.0では公開/非公開UIは非表示。
-    # 現在は1対1検証のため既存ロジックは一旦残す。
-    # メンバー・トレーナーを増やす前に、公開/非公開・閲覧範囲の仕様を見直す。
-    @request.directed_to_trainer_id = nil if params[:request_visibility].to_s != "private"
+    # MVP ver.0.1.0: 公開/非公開UIは未使用。全リクエストを公開扱いに固定。
+    @request.directed_to_trainer_id = nil
     draft_token = params[:request_polish_draft_token].to_s
-
-    # TODO: MVP ver.0.1.0では非公開リクエスト作成UIは非表示。
-    # 今後、公開/非公開機能を戻すときにこの分岐を再確認する。
-    if params[:request_visibility].to_s == "private" && @request.directed_to_trainer_id.blank?
-      @request.errors.add(:base, "非公開の場合はトレーナーを選択してください")
-      @trainers = trainers_for_request_form
-      render :new, status: :unprocessable_entity
-      return
-    end
 
     if @request.save
       clear_polish_attempts!(draft_token)
@@ -104,33 +88,10 @@ class RequestsController < ApplicationController
 
   def update
     redirect_to request_path(@request), alert: "現在この機能は利用できません"
-    return
-
-    old_video_key = @request.video.attached? ? @request.video.blob.key : nil
-    video_removed_by_user = params.dig(:request, :remove_video) == "1" && params.dig(:request, :video).blank? && @request.video.attached?
-    handle_video_removal_on_update!
-
-    if @request.update(request_params)
-      mark_request_as_edited_if_needed!(old_video_key, video_removed_by_user)
-      sync_video_thumbnail_after_update!(old_video_key)
-      notify_advising_trainer_request_body_updated!
-      # /requests/:idにリダイレクトするってこと（つまりrequests#showに移動する）
-      redirect_to @request, notice: "更新しました"
-    else
-      @editing_request = true
-      @request_edit_form = @request
-      @request_polish_draft_token = request_edit_polish_token(@request)
-      @remaining_request_polish_attempts = remaining_polish_attempts(@request_polish_draft_token)
-      render :show, status: :unprocessable_entity
-    end
   end
 
   def destroy
     redirect_to request_path(@request), alert: "現在この機能は利用できません"
-    return
-
-    @request.destroy
-    redirect_to requests_path, notice: "削除しました"
   end
 
   def polish
@@ -253,7 +214,6 @@ class RequestsController < ApplicationController
     if action_name == "show"
       scope = Request.includes(
         :user,
-        :paid_advice_requests,
         video_attachment: :blob,
         advices: [:user, video_attachment: :blob]
       )
