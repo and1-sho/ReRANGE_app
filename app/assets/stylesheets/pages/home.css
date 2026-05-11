@@ -4,7 +4,6 @@
 .home {
   min-height: 100vh;
   color: rgb(2, 27, 21);
-  /* font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; */
   background: var(--color-white);
   font-family: "Noto Sans JP", sans-serif;
 }
@@ -13,7 +12,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: rgba(2, 27, 21, 0.18) 0px 8px 22px;
   position: sticky;
   top: 0px;
   z-index: 10;
@@ -22,6 +20,11 @@
   box-sizing: border-box;
   padding: 16px 40px;
   background: var(--color-white);
+  transition: box-shadow 0.25s ease;
+}
+
+.home-header.is-scrolled {
+  box-shadow: rgba(2, 27, 21, 0.18) 0px 8px 22px;
 }
 
 .home-header__brand-logo img {
