@@ -833,6 +833,66 @@
   cursor: pointer;
 }
 
+/*=========== 詳しいアドバイス提案 ===========*/
+.advice-offer-aside {
+  margin-bottom: 12px;
+  padding: 14px 16px;
+  background: #fff;
+  border: 1px solid rgba(2, 27, 21, 0.1);
+  border-radius: 12px;
+}
+
+.advice-offer-aside__heading {
+  margin: 0 0 10px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: rgba(2, 27, 21, 0.55);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.advice-offer-aside__menus {
+  list-style: none;
+  margin: 0 0 10px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.advice-offer-aside__menu-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.advice-offer-aside__menu-label {
+  font-size: 0.85rem;
+  color: #021b15;
+}
+
+.advice-offer-aside__menu-price {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #021b15;
+  white-space: nowrap;
+}
+
+.advice-offer-aside__status-empty {
+  margin: 0;
+  padding-top: 10px;
+  border-top: 1px solid rgba(2, 27, 21, 0.08);
+  font-size: 0.82rem;
+  color: rgba(2, 27, 21, 0.45);
+}
+
+.advice-offer-aside__empty {
+  margin: 0;
+  font-size: 0.85rem;
+  color: rgba(2, 27, 21, 0.45);
+}
+
 /*==========================================================
     　　メッセージの編集
 ==============================================================*/
