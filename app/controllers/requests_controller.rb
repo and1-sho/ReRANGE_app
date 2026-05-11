@@ -16,19 +16,13 @@ class RequestsController < ApplicationController
   before_action :prepare_request_polish_session!, only: [:new, :create, :edit, :update]
 
   def index
+    # MVP ver.0.1.0: 全リクエストは公開扱い。非公開/directタブは未使用。
     @requests = if current_user.member?
-                  Request.where("directed_to_trainer_id IS NULL OR user_id = ?", current_user.id)
+                  Request.all
                 elsif current_user.trainer?
-                  @request_feed_tab = params[:feed] == "direct" ? "direct" : "all"
-                  @has_unadvised_direct_requests = Request
-                    .where(directed_to_trainer_id: current_user.id)
-                    .where.missing(:advices)
-                    .exists?
-                  base = Request.where("directed_to_trainer_id IS NULL OR directed_to_trainer_id = ?", current_user.id)
+                  base = Request.all
                   if params[:filter] == "advised_by_me"
                     base.joins(:advices).where(advices: { user_id: current_user.id }).distinct
-                  elsif @request_feed_tab == "direct"
-                    base.where(directed_to_trainer_id: current_user.id)
                   else
                     base
                   end
@@ -38,26 +32,11 @@ class RequestsController < ApplicationController
   end
 
   def show
-    # MVP ver.0.1.0では非表示：リクエストのインライン編集
-    # if can_current_user_edit_request_inline?
-      # @editing_request = params[:edit_request] == "1"
-      # @request_edit_form = @request
-      # @request_polish_draft_token = request_edit_polish_token(@request)
-      # @remaining_request_polish_attempts = remaining_polish_attempts(@request_polish_draft_token)
-    # end
-
-    if can_current_user_edit_advice_inline?
-      @editing_advice = params[:edit_advice] == "1"
-      @advice_edit_form = current_user_advice_for_request
-      @advice_polish_draft_token = advice_edit_polish_token(@advice_edit_form)
-      @remaining_advice_polish_attempts = remaining_advice_polish_attempts_for_show(@advice_polish_draft_token)
-    end
     if can_current_user_compose_advice_inline?
       @inline_advice = Advice.new
       @inline_advice_polish_draft_token = params[:advice_polish_draft_token].presence || "advice-new-request-#{@request.id}-user-#{current_user.id}"
       @remaining_inline_advice_polish_attempts = remaining_advice_polish_attempts_for_show(@inline_advice_polish_draft_token)
     end
-
   end
 
   def new
