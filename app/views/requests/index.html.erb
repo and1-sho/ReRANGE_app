@@ -32,6 +32,9 @@
             </div>
             <% end %>
 
+<%
+=begin%>
+            <%# MVP ver.0.1.0では非表示：トレーナー側のフィード切り替えタブ %>
             <% if current_user.trainer? && params[:filter] != "advised_by_me" %>
               <div class="requests-home-tabs"  role="tablist" aria-label="ホーム表示切り替え">
                 <%= link_to "すべて",
@@ -50,7 +53,8 @@
                 <% end %>
               </div>
             <% end %>
-
+<%
+=end%>
             <%= render "requests/feed_list" %>
           </div>
           <div class="requests-feed-aside-spacer" aria-hidden="true"></div>

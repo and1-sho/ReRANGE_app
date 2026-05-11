@@ -18,13 +18,29 @@
         data-controller="request-feed-card"
         data-request-feed-card-detail-url-value="<%= request_path(request) %>"
       >
+<%
+=begin%>
+        <%# MVP ver.0.1.0では非表示：アイコンクリックでプロフィールへ %>
         <%= link_to profile_path_for(request.user), class: "request-card__avatar-link", aria: { label: "#{request.user.name}のプロフィールへ移動" } do %>
           <%= render "shared/user_avatar_icon", variant: :card %>
         <% end %>
+<%
+=end%>
+
+        <span class="request-card__avatar-link">
+          <%= render "shared/user_avatar_icon", variant: :card %>
+        </span>
+
         <div class="request-card__body">
           <div class="request-card__header">
             <div class="request-card__header-main">
+<%
+=begin%>
+              <%# MVP ver.0.1.0では非表示：名前クリックでプロフィールへ %>
               <span class="request-card__name"><%= link_to request.user.name, profile_path_for(request.user) %></span>
+<%
+=end%>
+              <span class="request-card__name"><%= request.user.name %></span>
               <span class="request-card__dot">・</span>
               <time class="request-card__date" datetime="<%= request.created_at.iso8601 %>" title="<%= social_time_title(request.created_at) %>">
                 <%= social_time_ago(request.created_at) %>

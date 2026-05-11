@@ -7,6 +7,7 @@
 <% profile_edit_active = current_page?(edit_trainer_path(current_user)) %>
 <aside class="requests-sidebar" aria-label="メインメニュー">
   <nav class="requests-sidebar__nav">
+
     <%= link_to requests_path,
           class: "requests-sidebar__link #{"requests-sidebar__link--active" if home_feed_active}",
           aria: (home_feed_active ? { current: "page" } : {}) do %>
@@ -15,6 +16,7 @@
       </svg>
       <span class="requests-sidebar__link-label">ホーム</span>
     <% end %>
+
     <%= link_to requests_path(filter: "advised_by_me"),
           class: "requests-sidebar__link #{"requests-sidebar__link--active" if advised_feed_active}",
           aria: (advised_feed_active ? { current: "page" } : {}) do %>
@@ -23,6 +25,9 @@
       </svg>
       <span class="requests-sidebar__link-label">フィードバック</span>
     <% end %>
+<%
+=begin%>
+    <%# MVP ver.0.1.0では非表示：トレーナー側の取引メニュー %>
     <%= link_to transactions_path,
           class: "requests-sidebar__link #{"requests-sidebar__link--active" if transactions_active}",
           aria: (transactions_active ? { current: "page" } : {}) do %>
@@ -31,6 +36,8 @@
       </svg>
       <span class="requests-sidebar__link-label">取引</span>
     <% end %>
+
+    <%# MVP ver.0.1.0では非表示：トレーナー側のプロフィールを見るメニュー %>
     <%= link_to trainer_path(current_user),
           class: "requests-sidebar__link #{"requests-sidebar__link--active" if profile_show_active}",
           aria: (profile_show_active ? { current: "page" } : {}) do %>
@@ -39,6 +46,8 @@
       </svg>
       <span class="requests-sidebar__link-label">プロフィールを見る</span>
     <% end %>
+
+    <%# MVP ver.0.1.0では非表示：トレーナー側のプロフィールを編集メニュー %>
     <%= link_to edit_trainer_path(current_user),
           class: "requests-sidebar__link #{"requests-sidebar__link--active" if profile_edit_active}",
           aria: (profile_edit_active ? { current: "page" } : {}) do %>
@@ -47,5 +56,8 @@
       </svg>
       <span class="requests-sidebar__link-label">プロフィールを編集</span>
     <% end %>
+<%
+=end%>
+
   </nav>
 </aside>

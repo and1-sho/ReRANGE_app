@@ -34,11 +34,25 @@
               <!-- 投稿ヘッダー -->
               <header class="request-card__header">
                 <div class="request-card__header-main">
+<%
+=begin%>
+                  <%# MVP ver.0.1.0では非表示：アイコンクリックでプロフィールへ %>
                   <%= link_to profile_path_for(@request.user), class: "request-show__avatar-link", aria: { label: "#{@request.user.name}のプロフィールへ移動" } do %>
                     <%= render "shared/user_avatar_icon", variant: :card %>
                   <% end %>
+<%
+=end%>
+                  <span class="request-show__avatar-link">
+                    <%= render "shared/user_avatar_icon", variant: :card %>
+                  </span>
+
                   <span class="request-card__name">
+<%
+=begin%>
                     <%= link_to @request.user.name, profile_path_for(@request.user) %>
+<%
+=end%>
+                  <%= @request.user.name %>
                   </span>
                   <span class="request-card__dot">·</span>
                   <time class="request-card__date" datetime="<%= @request.created_at.iso8601 %>" title="<%= social_time_title(@request.created_at) %>">
@@ -209,12 +223,25 @@
                     <!-- アドバイスヘッダー -->
                     <header class="advice-card__header">
                       <div class="advice-card__header-main">
+<%
+=begin%>
+                        <%# MVP ver.0.1.0では非表示：アイコンクリックでプロフィールへ %>
                         <%= link_to profile_path_for(advice.user), class: "advice__avatar", aria: { label: "#{advice.user.name}のプロフィールへ移動" } do %>
                           <%= render "shared/user_avatar_icon", variant: :card %>
                         <% end %>
-
+<%
+=end%>
+                        <span class="advice__avatar">
+                          <%= render "shared/user_avatar_icon", variant: :card %>
+                        </span>
                         <span class="advice-card__name">
+<%
+=begin%>
+                          <%# MVP ver.0.1.0では非表示：アイコンクリックでプロフィールへ %>
                           <%= link_to advice.user.name, profile_path_for(advice.user) %>
+<%
+=end%>
+                          <%= advice.user.name %>
                         </span>
                         <span class="request-card__dot">·</span>
                         <time class="advice-card__date" datetime="<%= advice.created_at.iso8601 %>" title="<%= social_time_title(advice.created_at) %>">
@@ -403,7 +430,7 @@
                   </div>
                   <%= f.text_area :body,
                     rows: 1,
-                    placeholder: "アドバイスをください",
+                    placeholder: "アドバイスを書く",
                     class: "request__inline-compose-field",
                     data: {
                       inline_compose_target: "field",
@@ -443,9 +470,18 @@
                     </label>
                     <button type="button" class="request__advice-editor-polish" data-request-polish-target="polishButton" data-action="request-polish#polish" disabled>文章を整える</button>
                     <button type="button" class="request__inline-cancel" data-action="inline-compose#cancel">キャンセル</button>
+                    <%= f.submit "投稿", class: "request__inline-submit" %>
+<%
+=begin%>             
+                    <%# MVP ver.0.1.0では非表示：有料アドバイス設定モーダル用のボタン %>
                     <button type="button" class="request__inline-submit" data-action="advice-offer-modal#open">コメント</button>
-                  </div>
+                    </div>
+<%
+=end%>
 
+<%
+=begin%>
+                  <%# MVP ver.0.1.0では非表示：有料アドバイス設定モーダル %>
                   <div class="request__modal-backdrop" data-advice-offer-modal-target="backdrop" hidden>
                     <div class="request__modal">
                       <h3 class="request__modal-title">有料アドバイス設定</h3>
@@ -471,6 +507,9 @@
                       </div>
                     </div>
                   </div>
+<%
+=end%>
+
                   <% end %>
                 </div>
               <% elsif advice_list.blank? %>
@@ -480,11 +519,16 @@
 
             <!-- 投稿フォーム -->
             <div class="requests-feed-aside-spacer" aria-hidden="true"></div>
+<%
+=begin%>
+            <%# MVP ver.0.1.0では非表示：右側の詳しいアドバイス提案エリア %>
             <% if current_user.trainer? %>
               <%= render "shared/requests_feed_aside", my_advice_offer: @my_advice_offer %>
             <% else %>
               <%= render "shared/requests_feed_aside" %>
             <% end %>
+<%
+=end%>
           </div>
         </div>
       </div>

@@ -1,35 +1,38 @@
-<%# フィード右列（著作権・Reddit の右カラム相当・合計幅 1120px の一部） %>
-<% if local_assigns.key?(:my_advice_offer) %>
-  <aside class="requests-feed-aside requests-feed-aside--fixed" aria-label="有料アドバイス提案">
-    <div class="advice-offer-aside">
-      <p class="advice-offer-aside__heading">詳しいアドバイス提案</p>
-      <% if my_advice_offer&.accepts_paid_advice_enabled? %>
-        <ul class="advice-offer-aside__menus">
-          <% my_advice_offer.paid_menu_options.each do |option| %>
-            <li class="advice-offer-aside__menu-item">
-              <span class="advice-offer-aside__menu-label"><%= option[:label] %></span>
-              <span class="advice-offer-aside__menu-price">¥<%= number_with_delimiter(option[:price_jpy]) %></span>
-            </li>
-          <% end %>
-        </ul>
-        <% transaction = my_advice_offer.paid_advice_requests.first %>
-        <% if transaction %>
-          <div class="advice-offer-aside__status-row">
-            <span class="advice-offer-aside__status-badge"><%= transaction.status_label %></span>
-            <% unless transaction.completed? %>
-              <%= link_to "取引を確認", transaction_path(transaction), class: "advice-offer-aside__transaction-link" %>
-            <% end %>
-          </div>
-        <% else %>
-          <p class="advice-offer-aside__status-empty">未購入</p>
-        <% end %>
-      <% else %>
-        <p class="advice-offer-aside__empty">詳しいアドバイス提案なし</p>
-      <% end %>
-    </div>
-  </aside>
-<% end %>
 
+<%# MVP ver.0.1.0では非表示：右側エリア用スペーサー %>
+<%if false%>
+  <%# フィード右列（著作権・Reddit の右カラム相当・合計幅 1120px の一部） %>
+  <% if local_assigns.key?(:my_advice_offer) %>
+    <aside class="requests-feed-aside requests-feed-aside--fixed" aria-label="有料アドバイス提案">
+      <div class="advice-offer-aside">
+        <p class="advice-offer-aside__heading">詳しいアドバイス提案</p>
+        <% if my_advice_offer&.accepts_paid_advice_enabled? %>
+          <ul class="advice-offer-aside__menus">
+            <% my_advice_offer.paid_menu_options.each do |option| %>
+              <li class="advice-offer-aside__menu-item">
+                <span class="advice-offer-aside__menu-label"><%= option[:label] %></span>
+                <span class="advice-offer-aside__menu-price">¥<%= number_with_delimiter(option[:price_jpy]) %></span>
+              </li>
+            <% end %>
+          </ul>
+          <% transaction = my_advice_offer.paid_advice_requests.first %>
+          <% if transaction %>
+            <div class="advice-offer-aside__status-row">
+              <span class="advice-offer-aside__status-badge"><%= transaction.status_label %></span>
+              <% unless transaction.completed? %>
+                <%= link_to "取引を確認", transaction_path(transaction), class: "advice-offer-aside__transaction-link" %>
+              <% end %>
+            </div>
+          <% else %>
+            <p class="advice-offer-aside__status-empty">未購入</p>
+          <% end %>
+        <% else %>
+          <p class="advice-offer-aside__empty">詳しいアドバイス提案なし</p>
+        <% end %>
+      </div>
+    </aside>
+  <% end %>
+<%end %>
 
 <aside class="site-footer" aria-label="サイト情報">
   <p class="site-footer__copy">Re:RANGE ©2026. All reserved.</p>
