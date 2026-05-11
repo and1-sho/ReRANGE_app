@@ -1,5 +1,7 @@
 class TransactionsController < ApplicationController
   before_action :authenticate_user!
+  # MVP ver.0.1.0: 取引機能は未使用。URL直打ちを含めアクセス不可にする。
+  before_action -> { redirect_to requests_path }
   before_action :finalize_overdue_transactions!
   before_action :set_paid_advice_request, only: [:show, :deliver, :complete]
   before_action :authorize_transaction_access!, only: [:show]
