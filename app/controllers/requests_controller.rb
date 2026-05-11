@@ -38,12 +38,13 @@ class RequestsController < ApplicationController
   end
 
   def show
-    if can_current_user_edit_request_inline?
-      @editing_request = params[:edit_request] == "1"
-      @request_edit_form = @request
-      @request_polish_draft_token = request_edit_polish_token(@request)
-      @remaining_request_polish_attempts = remaining_polish_attempts(@request_polish_draft_token)
-    end
+    # MVP ver.0.1.0では非表示：リクエストのインライン編集
+    # if can_current_user_edit_request_inline?
+      # @editing_request = params[:edit_request] == "1"
+      # @request_edit_form = @request
+      # @request_polish_draft_token = request_edit_polish_token(@request)
+      # @remaining_request_polish_attempts = remaining_polish_attempts(@request_polish_draft_token)
+    # end
 
     if can_current_user_edit_advice_inline?
       @editing_advice = params[:edit_advice] == "1"
@@ -71,9 +72,14 @@ class RequestsController < ApplicationController
 
   def create
     @request = current_user.requests.build(request_params)
+    # TODO: MVP ver.0.1.0では公開/非公開UIは非表示。
+    # 現在は1対1検証のため既存ロジックは一旦残す。
+    # メンバー・トレーナーを増やす前に、公開/非公開・閲覧範囲の仕様を見直す。
     @request.directed_to_trainer_id = nil if params[:request_visibility].to_s != "private"
     draft_token = params[:request_polish_draft_token].to_s
 
+    # TODO: MVP ver.0.1.0では非公開リクエスト作成UIは非表示。
+    # 今後、公開/非公開機能を戻すときにこの分岐を再確認する。
     if params[:request_visibility].to_s == "private" && @request.directed_to_trainer_id.blank?
       @request.errors.add(:base, "非公開の場合はトレーナーを選択してください")
       @trainers = trainers_for_request_form
@@ -93,9 +99,13 @@ class RequestsController < ApplicationController
   end
 
   def edit
+    redirect_to request_path(@request), alert: "現在この機能は利用できません"
   end
 
   def update
+    redirect_to request_path(@request), alert: "現在この機能は利用できません"
+    return
+
     old_video_key = @request.video.attached? ? @request.video.blob.key : nil
     video_removed_by_user = params.dig(:request, :remove_video) == "1" && params.dig(:request, :video).blank? && @request.video.attached?
     handle_video_removal_on_update!
@@ -116,6 +126,9 @@ class RequestsController < ApplicationController
   end
 
   def destroy
+    redirect_to request_path(@request), alert: "現在この機能は利用できません"
+    return
+
     @request.destroy
     redirect_to requests_path, notice: "削除しました"
   end

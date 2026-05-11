@@ -2,7 +2,7 @@
 
   <div class="site-header">
     <%= link_to app_home_path, class: "requests-feed-chrome__brand" do %>
-      <span class="site-header__brand-logo">Re:RANGE</span>
+      <span class="site-header__brand-logo">10K</span>
     <% end %>
 
     <div class="site-header__account-actions">
@@ -30,25 +30,6 @@
                 <p class="profile-setting__text"><%= profile_lead %></p>
                 <%= link_to "プロフィールを設定", profile_edit, class: "menu-btn menu-btn--primary" %>
             </div>
-            <% end %>
-
-            <% if current_user.trainer? && params[:filter] != "advised_by_me" %>
-              <div class="requests-home-tabs"  role="tablist" aria-label="ホーム表示切り替え">
-                <%= link_to "すべて",
-                      requests_path,
-                      class: "requests-home-tabs__tab#{@request_feed_tab != "direct" ? " is-active" : ""}",
-                      role: "tab",
-                      aria: { selected: (@request_feed_tab != "direct").to_s } %>
-                <%= link_to requests_path(feed: "direct"),
-                      class: "requests-home-tabs__tab#{@request_feed_tab == "direct" ? " is-active" : ""}",
-                      role: "tab",
-                      aria: { selected: (@request_feed_tab == "direct").to_s } do %>
-                  <span>あなた宛（非公開）</span>
-                  <% if @has_unadvised_direct_requests %>
-                    <span aria-label="未対応の非公開リクエストがあります"></span>
-                  <% end %>
-                <% end %>
-              </div>
             <% end %>
 
             <%= render "requests/feed_list" %>

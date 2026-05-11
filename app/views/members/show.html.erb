@@ -1,12 +1,11 @@
 <div class="requests-page layout-feed page-members-show">
   <div class="requests-feed-chrome">
     <%= link_to app_home_path, class: "requests-feed-chrome__brand" do %>
-      <span class="requests-feed-chrome__brand-name">Re:RANGE</span>
+      <span class="requests-feed-chrome__brand-name">10K</span>
     <% end %>
 
     <div class="requests-feed-chrome__actions">
       <% if user_signed_in? %>
-        <%= render "shared/notification_bell_link" %>
         <%= render "shared/account_menu" %>
       <% else %>
         <%= link_to "無料ではじめる", new_user_registration_path, class: "menu-btn menu-btn--primary" %>
