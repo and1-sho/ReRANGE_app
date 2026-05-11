@@ -6,7 +6,6 @@
     <% end %>
 
     <div class="site-header__account-actions">
-      <%= render "shared/notification_bell_link" %>
       <%= render "shared/account_menu" %>
     </div>
   </div>
@@ -15,9 +14,6 @@
   <div class="requests-feed-box">
   <% if current_user.member? || current_user.trainer? %>
     <% sidebar_partial = current_user.member? ? "member_sidebar" : "trainer_sidebar" %>
-    <% profile_ok = current_user.member? ? current_user.member_profile_completed? : current_user.trainer_profile_completed? %>
-    <% profile_edit = current_user.member? ? edit_member_path(current_user) : edit_trainer_path(current_user) %>
-    <% profile_lead = current_user.member? ? "プロフィールを設定と、トレーナーがあなたの状況を理解しやすくなります。" : "プロフィールを設定と、メンバーがあなたの指導スタイルを把握しやすくなります。" %>
 
     <div class="requests-layout">
       <%= render sidebar_partial %>
@@ -25,13 +21,6 @@
       <div class="requests-main">
         <div class="requests-feed-main">
           <div class="requests-feed-inner">
-            <% unless profile_ok %>
-            <div class="profile-setting">
-                <p class="profile-setting__text"><%= profile_lead %></p>
-                <%= link_to "プロフィールを設定", profile_edit, class: "menu-btn menu-btn--primary" %>
-            </div>
-            <% end %>
-
             <%= render "requests/feed_list" %>
           </div>
           <div class="requests-feed-aside-spacer" aria-hidden="true"></div>

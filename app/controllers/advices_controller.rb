@@ -41,33 +41,18 @@ class AdvicesController < ApplicationController
   end
 
   def edit
-    @advice_polish_draft_token = advice_edit_polish_token(@advice)
-    @remaining_polish_attempts = remaining_advice_polish_attempts(@advice_polish_draft_token)
+    # MVP ver.0.1.0: アドバイス編集は未使用。
+    redirect_to request_path(@request), alert: "現在この機能は利用できません"
   end
 
   def update
-    old_video_key = @advice.video.attached? ? @advice.video.blob.key : nil
-    video_removed_by_user = params.dig(:advice, :remove_video) == "1" && params.dig(:advice, :video).blank? && @advice.video.attached?
-    handle_advice_video_removal_on_update!
-    draft_token = params[:advice_polish_draft_token].presence || advice_edit_polish_token(@advice)
-
-    if @advice.update(advice_params)
-      mark_advice_as_edited_if_needed!(old_video_key, video_removed_by_user)
-      sync_advice_video_thumbnail_after_update!(old_video_key)
-      redirect_to request_path(@request), notice: "アドバイスを更新しました"
-    else
-      @advice_polish_draft_token = advice_edit_polish_token(@advice)
-      @remaining_polish_attempts = remaining_advice_polish_attempts(@advice_polish_draft_token)
-      @editing_advice = true
-      @advice_edit_form = @advice
-      @remaining_advice_polish_attempts = @remaining_polish_attempts
-      render "requests/show", status: :unprocessable_entity
-    end
+    # MVP ver.0.1.0: アドバイス編集は未使用。
+    redirect_to request_path(@request), alert: "現在この機能は利用できません"
   end
 
   def destroy
-    @advice.destroy
-    redirect_to request_path(@request), notice: "アドバイスを削除しました"
+    # MVP ver.0.1.0: アドバイス削除は未使用。
+    redirect_to request_path(@request), alert: "現在この機能は利用できません"
   end
 
   def polish
