@@ -1,5 +1,7 @@
 class PaidAdviceRequestsController < ApplicationController
   before_action :authenticate_user!
+  # MVP ver.0.1.0: 有料アドバイス機能は未使用。URL直打ちを含めアクセス不可にする。
+  before_action -> { redirect_to requests_path }
   before_action :set_request_and_advice
   before_action :ensure_request_owner_member!
 
