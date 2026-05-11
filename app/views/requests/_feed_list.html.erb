@@ -30,6 +30,9 @@
                 <%= social_time_ago(request.created_at) %>
               </time>
             </div>
+            <%# MVP ver.0.1.0では非表示：リクエスト編集・削除メニュー %>
+<%
+=begin%>
             <% if user_signed_in? && current_user.member? && request.user_id == current_user.id %>
               <details class="request-card__overflow" data-controller="details-dismiss">
                 <summary class="request-card__overflow-trigger" aria-label="投稿のメニュー">
@@ -42,6 +45,8 @@
                 </div>
               </details>
             <% end %>
+            <%
+=end%>
           </div>
 
           <h2 class="request-card__title">

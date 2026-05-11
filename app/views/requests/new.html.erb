@@ -2,7 +2,7 @@
 
   <header class="site-header">
     <%= link_to app_home_path, class: "site-header__brand" do %>
-      <span class="site-header__brand-logo">Re:RANGE</span>
+      <span class="site-header__brand-logo">10K</span>
     <% end %>
 
     <div class="site-header__account-actions">
@@ -18,13 +18,16 @@
 
       <div class="layout__main">
         <div class="layout__main-inner">
+<%
+=begin%>
           <% unless current_user.member_profile_completed? %>
             <div class="profile-setting">
               <p class="profile-setting__text">プロフィールを設定と、トレーナーがあなたの状況を理解しやすくなります。</p>
               <%= link_to "プロフィールを設定", edit_member_path(current_user), class: "menu-btn menu-btn--primary" %>
             </div>
           <% end %>
-
+<%
+=end%>
           <!-- 新規リクエスト -->
           <main class="request-new__main">
             <h1 class="request-new__main-title">新規リクエスト</h1>
@@ -51,6 +54,9 @@
             } do |f| %>
               <%= hidden_field_tag :request_polish_draft_token, @request_polish_draft_token %>
 
+              <%# MVP ver.0.1.0では非表示：公開・非公開選択 %>
+<%
+=begin%>
               <!-- 公開・非公開 -->
               <div class="request-new__visibility" data-action="change->request-visibility#sync">
                 <div class="request-new__visibility-options">
@@ -85,7 +91,8 @@
                     data: { request_visibility_target: "trainerSelect" } %>
                 </div>
               </div>
-
+<%
+=end%>
               <!-- タイトル -->
               <div
                 class="request-new__form-block title-block"

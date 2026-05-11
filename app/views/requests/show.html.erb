@@ -2,7 +2,7 @@
 
   <header class="site-header">
     <%= link_to app_home_path, class: "site-header__brand" do %>
-      <span class="site-header__brand-logo">Re:RANGE</span>
+      <span class="site-header__brand-logo">10K</span>
     <% end %>
 
     <div class="site-header__account-actions">
@@ -47,6 +47,9 @@
                 </div>
 
                 <!-- 投稿のメニュー -->
+                <%# MVP ver.0.1.0では非表示：リクエスト編集・削除メニュー %>
+<%
+=begin%>
                 <% if current_user.member? && @request.user_id == current_user.id && !@editing_request %>
                   <details class="request-card__overflow" data-controller="details-dismiss">
                     <summary class="request-card__overflow-trigger" aria-label="投稿のメニュー">
@@ -59,6 +62,8 @@
                     </div>
                   </details>
                 <% end %>
+<%
+=end%>
               </header>
 
               <!-- 投稿本文 -->
@@ -95,6 +100,9 @@
                     <% end %>
                   </div>
 
+                  <%# MVP ver.0.1.0では非表示：詳細画面のアドバイス件数 %>
+<%
+=begin%>
                   <!-- エンゲージメント -->
                   <div class="request__meta" role="group" aria-label="アドバイス件数">
                     <span class="request__comments">
@@ -104,6 +112,8 @@
                       <span class="request__comments-count"><%= @request.advice_count %></span>
                     </span>
                   </div>
+<%
+=end%>
                 <% end %>
 
                 <% if @editing_request %>
@@ -166,15 +176,6 @@
                       </div>
                     <% end %>
                   </div>
-
-                  <div class="request__meta" role="group" aria-label="アドバイス件数">
-                    <span class="request__comments">
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="request__comments-icon" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 0 1-.923 1.785A5.969 5.969 0 0 0 6 21c1.282 0 2.47-.402 3.445-1.087.81.22 1.668.337 2.555.337Z" />
-                      </svg>
-                      <span class="request__comments-count"><%= @request.advice_count %></span>
-                    </span>
-                  </div>
                 <% end %>
               </div>
             </article>
@@ -207,7 +208,9 @@
                           <%= social_time_ago(advice.created_at) %>
                         </time>
                       </div>
-
+                      <%# MVP ver.0.1.0では非表示：詳細画面、編集・削除メニュー %>
+<%
+=begin%>
                       <% if current_user.trainer? && advice.user_id == current_user.id && !editing_this_advice %>
                         <details class="request-card__overflow" data-controller="details-dismiss">
                           <summary class="request-card__overflow-trigger" aria-label="アドバイスのメニュー">
@@ -220,6 +223,8 @@
                           </div>
                         </details>
                       <% end %>
+<%
+=end%>
                     </header>
 
                     <!-- 本文 -->
@@ -230,6 +235,11 @@
                           <p class="request__edited-mark">（編集済み）</p>
                         <% end %>
                       </div>
+
+                      <%# MVP ver.0.1.0では非表示：詳しいアドバイス依頼・決済導線 %>
+
+<%
+=begin%>
                       <% if current_user.member? && @request.user_id == current_user.id && advice.accepts_paid_advice_enabled? && advice.paid_menu_options.any? %>
                         <% existing_transaction = @request.paid_advice_requests.where(member_id: current_user.id).where.not(status: PaidAdviceRequest::STATUS_CHECKOUT_STARTED).order(created_at: :desc).first %>
                         <% if existing_transaction.present? && !existing_transaction.completed? %>
@@ -265,6 +275,8 @@
                           </div>
                         <% end %>
                       <% end %>
+<%
+=end%>
                     <% end %>
 
                     <% if advice.video.attached? %>
