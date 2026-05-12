@@ -1,92 +1,119 @@
+# ============================================================
+# RequestsController
+#
+# メンバーが投稿する「リクエスト（質問・相談）」に関する操作を担うコントローラ。
+# 一覧表示・詳細表示・新規作成を提供する。
+# 編集・削除は MVP ver.0.1.0 では使用しないためリダイレクトで封じている。
+# ============================================================
 class RequestsController < ApplicationController
+  # AI 文章整えの最大試行回数
   POLISH_MAX_ATTEMPTS = 2
 
-  # ログインしていない人はアクセスできない設定
+  # ログインしていないユーザーはすべてのアクションに入れない
   before_action :authenticate_user!
-  # memberかをチェックする設定
-  before_action :ensure_member!, only: [:new, :create, :edit, :update, :destroy, :polish]
-  # リクエストをセットする設定
-  before_action :set_request, only: [:show, :edit, :update, :destroy]
-  # 閲覧権限: 公開リクエストはログイン全員、指定トレーナー宛は投稿者とそのトレーナーのみ（show）
-  before_action :authorize_request_access!, only: [:show]
-  # リクエスト詳細を開いたら、このリクエストに紐づく自分宛未読通知を既読にする
+  # 新規作成・AI整えはメンバーだけが実行できる
+  before_action :ensure_member!, only: [:new, :create, :polish]
+  # show / edit / update / destroy では URL の :id からリクエストを DB から取り出す
+  before_action :set_request,    only: [:show, :edit, :update, :destroy]
+  # 詳細を開いたとき、そのリクエストに紐づく自分宛の未読通知を既読にする
   before_action :mark_request_notifications_as_read!, only: [:show]
-  # 編集・削除はリクエストの投稿者本人のみ（member 同士のなりすまし防止）
-  before_action :authorize_request_owner!, only: [:edit, :update, :destroy]
-  before_action :prepare_request_polish_session!, only: [:new, :create]
+  # 新規投稿フォーム・投稿時に AI整えのセッション情報を初期化する
+  before_action :prepare_request_polish_session!,     only: [:new, :create]
 
+  # GET /requests
+  # リクエスト一覧を表示する
+  # トレーナーは「自分がアドバイス済みのリクエストだけ」に絞り込めるフィルター付き
   def index
-    # MVP ver.0.1.0: 全リクエストは公開扱い。非公開/directタブは未使用。
-    @requests = if current_user.member?
+    @requests = if current_user.trainer? && params[:filter] == "advised_by_me"
+                  # フィルターあり：自分のアドバイスが付いているリクエストだけを取得
+                  Request.joins(:advices).where(advices: { user_id: current_user.id }).distinct
+                else
+                  # フィルターなし：全リクエストを取得
                   Request.all
-                elsif current_user.trainer?
-                  base = Request.all
-                  if params[:filter] == "advised_by_me"
-                    base.joins(:advices).where(advices: { user_id: current_user.id }).distinct
-                  else
-                    base
-                  end
                 end
-    @requests = @requests.includes(:user, :advices, video_attachment: :blob, video_thumbnail_attachment: :blob)
-                           .order(created_at: :desc)
+
+    # N+1 クエリを防ぐため、関連データをまとめて取得する
+    @requests = @requests
+                  .includes(:user, :advices, video_attachment: :blob, video_thumbnail_attachment: :blob)
+                  .order(created_at: :desc)
   end
 
+  # GET /requests/:id
+  # リクエスト詳細を表示する
+  # トレーナーだった場合、まだアドバイスを書いていなければインラインの投稿フォームを準備する
   def show
-    if can_current_user_compose_advice_inline?
+    if can_compose_advice_inline?
       @inline_advice = Advice.new
-      @inline_advice_polish_draft_token = params[:advice_polish_draft_token].presence || "advice-new-request-#{@request.id}-user-#{current_user.id}"
-      @remaining_inline_advice_polish_attempts = remaining_advice_polish_attempts_for_show(@inline_advice_polish_draft_token)
+      # AI整えのセッションキー（画面をリロードしても試行回数を引き継ぐため固定キーを使う）
+      @inline_advice_polish_draft_token = params[:advice_polish_draft_token].presence ||
+                                          "advice-new-request-#{@request.id}-user-#{current_user.id}"
+      @remaining_inline_advice_polish_attempts =
+        remaining_advice_polish_attempts_for_show(@inline_advice_polish_draft_token)
     end
   end
 
+  # GET /requests/new
+  # 新規リクエスト投稿フォームを表示する
   def new
     @request = Request.new
-    @trainers = trainers_for_request_form
   end
 
+  # POST /requests
+  # フォームの内容を受け取ってリクエストを保存する
   def create
     @request = current_user.requests.build(request_params)
-    # MVP ver.0.1.0: 公開/非公開UIは未使用。全リクエストを公開扱いに固定。
+    # MVP ver.0.1.0: 公開/非公開 UI は未使用。全リクエストを公開扱いに固定
     @request.directed_to_trainer_id = nil
     draft_token = params[:request_polish_draft_token].to_s
 
     if @request.save
-      clear_polish_attempts!(draft_token)
-      enqueue_video_thumbnail_job_if_video_attached!(@request)
-      notify_trainers_new_request!
+      clear_polish_attempts!(draft_token)               # AI整えの試行カウントをリセット
+      enqueue_video_thumbnail_job_if_attached!(@request) # 動画があればサムネ生成ジョブを非同期で実行
+      notify_trainers_new_request!                       # 全トレーナーに通知を作成
       redirect_to requests_path, notice: "作成しました"
     else
-      @trainers = trainers_for_request_form
       render :new, status: :unprocessable_entity
     end
   end
 
+  # GET /requests/:id/edit
+  # MVP ver.0.1.0 では編集機能を停止している
   def edit
     redirect_to request_path(@request), alert: "現在この機能は利用できません"
   end
 
+  # PATCH /requests/:id
+  # MVP ver.0.1.0 では更新機能を停止している
   def update
     redirect_to request_path(@request), alert: "現在この機能は利用できません"
   end
 
+  # DELETE /requests/:id
+  # MVP ver.0.1.0 では削除機能を停止している
   def destroy
     redirect_to request_path(@request), alert: "現在この機能は利用できません"
   end
 
+  # POST /requests/polish
+  # AI に本文の文章整えを依頼して、提案テキストを JSON で返す（非同期・Ajax）
   def polish
     draft_token = params[:draft_token].to_s
-    return render json: { error: "整形セッションが無効です。再読み込みしてください。" }, status: :unprocessable_entity if draft_token.blank?
+    if draft_token.blank?
+      return render json: { error: "整形セッションが無効です。再読み込みしてください。" }, status: :unprocessable_entity
+    end
 
     if remaining_polish_attempts(draft_token) <= 0
       return render json: { error: "文章を整える操作は2回までです", remaining_attempts: 0 }, status: :unprocessable_entity
     end
 
     body = params[:body].to_s.strip
-    return render json: { error: "本文を入力してください", remaining_attempts: remaining_polish_attempts(draft_token) }, status: :unprocessable_entity if body.blank?
+    if body.blank?
+      return render json: { error: "本文を入力してください", remaining_attempts: remaining_polish_attempts(draft_token) }, status: :unprocessable_entity
+    end
 
     polisher = ::RequestTextPolisher.new(body: body)
     proposal = polisher.call
-    increment_polish_attempts!(draft_token)
+    increment_polish_attempts!(draft_token) # 試行回数を1増やす
     render json: proposal.merge(remaining_attempts: remaining_polish_attempts(draft_token)), status: :ok
   rescue RequestTextPolisher::PolishError => e
     render json: { error: e.message, remaining_attempts: remaining_polish_attempts(draft_token) }, status: :unprocessable_entity
@@ -94,89 +121,101 @@ class RequestsController < ApplicationController
 
   private
 
+  # URL の :id からリクエストを取得し @request に入れる
+  # N+1 を防ぐためアドバイスと投稿者・動画も一緒に読み込む
+  def set_request
+    @request = Request.includes(
+      :user,
+      video_attachment: :blob,
+      advices: [:user, video_attachment: :blob]
+    ).find(params[:id])
+  end
+
+  # フォームから受け取っていいパラメータだけを許可する（セキュリティ対策）
+  def request_params
+    params.require(:request).permit(:title, :body, :video)
+  end
+
+  # AI整えで使うセッションキーと残り試行回数を初期化する
   def prepare_request_polish_session!
     @request_polish_draft_token = params[:request_polish_draft_token].presence || SecureRandom.uuid
-    @remaining_polish_attempts = remaining_polish_attempts(@request_polish_draft_token)
+    @remaining_polish_attempts  = remaining_polish_attempts(@request_polish_draft_token)
   end
 
-  def request_params
-    permitted = [:title, :body, :video]
-    permitted << :directed_to_trainer_id if action_name == "create"
-    params.require(:request).permit(*permitted)
-  end
-
-  def trainers_for_request_form
-    User.trainer.order(:name, :id)
-  end
-
+  # セッションに保存している「AI整え試行回数」のストアを取得する
+  # セッションの値が壊れていた場合でも空ハッシュに補正する
   def polish_attempts_store
-    raw = session[:request_polish_attempts]
-    store = raw.is_a?(Hash) ? raw : {}
+    store = session[:request_polish_attempts]
+    store = {} unless store.is_a?(Hash)
     session[:request_polish_attempts] = store
-    store
   end
 
+  # 指定トークンの試行回数を返す（未記録なら0）
   def polish_attempts(draft_token)
     polish_attempts_store[draft_token].to_i
   end
 
+  # 指定トークンの残り試行回数を返す（0 未満にはならない）
   def remaining_polish_attempts(draft_token)
     [POLISH_MAX_ATTEMPTS - polish_attempts(draft_token), 0].max
   end
 
+  # 試行回数を1増やして保存する
   def increment_polish_attempts!(draft_token)
     polish_attempts_store[draft_token] = polish_attempts(draft_token) + 1
   end
 
+  # 投稿完了時に試行回数をリセットする（次の投稿で試行回数が残るのを防ぐ）
   def clear_polish_attempts!(draft_token)
     return if draft_token.blank?
 
     polish_attempts_store.delete(draft_token)
   end
 
-  def request_edit_polish_token(request)
-    "request-edit-#{request.id}-user-#{current_user.id}"
-  end
-
-  def advice_edit_polish_token(advice)
-    "advice-edit-#{advice.id}-user-#{current_user.id}"
-  end
-
+  # アドバイス投稿フォーム用の AI整え試行回数ストアを取得する
+  # リクエストのポリッシュストアとは別のセッションキーで管理する
   def advice_polish_attempts_store_for_show
-    raw = session[:advice_polish_attempts]
-    store = raw.is_a?(Hash) ? raw : {}
+    store = session[:advice_polish_attempts]
+    store = {} unless store.is_a?(Hash)
     session[:advice_polish_attempts] = store
-    store
   end
 
+  # アドバイス投稿フォームの残り AI整え試行回数を返す
   def remaining_advice_polish_attempts_for_show(draft_token)
     attempts = advice_polish_attempts_store_for_show[draft_token].to_i
     [AdvicesController::POLISH_MAX_ATTEMPTS - attempts, 0].max
   end
 
-  # 動画のみ削除（新しいファイルを選んだ場合は update 内の attach で差し替え）
-  def handle_video_removal_on_update!
-    return unless params.dig(:request, :remove_video) == "1"
-    return if params.dig(:request, :video).present?
-
-    @request.video_thumbnail.purge if @request.video_thumbnail.attached?
-    @request.video.purge if @request.video.attached?
+  # 現在のユーザーがこのリクエストにインラインでアドバイスを投稿できるか
+  # 条件：トレーナーであること、かつまだアドバイスを書いていないこと
+  def can_compose_advice_inline?
+    current_user&.trainer? &&
+      @request.advices.none? { |a| a.user_id == current_user.id }
   end
 
-  def enqueue_video_thumbnail_job_if_video_attached!(request)
+  # このリクエストに紐づく、ログイン中ユーザー宛の未読通知をすべて既読にする
+  def mark_request_notifications_as_read!
+    current_user.notifications.unread.where(request_id: @request.id).update_all(read_at: Time.current)
+  end
+
+  # 新しいリクエストが投稿されたことを全トレーナーに通知する
+  def notify_trainers_new_request!
+    message = "新しいリクエスト「#{@request.title}」が投稿されました"
+    User.trainer.find_each do |trainer|
+      Notification.create!(
+        user: trainer, request: @request,
+        kind: "new_request", message: message
+      )
+    end
+  end
+
+  # 動画が添付されていれば、サムネイル生成ジョブをキューに入れる
+  def enqueue_video_thumbnail_job_if_attached!(request)
     VideoThumbnailJob.perform_later("Request", request.id) if request.video.attached?
   end
 
-  def sync_video_thumbnail_after_update!(old_video_key)
-    unless @request.video.attached?
-      @request.video_thumbnail.purge if @request.video_thumbnail.attached?
-      return
-    end
-
-    new_key = @request.video.blob.key
-    VideoThumbnailJob.perform_later("Request", @request.id) if old_video_key != new_key
-  end
-
+  # メンバー以外がリクエスト関連のアクションを実行しようとした場合に弾く
+  # JSON リクエストの場合は 403 エラーを返す（Stimulus から呼ばれる polish アクション用）
   def ensure_member!
     return if current_user.member?
 
@@ -187,103 +226,4 @@ class RequestsController < ApplicationController
       redirect_to requests_path, alert: message
     end
   end
-
-  def set_request
-    scope = Request
-    if action_name == "show"
-      scope = Request.includes(
-        :user,
-        video_attachment: :blob,
-        advices: [:user, video_attachment: :blob]
-      )
-    end
-    @request = scope.find(params[:id])
-  end
-
-  def authorize_request_access!
-    # MVP ver.0.1.0: 全リクエストは公開扱い。ログイン済みであれば誰でも閲覧可。
-    # visible_to? は directed_to_trainer_id が残る旧データで false になる場合があるため使用しない。
-  end
-
-  # 自分の投稿以外は編集・削除はできない
-  def authorize_request_owner!
-    return if @request.user_id == current_user.id
-
-    redirect_to requests_path, alert: "このリクエストを編集・削除する権限がありません"
-  end
-
-  def can_current_user_compose_advice_inline?
-    return false unless current_user&.trainer?
-    return false if current_user_advice_for_request.present?
-    return true if @request.directed_to_trainer_id.blank?
-
-    @request.directed_to_trainer_id == current_user.id
-  end
-
-  def can_current_user_edit_advice_inline?
-    return false unless current_user&.trainer?
-    return false if current_user_advice_for_request.blank?
-
-    true
-  end
-
-  def can_current_user_edit_request_inline?
-    current_user&.member? && @request.user_id == current_user.id
-  end
-
-  # このリクエストに紐づく、ログイン中ユーザー宛の未読通知を既読にする
-  def mark_request_notifications_as_read!
-    current_user.notifications.unread.where(request_id: @request.id).update_all(read_at: Time.current)
-  end
-
-  # 公開リクエストは全トレーナーへ通知。指定トレーナー宛はそのトレーナーのみ
-  def notify_trainers_new_request!
-    if @request.directed_to_trainer_id.present?
-      trainer = User.trainer.find_by(id: @request.directed_to_trainer_id)
-      return if trainer.blank?
-
-      Notification.create!(
-        user: trainer,
-        request: @request,
-        kind: "direct_request",
-        message: "あなた宛のリクエスト「#{@request.title}」が届きました"
-      )
-    else
-      message = "新しいリクエスト「#{@request.title}」が投稿されました"
-      User.trainer.find_each do |trainer|
-        Notification.create!(
-          user: trainer,
-          request: @request,
-          kind: "new_request",
-          message: message
-        )
-      end
-    end
-  end
-
-  # 本文が更新されたら、アドバイス済みのトレーナーにだけ通知する（タイトルだけの変更では送らない）
-  def notify_advising_trainer_request_body_updated!
-    # .saved_change_to_body?はカラムを作った時に自動生成されるメソッド
-    return unless @request.saved_change_to_body?
-    @request.advices.includes(:user).find_each do |advice|
-      Notification.create!(
-        user: advice.user,
-        request: @request,
-        kind: "request_body_updated",
-        message: "リクエスト「#{@request.title}」の本文が更新されました"
-      )
-    end
-  end
-
-  def current_user_advice_for_request
-    @current_user_advice_for_request ||= @request.advices.find_by(user_id: current_user.id)
-  end
-
-  def mark_request_as_edited_if_needed!(old_video_key, video_removed_by_user)
-    video_changed = old_video_key != (@request.video.attached? ? @request.video.blob.key : nil)
-    return unless @request.saved_change_to_body? || video_removed_by_user || video_changed
-
-    @request.update_column(:edited, true) unless @request.edited?
-  end
-
 end
