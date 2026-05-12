@@ -1,61 +1,35 @@
+# ============================================================
+# Request モデル
+#
+# メンバーが投稿する「リクエスト（質問・相談）」を表すモデル。
+# タイトル・本文・動画を持ち、トレーナーからアドバイスを受ける。
+# ============================================================
 class Request < ApplicationRecord
   include ValidatesAttachedVideo
 
-  # requestのタイトルを必須項目にする（UI 上のカウンタと揃えて最大24字）
+  # タイトルは必須・最大24文字
   validates :title, presence: true, length: { maximum: 24 }
-  # requestのボディーを必須項目にする（UI のカウンタと揃えて最大300字）
-  validates :body, presence: true, length: { maximum: 300 }
+  # 本文は必須・最大300文字
+  validates :body,  presence: true, length: { maximum: 300 }
 
-  # 動画は1リクエストにつき1本（MP4 / MOV・100MBまで）
+  # 動画は1本だけ添付できる（Active Storage で管理）
   has_one_attached :video
-  # 一覧用サムネ（VideoThumbnailJob）
+  # 一覧画面表示用のサムネイル画像（VideoThumbnailJob が非同期で生成する）
   has_one_attached :video_thumbnail
 
-  # requestはユーザーに属する
+  # リクエストはどのメンバーが投稿したかを持つ
   belongs_to :user
-  # 指定トレーナー宛（一覧には出さない）。未設定ならログイン全員向けの公開リクエスト
-  belongs_to :directed_to_trainer, class_name: "User", optional: true
-  # requestは複数のadviceを持つ（リクエスト削除時はアドバイスも消す）
-  has_many :advices, dependent: :destroy
+
+  # リクエストには複数のアドバイスが付く。リクエストを削除するとアドバイスも消える
+  has_many :advices,              dependent: :destroy
+  # リクエストには有料アドバイス取引が紐づく。リクエスト削除で取引も消える
   has_many :paid_advice_requests, dependent: :destroy
-  # このリクエストに紐づく通知（リクエスト削除時は通知も消す）
-  has_many :notifications, dependent: :destroy
+  # リクエストには通知が紐づく。リクエスト削除で通知も消える
+  has_many :notifications,        dependent: :destroy
 
-  before_validation :normalize_directed_to_trainer_id
-  validate :directed_to_trainer_must_be_trainer
-
-  # 一覧（みんなのリクエスト）に載せるもの
-  scope :on_public_feed, -> { where(directed_to_trainer_id: nil) }
-
-  # ログイン中ユーザーが詳細を閲覧できるか
-  def visible_to?(viewer)
-    return false if viewer.blank?
-
-    return true if user_id == viewer.id
-    return true if directed_to_trainer_id.nil?
-    return true if viewer.trainer? && directed_to_trainer_id == viewer.id
-
-    false
-  end
-
-  def public_feed?
-    directed_to_trainer_id.blank?
-  end
-
+  # このリクエストに付いているアドバイスの件数を返す
+  # アドバイスはすでにメモリに読み込まれている場合は DB に問い合わせない
   def advice_count
     advices.size
-  end
-
-  private
-
-  def normalize_directed_to_trainer_id
-    self.directed_to_trainer_id = nil if directed_to_trainer_id.blank?
-  end
-
-  def directed_to_trainer_must_be_trainer
-    return if directed_to_trainer_id.blank?
-
-    trainer = User.find_by(id: directed_to_trainer_id)
-    errors.add(:directed_to_trainer_id, "はトレーナーを指定してください") unless trainer&.trainer?
   end
 end
