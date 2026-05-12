@@ -176,6 +176,10 @@
     opacity: 0.92;
   }
 
+  .account-menu__panel {
+    left: 0px;
+  }
+
   /*==========================================================
     　　レイアウト
   ===========================================================*/
@@ -214,6 +218,10 @@
     display: none;
   }
 
+  .requests-sidebar__link--active {
+    background: rgba(255, 255, 255, 0) !important;
+  }
+
   .sidebar__nav {
     position: relative;
     display: grid;
@@ -228,7 +236,7 @@
   .link_home .requests-sidebar__link-icon {
     transform: scale(1.15);
     text-align: center;
-    background: rgba(255, 255, 255, 1);
+    /* background: rgba(255, 255, 255, 1); */
   }
 
   .link_new {
@@ -396,19 +404,170 @@
     margin-bottom: 90px;
   }
 
-
 }
 
 @media screen and (min-width: 1024px) {
   /* パソコン用レイアウト 1024px以上の範囲に収めるデザインはこの中に記述 */
   /*==========================================================
+    　　PC_ヘッダー
+  ===========================================================*/
+  .site-header {
+    grid-template-areas:
+    "left . right";
+    padding: 0 20px;
+  }
+
+  .site-header__account-actions {
+    grid-area: right;
+    justify-content: end;
+  }
+
+  .site-header__brand-logo {
+    grid-area: left;
+    margin: 0 auto 0 0;
+  }
+
+  .site-header__brand-logo img {
+    width: 38px;
+    height: 38px;
+  }
+
+  .account-menu__panel {
+    left: auto;
+    right: 0;
+  }
+  /*==========================================================
     　　PC_レイアウト
   ===========================================================*/
-  .sidebar {
-    height: 100vh;
+  .request-index .layout__main {
+    margin-left: 240px;
+    padding: 0 40px;
   }
+
+  .account-menu__summary:hover .account-menu__user-icon {
+    background: rgba(2, 27, 21, 0);
+    cursor: pointer;
+    opacity: 0.8;
+  }
+
+  /*==========================================================
+    　　PC_サイドバー
+  ===========================================================*/
+  .sidebar {
+    width: 240px;
+    height: 100vh;
+    background: var(--color-white);
+    border-top: none;
+    border-right: 1px solid rgba(51, 61, 66, 0.14);
+  }
+
+  .sidebar__nav {
+    margin-top: 56px;
+    padding-top: 12px;
+    place-content: start end;
+  }
+
+  .requests-sidebar__link--active {
+    background: rgba(2, 27, 21, 0.1) !important;
+  }
+
+  .sidebar__link-label {
+    display: block;
+  }
+
+  .sidebar__link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 34px;
+    width: 204px;
+    padding: 6px 12px;
+    border-radius: 8px;
+    margin-left: auto;
+    text-decoration: none;
+    color: #021b15;
+    font-size: 0.95rem;
+    font-weight: 500;
+    line-height: 1.35;
+    transition: background 0.12s ease;
+  }
+
+  .sidebar__link:hover {
+    background: #f6f6f6;
+    cursor: pointer;
+  }
+
+  .link_home .requests-sidebar__link-icon,
+  .link_new .requests-sidebar__link-icon {
+    transform: scale(1);
+  }
+
+
+  .link_home {
+    border-bottom: none;
+  }
+
+  .link_home .requests-sidebar__link-icon {
+    background: none;
+  }
+
+  .link_new {
+    position: relative;
+    top: 0;
+    right: 0;
+    width: 100%;
+    max-width: 204px;
+    height: auto;
+    border-radius: 0;
+    background: var(--color-white);
+    color: #333;
+    justify-content: start;
+    border-radius: 8px;
+  }
+
+
 }
 
 @media screen and (min-width: 1400px) {
   /* PC全画面用レイアウト 1400px以上の範囲に収めるデザインはこの中に記述 */
+  /*==========================================================
+    　　PC-big_レイアウト
+  ===========================================================*/
+  .request-index .layout__main {
+    /* display: flex;
+    width: 100%; */
+    position: relative;
+    max-width: 1200px;
+  }
+  .request-index .layout__main-inner {
+    max-width: 800px;
+    margin: 0 auto;
+    padding-right: 200px;
+  }
+
+  /*==========================================================
+    　　PC-big_フッター
+  ===========================================================*/
+  .site-footer {
+    /* position: fixed;
+    left: 0;
+    bottom: 0; */
+
+    position: fixed;
+    /* margin-left: 800px; */
+    /* margin-left: 240px; */
+    /* left: 50%; */
+    bottom: max(16px, env(safe-area-inset-bottom));
+    max-width: 1200px;
+    width: 100%;
+    margin-bottom: 0;
+    /* padding: 0 40px; */
+  }
+
+  .site-footer__copy {
+    text-align: right;
+    margin-right: 120px;
+  }
+
+
 }
