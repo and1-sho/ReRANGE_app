@@ -1,26 +1,24 @@
 <%# メンバー一覧用サイドバー（トレーナーとレイアウト共通・項目のみ差し替え） %>
 <% feed_index = controller_name == "requests" && action_name == "index" %>
 <% compose_request = controller_name == "requests" && %w[new create].include?(action_name) %>
-<aside class="requests-sidebar" aria-label="メインメニュー">
-  <nav class="requests-sidebar__nav">
+<aside class="sidebar" aria-label="メインメニュー">
+  <nav class="sidebar__nav">
     <%= link_to requests_path,
-          class: "requests-sidebar__link #{"requests-sidebar__link--active" if feed_index}",
+          class: "link_home sidebar__link #{"requests-sidebar__link--active" if feed_index}",
           aria: (feed_index ? { current: "page" } : {}) do %>
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="requests-sidebar__link-icon" aria-hidden="true">
         <path fill-rule="evenodd" d="M9.293 2.293a1 1 0 0 1 1.414 0l7 7A1 1 0 0 1 17 11h-1v6a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-6H3a1 1 0 0 1-.707-1.707l7-7Z" clip-rule="evenodd" />
       </svg>
-      <span class="requests-sidebar__link-label">ホーム</span>
+      <span class="sidebar__link-label">ホーム</span>
     <% end %>
 
     <%= link_to new_request_path,
-          class: "requests-sidebar__link #{"requests-sidebar__link--active" if compose_request}",
+          class: "link_new sidebar__link #{"requests-sidebar__link--active" if compose_request}",
           aria: (compose_request ? { current: "page" } : {}) do %>
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="requests-sidebar__link-icon" aria-hidden="true">
         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
       </svg>
-      <span class="requests-sidebar__link-label">新規リクエスト</span>
+      <span class="sidebar__link-label">新規リクエスト</span>
     <% end %>
-
-
   </nav>
 </aside>
