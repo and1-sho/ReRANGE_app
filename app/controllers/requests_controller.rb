@@ -201,9 +201,8 @@ class RequestsController < ApplicationController
   end
 
   def authorize_request_access!
-    return if @request.visible_to?(current_user)
-
-    redirect_to requests_path, alert: "このリクエストを表示する権限がありません"
+    # MVP ver.0.1.0: 全リクエストは公開扱い。ログイン済みであれば誰でも閲覧可。
+    # visible_to? は directed_to_trainer_id が残る旧データで false になる場合があるため使用しない。
   end
 
   # 自分の投稿以外は編集・削除はできない
