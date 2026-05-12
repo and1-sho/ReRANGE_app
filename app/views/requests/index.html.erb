@@ -1,26 +1,25 @@
 <div class="requests-page-content request-index">
 
   <div class="site-header">
-    <%= link_to app_home_path, class: "requests-feed-chrome__brand" do %>
-      <span class="site-header__brand-logo">10K</span>
-    <% end %>
-
     <div class="site-header__account-actions">
       <%= render "shared/account_menu" %>
     </div>
+    <%= link_to app_home_path, class: "site-header__brand-logo" do %>
+      <img class="logo-img" src="/images/logo/logo-main.png" alt="10K">
+    <% end %>
   </div>
 
 
-  <div class="requests-feed-box">
+  <div class="layout">
   <% if current_user.member? || current_user.trainer? %>
     <% sidebar_partial = current_user.member? ? "member_sidebar" : "trainer_sidebar" %>
 
-    <div class="requests-layout">
+    <div class="layout__inner">
       <%= render sidebar_partial %>
 
-      <div class="requests-main">
-        <div class="requests-feed-main">
-          <div class="requests-feed-inner">
+      <div class="layout__main">
+        <div class="layout__main-inner">
+          <div class="requests-list-index">
             <%= render "requests/feed_list" %>
           </div>
           <div class="requests-feed-aside-spacer" aria-hidden="true"></div>
