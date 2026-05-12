@@ -3,10 +3,10 @@
 <% home_feed_active = requests_index && params[:filter].blank? %>
 <% advised_feed_active = requests_index && params[:filter] == "advised_by_me" %>
 <aside class="sidebar" aria-label="メインメニュー">
-  <nav class="sidebar__nav">
+  <nav class="sidebar__nav trainer_sidebar">
 
     <%= link_to requests_path,
-          class: "link_home requests-sidebar__link #{"requests-sidebar__link--active" if home_feed_active}",
+          class: "link_home sidebar__link #{"requests-sidebar__link--active" if home_feed_active}",
           aria: (home_feed_active ? { current: "page" } : {}) do %>
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="requests-sidebar__link-icon" aria-hidden="true">
         <path fill-rule="evenodd" d="M9.293 2.293a1 1 0 0 1 1.414 0l7 7A1 1 0 0 1 17 11h-1v6a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-6H3a1 1 0 0 1-.707-1.707l7-7Z" clip-rule="evenodd" />
@@ -20,7 +20,7 @@
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="requests-sidebar__link-icon" aria-hidden="true">
         <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
       </svg>
-      <span class="requests-sidebar__link-label">フィードバック</span>
+      <span class="sidebar__link-label">フィードバック</span>
     <% end %>
 
   </nav>
