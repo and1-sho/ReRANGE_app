@@ -184,15 +184,19 @@
     　　レイアウト
   ===========================================================*/
   .layout {
+    padding-top: calc(48px + env(safe-area-inset-top, 0px));
+  }
+
+  .request-index .layout {
     padding-top: 57px;
   }
 
-  .layout__inner {
+  .request-index .layout__inner {
     display: grid;
     grid-auto-rows: 1fr;
   }
 
-  .layout__main {
+  .request-index .layout__main {
     padding: 0 16px;
   }
 
@@ -381,11 +385,6 @@
     margin-bottom: 80px;
   }
 
-  .requests-show .site-footer {
-    margin-top: 80px;
-    margin-bottom: 80px;
-  }
-
   .site-footer__copy {
     text-align: center;
     margin: 0;
@@ -435,11 +434,6 @@
     margin-bottom: 90px;
   }
 
-  .requests-show .site-footer {
-    margin-top: 100px;
-    margin-bottom: 90px;
-  }
-
 }
 
 @media screen and (min-width: 1024px) {
@@ -475,9 +469,9 @@
   /*==========================================================
     　　PC_レイアウト
   ===========================================================*/
-  .layout__main {
+  .request-index .layout__main {
     margin-left: 240px;
-    padding: 0 16px;
+    padding: 0 40px;
   }
 
   .account-menu__summary:hover .account-menu__user-icon {
@@ -579,14 +573,13 @@
   /*==========================================================
     　　PC-big_レイアウト
   ===========================================================*/
-  .layout__main {
+  .request-index .layout__main {
     /* display: flex;
     width: 100%; */
     position: relative;
     max-width: 1200px;
   }
-
-  .layout__main-inner {
+  .request-index .layout__main-inner {
     max-width: 800px;
     margin: 0 auto;
     padding-right: 200px;
@@ -609,10 +602,6 @@
     width: 100%;
     margin-bottom: 0;
     /* padding: 0 40px; */
-  }
-
-  .requests-show .site-footer {
-    margin: 0;
   }
 
   .site-footer__copy {

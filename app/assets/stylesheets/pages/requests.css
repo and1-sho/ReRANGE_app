@@ -12,9 +12,9 @@
     padding: 0;
   }
 
-  .layout {
+  /* .layout {
     padding-top: calc(48px + env(safe-area-inset-top, 0px));
-  }
+  } */
 
   /* 左ナビ + 中央「フィード＋右320px」合計 1120px（メンバー・トレーナー共通・Reddit 型） */
   /* .layout__inner {
@@ -59,10 +59,10 @@
     margin-top: 20px;
   } */
 
-  .requests-show .layout__main-inner {
+  /* .requests-show .layout__main-inner {
     width: 720px;
     margin-left: -44px;
-  }
+  } */
 
 
   /*=========== プロフィール設定 ===========*/
@@ -313,6 +313,11 @@
   /*==========================================================
       　　投稿詳細
   ==============================================================*/
+  .requests-show .layout__main-inner {
+    padding-top: 60px;
+    min-height: 60vh;
+  }
+
   .requests-show .request {
     position: relative;
   }
@@ -333,8 +338,12 @@
   /* 戻るボタン */
   .request__back-btn {
     position: absolute;
-    top: 0;
-    left: -50px;
+    /* top: 0; */
+    top: -48px;
+    left: 0;
+
+    /* top: 0;
+    left: -50px; */
     flex-shrink: 0;
     display: inline-flex;
     align-items: center;
@@ -360,9 +369,14 @@
     align-items: center;
   }
 
-  /* .request__advice-editor .advice-card__header-main {
-    margin-bottom: 16px;
-  } */
+  .requests-show .request__text {
+    line-height: 1.8;
+    margin-top: -3px;
+  }
+
+  .request-card__header-main {
+    /* padding-left: 54px; */
+  }
 
   .request__visibility-icon {
     position: relative;
@@ -1543,12 +1557,59 @@
   .request-card {
     padding: 12px 16px;
   }
+
+  /*==========================================================
+      　　TB_投稿詳細
+  ==============================================================*/
+  .requests-show .layout__main-inner {
+    padding: 20px 20px 0 60px;
+    min-height: 77vh;
+  }
+
+  /* 戻るボタン */
+  .request__back-btn {
+    top: 0;
+    left: -52px;
+  }
+
+  .requests-show .request {
+    padding: 0 8px;
+  }
+
+  .requests-show .advice-list {
+    padding: 0 8px;
+  }
+
 }
 
 @media screen and (min-width: 1024px) {
   /* パソコン用レイアウト 1024px以上の範囲に収めるデザインはこの中に記述 */
+  /*==========================================================
+      　　PC_投稿詳細
+  ==============================================================*/
+  .requests-show .layout__main-inner {
+    padding: 20px 20px 0 60px;
+    min-height: 70vh;
+  }
+
+  /* 戻るボタン */
+  .request__back-btn {
+    top: 0;
+    left: -50px;
+  }
 }
 
 @media screen and (min-width: 1400px) {
   /* PC全画面用レイアウト 1400px以上の範囲に収めるデザインはこの中に記述 */
+   /*==========================================================
+      　　PC-big_投稿詳細
+  ==============================================================*/
+  .requests-show .layout__main-inner {
+    max-width: 750px;
+    margin: 0 auto;
+    /* padding-right: 260px; */
+    /* padding: 20px 260px 0 50px; */
+    padding: 20px 200px 0 50px;
+  }
+
 }
