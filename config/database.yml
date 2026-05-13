@@ -1,25 +1,33 @@
-# SQLite. Versions 3.8.0 and up are supported.
-#   gem install sqlite3
+# ============================================================
+# データベース設定ファイル
 #
-#   Ensure the SQLite 3 gem is defined in your Gemfile
-#   gem "sqlite3"
+# Rails は「development（開発）」「test（テスト）」「production（本番）」の
+# 3つの環境を持っている。それぞれで使うデータベースをここで設定する。
 #
-default: &default
+# 開発・テストは SQLite（ファイル1つで動く軽量DB）を使う。
+# 本番（Render）は PostgreSQL を使う。
+# ============================================================
+
+# --- 開発環境（自分のPCで動かすとき）---
+development:
   adapter: sqlite3
+  database: storage/development.sqlite3
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   timeout: 5000
 
-development:
-  <<: *default
-  database: storage/development.sqlite3
-
-# Warning: The database defined as "test" will be erased and
-# re-generated from your development database when you run "rake".
-# Do not set this db to the same as development or production.
+# --- テスト環境（自動テストを動かすとき）---
 test:
-  <<: *default
+  adapter: sqlite3
   database: storage/test.sqlite3
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  timeout: 5000
 
+# --- 本番環境（Renderにデプロイしたとき）---
+#
+# DATABASE_URL は Render が自動で用意する環境変数。
+# 「どのサーバーのどのDBにどのパスワードで繋ぐか」が1行にまとまった文字列。
+# コード内に直接パスワードを書かないための安全な仕組み。
 production:
-  <<: *default
-  database: storage/production.sqlite3
+  adapter: postgresql
+  url: <%= ENV["DATABASE_URL"] %>
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>

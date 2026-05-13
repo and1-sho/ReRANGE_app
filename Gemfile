@@ -8,8 +8,12 @@ gem "rails", "~> 7.1.6"
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
 
-# Use sqlite3 as the database for Active Record
-gem "sqlite3", ">= 1.4"
+# 本番環境（Render）では PostgreSQL を使う
+gem "pg", "~> 1.5"
+
+# Cloudflare R2 は Amazon S3 と同じ仕組みで動くため aws-sdk-s3 で接続する
+# require: false = 必要なときだけ読み込む（起動を速くするため）
+gem "aws-sdk-s3", require: false
 
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
@@ -45,8 +49,9 @@ gem "bootsnap", require: false
 gem "image_processing", "~> 1.2"
 
 group :development, :test do
-  # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ]
+  # SQLite はローカル開発・テスト専用。本番（Render）では使わない
+  gem "sqlite3", ">= 1.4"
 end
 
 group :development do
