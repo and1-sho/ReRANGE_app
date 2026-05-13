@@ -12,3 +12,37 @@ body {
   margin: 0;
   padding: 0;
 }
+
+@media screen and (min-width: 320px) {
+  /* スマホ用レイアウト 320px以上の範囲に収めるデザインはこの中に記述 */
+  .tb-only,
+  .pc-only {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 640px) {
+  /* タブレット用レイアウト 640px以上の範囲に収めるデザインはこの中に記述 */
+  .sp-only {
+    display: none;
+  }
+
+  .tb-only {
+    display: block;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  /* パソコン用レイアウト 1024px以上の範囲に収めるデザインはこの中に記述 */
+  .tb-only {
+    display: none;
+  }
+
+  .pc-only {
+    display: block;
+  }
+}
+
+@media screen and (min-width: 1400px) {
+  /* PC全画面用レイアウト 1400px以上の範囲に収めるデザインはこの中に記述 */
+}
