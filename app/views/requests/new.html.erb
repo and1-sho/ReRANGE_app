@@ -1,13 +1,12 @@
 <div class="requests-page-content requests-new">
 
   <header class="site-header">
-    <%= link_to app_home_path, class: "site-header__brand" do %>
-      <span class="site-header__brand-logo">10K</span>
-    <% end %>
-
     <div class="site-header__account-actions">
       <%= render "shared/account_menu" %>
     </div>
+    <%= link_to app_home_path, class: "site-header__brand-logo" do %>
+      <img class="logo-img" src="/images/logo/logo-main.png" alt="10K">
+    <% end %>
   </header>
 
   <div class="layout">
@@ -122,7 +121,7 @@
                   tabindex="0"
                   aria-controls="request_video_input"
                 >
-                  <p class="request-new__video-drop-text">動画をドラッグ＆ドロップするか、クリックしてアップロード</p>
+                  <p class="request-new__video-drop-text">動画をドラッグ＆ドロップするか、<br>クリックしてアップロード</p>
                   <div class="request-new__video-drop-icon" aria-hidden="true">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="request-new__video-drop-svg" width="28" height="28">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0 3 3m-3-3-3 3M6.75 19.5a4.5 4.5 0 0 1-1.41-8.775 5.25 5.25 0 0 1 10.233-2.33 3 3 0 0 1 3.758 3.848A3.752 3.752 0 0 1 18 19.5H6.75Z" />
