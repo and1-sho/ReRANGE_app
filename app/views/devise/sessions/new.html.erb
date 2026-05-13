@@ -1,27 +1,27 @@
-<div class="top-wrap">
-  <header class="top-header">
-    <%= link_to app_home_path, class: "logo logo--link" do %>
-      <span class="logo-name">10K</span>
+<div class="auth-page">
+  <header class="site-header auth-header">
+    <%= link_to app_home_path, class: "site-header__brand-logo" do %>
+      <img class="logo-img" src="/images/logo/logo-main.png" alt="10K">
     <% end %>
   </header>
 
-  <main class="auth-main">
-    <div class="auth-card">
+  <main class="auth-layout login">
+    <div class="auth-inner">
       <h1 class="auth-title">ログイン</h1>
 
       <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "auth-form" }) do |f| %>
-        <div class="auth-field">
-          <%= f.label :email, "メールアドレス", class: "auth-label" %>
-          <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "auth-input" %>
+        <div class="auth-form__field">
+          <%= f.label :email, "メールアドレス", class: "auth-form__label" %>
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "auth-form__input" %>
         </div>
 
-        <div class="auth-field">
-          <%= f.label :password, "パスワード", class: "auth-label" %>
-          <%= f.password_field :password, autocomplete: "current-password", class: "auth-input" %>
+        <div class="auth-form__field">
+          <%= f.label :password, "パスワード", class: "auth-form__label" %>
+          <%= f.password_field :password, autocomplete: "current-password", class: "auth-form__input" %>
         </div>
 
         <% if devise_mapping.rememberable? %>
-          <div class="auth-field auth-field--check">
+          <div class="auth-form__field auth-field--check">
             <%= f.check_box :remember_me, class: "auth-checkbox" %>
             <%= f.label :remember_me, "ログイン状態を保持する", class: "auth-check-label" %>
           </div>
@@ -32,13 +32,13 @@
         </div>
       <% end %>
 
-      <p class="auth-footer">
-        <%= link_to "新規登録はこちら", new_user_registration_path, class: "auth-link" %>
+      <p class="auth-links">
+        <%= link_to "新規登録はこちら", new_user_registration_path, class: "auth-links__link" %>
       </p>
 
       <% if devise_mapping.recoverable? %>
-        <p class="auth-footer auth-footer--sub">
-          <%= link_to "パスワードをお忘れの方", new_password_path(resource_name), class: "auth-link auth-link--sub" %>
+        <p class="auth-links auth-links--sub">
+          <%= link_to "パスワードをお忘れの方", new_password_path(resource_name), class: "auth-links__link auth-links__link--sub" %>
         </p>
       <% end %>
     </div>

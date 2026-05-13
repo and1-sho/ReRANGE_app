@@ -1,1 +1,222 @@
 /* ログイン、新規登録、パスワード再設定など。 */
+@media screen and (min-width: 320px) {
+  /* スマホ用レイアウト 320px以上の範囲に収めるデザインはこの中に記述 */
+  /*==========================================================
+      　　ログイン
+  ==============================================================*/
+  .auth-header {
+    box-shadow: rgba(2, 27, 21, 0.18) 0px 8px 22px;
+    border-bottom: none;
+    display: flex;
+    justify-content: start;
+    height: 59px;
+  }
+
+  .auth-header .site-header__brand-logo {
+    margin-left: 0;
+  }
+
+  .auth-wrap {
+    min-height: 100vh;
+    background: #fff;
+    color: #021b15;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+
+  .auth-layout {
+    display: flex;
+    justify-content: center;
+    padding: 32px 24px 48px;
+    margin-top: 59px;
+  }
+
+  .auth-inner {
+    width: 100%;
+    max-width: 420px;
+    padding: 32px 28px;
+    border-radius: 16px;
+    border: 1px solid rgba(2, 27, 21, 0.12);
+    background: #fff;
+    box-shadow: 0 8px 32px rgba(2, 27, 21, 0.06);
+  }
+
+  .auth-title {
+    margin: 0 0 24px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: 0.02em;
+  }
+
+  .auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .auth-lead {
+    margin: -8px 0 20px;
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: rgba(2, 27, 21, 0.62);
+    text-align: center;
+  }
+
+  .auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .auth-form__field {
+    margin-bottom: 18px;
+  }
+
+  .auth-form__label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #021b15;
+  }
+
+  .auth-hint {
+    margin: 0 0 6px;
+    font-size: 0.75rem;
+    color: rgba(2, 27, 21, 0.55);
+  }
+
+  .auth-form__input {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 1rem;
+    color: #021b15;
+    background: #fff;
+    border: 1px solid rgba(2, 27, 21, 0.2);
+    border-radius: 10px;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .auth-form__input:focus {
+    outline: none;
+    border-color: #021b15;
+    box-shadow: 0 0 0 3px rgba(2, 27, 21, 0.12);
+  }
+
+  .auth-select {
+    cursor: pointer;
+  }
+
+  .auth-actions {
+    margin-top: 8px;
+  }
+
+  .auth-submit {
+    width: 100%;
+    padding: 12px 18px;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+
+  .auth-links {
+    margin: 24px 0 0;
+    text-align: center;
+    font-size: 0.9rem;
+  }
+
+  .auth-links__link {
+    color: #021b15;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .auth-links__link:hover {
+    opacity: 0.85;
+  }
+
+  .auth-field--check {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+
+  .auth-checkbox {
+    width: 1.1rem;
+    height: 1.1rem;
+    accent-color: #021b15;
+    cursor: pointer;
+  }
+
+  .auth-check-label {
+    margin: 0;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #021b15;
+    cursor: pointer;
+  }
+
+  .auth-links--sub {
+    margin-top: 12px;
+    font-size: 0.85rem;
+  }
+
+  .auth-links__link--sub {
+    font-weight: 500;
+    color: rgba(2, 27, 21, 0.65);
+  }
+
+  .auth-links__link--sub:hover {
+    color: #021b15;
+    opacity: 1;
+  }
+
+  #error_explanation {
+    margin-bottom: 20px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: rgba(220, 38, 38, 0.06);
+    border: 1px solid rgba(220, 38, 38, 0.25);
+    color: #991b1b;
+    font-size: 0.875rem;
+  }
+
+  #error_explanation h2 {
+    margin: 0 0 8px;
+    font-size: 0.9rem;
+    font-weight: 700;
+  }
+
+  #error_explanation ul {
+    margin: 0;
+    padding-left: 1.25rem;
+  }
+
+
+}
+
+@media screen and (min-width: 640px) {
+  /* タブレット用レイアウト 640px以上の範囲に収めるデザインはこの中に記述 */
+  /*==========================================================
+      　　TB_ログイン
+  ==============================================================*/
+
+}
+
+@media screen and (min-width: 1024px) {
+  /* パソコン用レイアウト 1024px以上の範囲に収めるデザインはこの中に記述 */
+  /*==========================================================
+      　　PC_ログイン
+  ==============================================================*/
+}
+
+@media screen and (min-width: 1400px) {
+  /* PC全画面用レイアウト 1400px以上の範囲に収めるデザインはこの中に記述 */
+  /*==========================================================
+      　　PC-big_ログイン
+  ==============================================================*/
+}
+
+
