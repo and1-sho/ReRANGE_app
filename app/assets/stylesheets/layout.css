@@ -184,19 +184,15 @@
     　　レイアウト
   ===========================================================*/
   .layout {
-    padding-top: calc(48px + env(safe-area-inset-top, 0px));
-  }
-
-  .request-index .layout {
     padding-top: 57px;
   }
 
-  .request-index .layout__inner {
+  .layout__inner {
     display: grid;
     grid-auto-rows: 1fr;
   }
 
-  .request-index .layout__main {
+  .layout__main {
     padding: 0 16px;
   }
 
@@ -279,6 +275,7 @@
     display: grid;
     place-content: center;
     color: var(--color-white);
+    padding: 0;
   }
 
   .link_new .requests-sidebar__link-icon {
@@ -384,6 +381,11 @@
     margin-bottom: 80px;
   }
 
+  .requests-show .site-footer {
+    margin-top: 80px;
+    margin-bottom: 80px;
+  }
+
   .site-footer__copy {
     text-align: center;
     margin: 0;
@@ -433,6 +435,11 @@
     margin-bottom: 90px;
   }
 
+  .requests-show .site-footer {
+    margin-top: 100px;
+    margin-bottom: 90px;
+  }
+
 }
 
 @media screen and (min-width: 1024px) {
@@ -468,9 +475,9 @@
   /*==========================================================
     　　PC_レイアウト
   ===========================================================*/
-  .request-index .layout__main {
+  .layout__main {
     margin-left: 240px;
-    padding: 0 40px;
+    padding: 0 16px;
   }
 
   .account-menu__summary:hover .account-menu__user-icon {
@@ -572,13 +579,14 @@
   /*==========================================================
     　　PC-big_レイアウト
   ===========================================================*/
-  .request-index .layout__main {
+  .layout__main {
     /* display: flex;
     width: 100%; */
     position: relative;
     max-width: 1200px;
   }
-  .request-index .layout__main-inner {
+
+  .layout__main-inner {
     max-width: 800px;
     margin: 0 auto;
     padding-right: 200px;
@@ -601,6 +609,10 @@
     width: 100%;
     margin-bottom: 0;
     /* padding: 0 40px; */
+  }
+
+  .requests-show .site-footer {
+    margin: 0;
   }
 
   .site-footer__copy {
