@@ -12,8 +12,19 @@
     padding: 0;
   }
 
-  /*=========== プロフィール設定 ===========*/
+  /* 公開のリクエストはまだありません */
+  .requests-empty {
+    display: grid;
+    place-content: center;
+    text-align: center;
+    min-height: 60vh;
+    max-width: 1200px;
+    margin: 36px auto 80px auto !important;
+    padding: 0 32px;
+    color: rgba(2, 27, 21, 0.62);
+  }
 
+  /*=========== プロフィール設定 ===========*/
   .profile-setting {
     max-width: 1200px;
     margin: 4px auto 0;
@@ -259,7 +270,7 @@
       　　投稿詳細
   ==============================================================*/
   .requests-show .layout__main-inner {
-    padding-top: 60px;
+    padding-top: 20px;
     min-height: 60vh;
   }
 
@@ -282,12 +293,8 @@
   /* 戻るボタン */
   .request__back-btn {
     position: absolute;
-    /* top: 0; */
     top: -48px;
     left: 0;
-
-    /* top: 0;
-    left: -50px; */
     flex-shrink: 0;
     display: inline-flex;
     align-items: center;
@@ -299,6 +306,7 @@
     background: rgba(2, 27, 21, 0.08);
     text-decoration: none;
     transition: background 0.12s, color 0.12s;
+    display: none;
   }
 
   .request__back-arrow {
@@ -1495,6 +1503,13 @@
     padding: 12px 16px;
   }
 
+  /* 公開のリクエストはまだありません */
+  .requests-empty {
+    min-height: 77vh;
+    font-size: 18px;
+    margin: 36px auto 70px auto !important;
+  }
+
   /*==========================================================
       　　TB_投稿詳細
   ==============================================================*/
@@ -1505,6 +1520,8 @@
 
   /* 戻るボタン */
   .request__back-btn {
+    display: block;
+    display: inline-flex;
     top: 0;
     left: -52px;
   }
@@ -1559,6 +1576,16 @@
 @media screen and (min-width: 1024px) {
   /* パソコン用レイアウト 1024px以上の範囲に収めるデザインはこの中に記述 */
   /*==========================================================
+      　　PC_投稿一覧
+  ==============================================================*/
+  /* 公開のリクエストはまだありません */
+  .requests-empty {
+    min-height: 67.4vh;
+    font-size: 18px;
+    margin: 36px auto 70px auto !important;
+  }
+
+  /*==========================================================
       　　PC_投稿詳細
   ==============================================================*/
   .requests-show .layout__main-inner {
@@ -1586,7 +1613,15 @@
 
 @media screen and (min-width: 1400px) {
   /* PC全画面用レイアウト 1400px以上の範囲に収めるデザインはこの中に記述 */
-   /*==========================================================
+  /*==========================================================
+      　　PC_投稿一覧
+  ==============================================================*/
+  /* 公開のリクエストはまだありません */
+  .requests-empty {
+    min-height: 70vh;
+  }
+
+  /*==========================================================
       　　PC-big_投稿詳細
   ==============================================================*/
   .requests-show .layout__main-inner {

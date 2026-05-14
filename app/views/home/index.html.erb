@@ -9,7 +9,9 @@
         <%= link_to "ログアウト", destroy_user_session_path, class: "menu-btn menu-btn--ghost", data: { turbo_method: :delete } %>
       <% else %>
         <%= link_to "ログイン", new_user_session_path, class: "home__btn home__btn--ghost" %>
-        <%= link_to "トレーナーに無料で相談しよう", new_user_registration_path, class: "home__btn home__btn--primary" %>
+        <%= link_to "動画を投稿する", new_user_registration_path, class: "home__btn home__btn--primary sp-only" %>
+
+        <%= link_to "トレーナーに無料で相談しよう", new_user_registration_path, class: "home__btn home__btn--primary sp-none" %>
       <% end %>
     </nav>
   </header>
@@ -21,7 +23,7 @@
       <div class="soon"></div>
       <p class="home-notes">※このアプリはβ版です。<br class="sp-only">正式版に向けて改善を行なっております。</p>
     </div>
-    <p class="home-copy">©2026 10K. All rights reserved.</p>
+    <p class="home-copy">© 2026 10K. All rights reserved. β版 v0.1.0</p>
   </main>
 </div>
 

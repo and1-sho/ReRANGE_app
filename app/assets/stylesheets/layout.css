@@ -13,9 +13,10 @@
     height: 56px;
     z-index: 100;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-areas:
+    "left . right";
     align-items: center;
-    padding: 0 16px;
+    padding: 0 16px 0 18px;
     background: rgba(255, 255, 255, 0.94);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
@@ -31,7 +32,8 @@
   }
 
   .site-header__brand-logo {
-    margin: auto;
+    grid-area: left;
+    margin: auto auto auto 0;
     padding-top: 4px;
   }
 
@@ -62,10 +64,6 @@
   .user-avatar-icon--header {
     width: 40px !important;
     height: 40px !important;
-  }
-
-  .account-menu__summary:hover .account-menu__user-icon {
-    background: rgba(2, 27, 21, 0.06);
   }
 
   .account-menu__panel {
@@ -153,6 +151,8 @@
     align-items: center;
     gap: 8px;
     flex-shrink: 0;
+    grid-area: right;
+    justify-content: end;
   }
 
   .menu-btn {
@@ -173,10 +173,6 @@
 
   .menu-btn--primary:hover {
     opacity: 0.92;
-  }
-
-  .account-menu__panel {
-    left: 0px;
   }
 
   /*==========================================================
@@ -326,6 +322,12 @@
 
 @media screen and (min-width: 640px) {
   /* タブレット用レイアウト 640px以上の範囲に収めるデザインはこの中に記述 */
+  /*==========================================================
+    　　TB_ヘッダー
+  ===========================================================*/
+  .site-header {
+    padding: 0 20px 0 24px;
+  }
 
   /*==========================================================
     　　TB_レイアウト
@@ -358,12 +360,13 @@
   }
 
   /*==========================================================
-    　　フッター
+    　　TB_フッター
   ===========================================================*/
   .site-footer {
     margin-bottom: 90px;
   }
 
+  .requests-index .site-footer,
   .requests-show .site-footer {
     margin-top: 100px;
     margin-bottom: 90px;
@@ -376,30 +379,13 @@
   /*==========================================================
     　　PC_ヘッダー
   ===========================================================*/
-  .site-header {
-    grid-template-areas:
-    "left . right";
-    padding: 0 20px;
-  }
-
-  .site-header__account-actions {
-    grid-area: right;
-    justify-content: end;
-  }
-
-  .site-header__brand-logo {
-    grid-area: left;
-    margin: 0 auto 0 0;
-  }
-
   .site-header__brand-logo img {
     width: 38px;
     height: 38px;
   }
 
-  .account-menu__panel {
-    left: auto;
-    right: 0;
+  .account-menu__summary:hover .account-menu__user-icon {
+    background: rgba(2, 27, 21, 0.06);
   }
   /*==========================================================
     　　PC_レイアウト
@@ -535,7 +521,6 @@
 
   .site-footer__copy {
     text-align: right;
-    margin-right: 120px;
   }
 
 
