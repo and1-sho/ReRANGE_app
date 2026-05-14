@@ -1,24 +1,24 @@
-<div class="top-wrap">
-  <header class="top-header">
-    <%= link_to app_home_path, class: "logo logo--link" do %>
-      <span class="logo-name">10K</span>
+<div class="auth-page">
+  <header class="site-header auth-header">
+    <%= link_to app_home_path, class: "site-header__brand-logo" do %>
+      <img class="logo-img" src="/images/logo/logo-main.png" alt="10K">
     <% end %>
   </header>
 
-  <main class="auth-main">
-    <div class="auth-card">
+  <main class="auth-layout password-reset">
+    <div class="auth-inner">
       <h1 class="auth-title">パスワードをお忘れの方</h1>
 
       <p class="auth-lead">
-        登録したメールアドレスを入力してください。パスワード再設定用のリンクをお送りします。
+        登録したメールアドレスを入力してください。<br>パスワード再設定用のリンクをお送りします。
       </p>
 
       <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post, class: "auth-form" }) do |f| %>
         <%= render "devise/shared/error_messages", resource: resource %>
 
-        <div class="auth-field">
-          <%= f.label :email, "メールアドレス", class: "auth-label" %>
-          <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "auth-input" %>
+        <div class="auth-form__field">
+          <%= f.label :email, "メールアドレス", class: "auth-form__label" %>
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "auth-form__input" %>
         </div>
 
         <div class="auth-actions">
@@ -26,12 +26,12 @@
         </div>
       <% end %>
 
-      <p class="auth-footer">
-        <%= link_to "ログインはこちら", new_user_session_path, class: "auth-link" %>
+      <p class="auth-links">
+        <%= link_to "ログインはこちら", new_user_session_path, class: "auth-links__link" %>
       </p>
 
-      <p class="auth-footer auth-footer--sub">
-        <%= link_to "新規登録はこちら", new_user_registration_path, class: "auth-link auth-link--sub" %>
+      <p class="auth-links auth-links--sub">
+        <%= link_to "新規登録はこちら", new_user_registration_path, class: "auth-links__link auth-links__link--sub" %>
       </p>
     </div>
   </main>
