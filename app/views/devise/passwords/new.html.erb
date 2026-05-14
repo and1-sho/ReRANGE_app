@@ -10,7 +10,7 @@
       <h1 class="auth-title">パスワードをお忘れの方</h1>
 
       <p class="auth-lead">
-        登録したメールアドレスを入力してください。<br>パスワード再設定用のリンクをお送りします。
+        登録したメールアドレスを入力してください。<br class="sp-none">パスワード再設定用のリンクをお送りします。
       </p>
 
       <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post, class: "auth-form" }) do |f| %>
