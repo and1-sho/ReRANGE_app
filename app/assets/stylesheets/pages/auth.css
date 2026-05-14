@@ -2,14 +2,11 @@
 @media screen and (min-width: 320px) {
   /* スマホ用レイアウト 320px以上の範囲に収めるデザインはこの中に記述 */
   /*==========================================================
-      　　ログイン
+      　　ログイン・新規登録
   ==============================================================*/
   .auth-header {
-    box-shadow: rgba(2, 27, 21, 0.18) 0px 8px 22px;
-    border-bottom: none;
     display: flex;
     justify-content: start;
-    height: 59px;
   }
 
   .auth-header .site-header__brand-logo {
@@ -70,6 +67,7 @@
 
   .auth-form__field {
     margin-bottom: 18px;
+    position: relative;
   }
 
   .auth-form__label {
@@ -104,8 +102,27 @@
     box-shadow: 0 0 0 3px rgba(2, 27, 21, 0.12);
   }
 
-  .auth-select {
+  .auth-form__select {
     cursor: pointer;
+    position: relative;
+  }
+
+  .auth-form__select .auth-form__input {
+    appearance: none;
+  }
+
+  .auth-form__select::before {
+    content: "";
+    position: absolute;
+    right: 16px;
+    top: 42px;
+    transform: rotate(45deg);
+    width: 6px;
+    height: 6px;
+    border-right: 1.5px solid #021b15;
+    border-bottom: 1.5px solid #021b15;
+    pointer-events: none;
+    z-index: 10;
   }
 
   .auth-actions {
