@@ -15,12 +15,65 @@
       <% end %>
     </nav>
   </header>
+
   <main class="home-main">
     <div class="home-main-inner">
-      <h1 class="home-title">１本の動画があなたを、<br class="pc-only">もっと強くする。</h1>
-      <p class="home-lead">動画を投稿するだけで、<br class="sp-only">トレーナーが「課題」と「原因」、<br>あなただけの「練習方法」をアドバイス<br class="sp-only">してくれるボクシング動画<br class="tb-only">コーチング<br class="sp-only">サービスです。</p>
+      <h1 class="home-title">"強くなる"をアップデートする</h1>
+      <p class="home-lead">練習動画やスパーリング動画を投稿すると、<br>ボクシングトレーナーから課題・原因・練習方法のアドバイスが届くサービスです。</p>
       <%= link_to "トレーナーに無料で相談しよう", new_user_registration_path, class: "home__btn home__btn--primary" %>
       <div class="soon"></div>
+
+      <!-- ホームヒーロー -->
+      <section class="home-hero">
+        <img class="home-hero__img" src="/images/home-hero.png" alt="スマホ">
+
+        <!-- ユーザー -->
+        <article class="home-hero__user-info home-hero-card">
+          <div class="user-icon"></div>
+          <div class="user-item">
+            <p class="user-name">高辻 龍二</p>
+            <p class="user-text">元日本フェザー級チャンピオン</p>
+          </div>
+        </article>
+
+        <!-- 動画 -->
+        <article class="home-hero__video home-hero-card">
+          <img class="video-icon" src="/images/icon/icon-video.svg" alt="動画再生アイコン">
+        </article>
+
+        <!-- サービス内容 -->
+        <article class="home-hero__service home-hero-card">
+          <div class="service__user-info">
+            <div class="service__user-icon"></div>
+            <div class="service__user-item">
+              <p class="service__user-name">高辻 智和<span>・3分前</span></p>
+              <p class="service__user-text">元日本フェザー級チャンピオン</p>
+            </div>
+          </div>
+          <div class="service-item item-01">
+            <div class="service-item__title-box">
+              <img class="service-item__icon" src="/images/icon/icon-problem.svg" alt="課題アイコン">
+              <p class="service-item__title">課題</p>
+            </div>
+            <p class="service-item__text">ストレートを打つ時に<br>体感が使えていない感じがしますね<span class="emoji">🤔</span></p>
+          </div>
+          <div class="service-item item-02">
+            <div class="service-item__title-box">
+              <img class="service-item__icon" src="/images/icon/icon-question.svg" alt="原因アイコン">
+              <p class="service-item__title">原因</p>
+            </div>
+            <p class="service-item__text">パンチを打つ時の体の使い方に問題がありそうです<span class="emoji">💡</span></p>
+          </div>
+          <div class="service-item item-03">
+            <div class="service-item__title-box">
+              <img class="service-item__icon" src="/images/icon/icon-training.svg" alt="練習方法アイコン">
+              <p class="service-item__title">練習方法</p>
+            </div>
+            <p class="service-item__text">ポイントは、ストレートを打つ際の重心の位置です！<br>動画で説明していることを意識してみてください<span class="emoji">🔥</span></p>
+          </div>
+        </article>
+      </section>
+
       <p class="home-notes">※このアプリはβ版です。<br class="sp-only">正式版に向けて改善を行なっております。</p>
     </div>
     <p class="home-copy">© 2026 10K. All rights reserved. β版 v0.1.0</p>
