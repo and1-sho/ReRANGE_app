@@ -34,8 +34,8 @@
   }
 
   .home-header__brand-logo img {
-    width: 46px;
-    height: 46px;
+    width: 40px;
+    height: 40px;
     margin-bottom: -4px;
   }
 
@@ -47,7 +47,11 @@
   .home-header__menu .home__btn {
     width: 130px;
     text-align: center;
-    padding: 8px 14px;
+    padding: 0 14px;
+  }
+
+  .home-header__menu .home__btn.sp-none {
+    display: none;
   }
 
   .home__btn {
@@ -81,7 +85,7 @@
     color: #021b15;
     background: transparent;
     max-width: 95px;
-    padding: 14px 0 !important;
+    padding: 12px 0 !important;
   }
 
   .home-main {
@@ -149,8 +153,8 @@
   }
 
   .home-header__brand-logo img {
-    width: 57px;
-    height: 57px;
+    width: 52px;
+    height: 52px;
   }
 
   /* ボタン */
@@ -158,6 +162,14 @@
     width: auto;
     text-align: left;
     padding: 14px 20px;
+  }
+
+  .home-header__menu .home__btn.sp-only {
+    display: none;
+  }
+
+  .home-header__menu .home__btn.sp-none {
+    display: block;
   }
 
   .home__btn--primary {

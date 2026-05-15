@@ -1,0 +1,8 @@
+<header class="site-header">
+  <%= link_to app_home_path, class: "site-header__brand-logo" do %>
+    <img class="logo-img" src="/images/logo/logo-main.png" alt="10K">
+  <% end %>
+  <div class="site-header__account-actions">
+    <%= render "shared/account_menu" %>
+  </div>
+</header>

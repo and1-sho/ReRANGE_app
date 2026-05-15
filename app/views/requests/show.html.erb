@@ -1,13 +1,7 @@
 <div class="requests-page-content requests-show">
 
-  <header class="site-header">
-    <div class="site-header__account-actions">
-      <%= render "shared/account_menu" %>
-    </div>
-    <%= link_to app_home_path, class: "site-header__brand-logo" do %>
-      <img class="logo-img" src="/images/logo/logo-main.png" alt="10K">
-    <% end %>
-  </header>
+  <!-- ヘッダー -->
+  <%= render "shared/header" %>
 
   <main class="layout">
     <% if current_user.member? || current_user.trainer? %>

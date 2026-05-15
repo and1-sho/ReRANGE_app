@@ -6,11 +6,26 @@
   ==============================================================*/
   .auth-header {
     display: flex;
+    height: 75px;
+    align-items: center;
     justify-content: start;
+    padding: 16px 16px 16px 20px;
+    border-bottom: none;
+  }
+
+  .auth-header.is-scrolled {
+    box-shadow: rgba(2, 27, 21, 0.18) 0px 8px 22px;
   }
 
   .auth-header .site-header__brand-logo {
+    padding-top: 0;
     margin-left: 0;
+  }
+
+  .auth-header .site-header__brand-logo img {
+    width: 40px;
+    height: 40px;
+    margin-bottom: -4px;
   }
 
   .auth-wrap {
@@ -217,16 +232,41 @@
 @media screen and (min-width: 640px) {
   /* タブレット用レイアウト 640px以上の範囲に収めるデザインはこの中に記述 */
   /*==========================================================
-      　　TB_ログイン
+      　　TB_ログイン・新規登録・パスワードをお忘れの方
   ==============================================================*/
+  .auth-header {
+    padding: 16px 40px !important;
+  }
+
+  .auth-header .site-header__brand-logo img {
+    width: 52px;
+    height: 52px;
+  }
+
+  .auth-layout {
+    margin-top: 75px;
+  }
 
 }
 
 @media screen and (min-width: 1024px) {
   /* パソコン用レイアウト 1024px以上の範囲に収めるデザインはこの中に記述 */
   /*==========================================================
-      　　PC_ログイン
+      　　PC_ログイン・新規登録・パスワードをお忘れの方
   ==============================================================*/
+  .auth-layout {
+    margin-top: 90px;
+  }
+
+  .auth-header {
+    height: 90px;
+  }
+
+  .auth-header .site-header__brand-logo img {
+    width: 57px;
+    height: 57px;
+  }
+
 }
 
 @media screen and (min-width: 1400px) {
