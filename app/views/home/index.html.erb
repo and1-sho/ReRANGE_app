@@ -18,17 +18,13 @@
 
   <main class="home-main">
     <div class="home-main-inner">
-      <h1 class="home-title">"強くなる"をアップデートする</h1>
+      <h1 class="home-title">"強くなる"を<br class="sp-only">アップデートする</h1>
       <p class="home-lead">練習動画やスパーリング動画を投稿すると、<br>ボクシングトレーナーから課題・原因・練習方法のアドバイスが届くサービスです。</p>
       <%= link_to "トレーナーに無料で相談しよう", new_user_registration_path, class: "home__btn home__btn--primary" %>
 
       <!-- ホームヒーロー -->
       <section class="home-hero">
-        <figure class="home-hero__image">
-          <img class="home-hero__img" src="/images/home-hero.webp" alt="スマホ">
-        </figure>
-
-        <!-- ユーザー -->
+      <!-- ユーザー -->
         <article class="home-hero__user-info home-hero-card">
           <div class="user-icon"></div>
           <div class="user-item">
@@ -41,6 +37,10 @@
         <article class="home-hero__video home-hero-card">
           <img class="video-icon" src="/images/icon/icon-video.svg" alt="動画再生アイコン">
         </article>
+
+        <figure class="home-hero__image">
+          <img class="home-hero__img" src="/images/home-hero.webp" alt="スマホ">
+        </figure>
 
         <!-- サービス内容 -->
         <article class="home-hero__service home-hero-card">
@@ -70,7 +70,7 @@
               <img class="service-item__icon" src="/images/icon/icon-training.svg" alt="練習方法アイコン">
               <p class="service-item__title">練習方法</p>
             </div>
-            <p class="service-item__text">ポイントは、ストレートを打つ際の重心の位置です！<br>動画で説明していることを意識してみてください<span class="emoji">🔥</span></p>
+            <p class="service-item__text">ポイントは、ストレートを打つ際の重心の位置です！<br class="sp-none">動画で説明していることを意識してみてください<span class="emoji">🔥</span></p>
           </div>
         </article>
       </section>
@@ -80,15 +80,15 @@
 
       <!-- 問題・悩み -->
       <section class="home-worry" data-controller="home-scroll">
-        <h2 class="sec-title">強くなりたくて、練習している。<br>でも、<span class="color">何をどう直せばいいのかわからない。</span></h2>
-        <p class="home-lead">たくさんのYoutube動画を見て真似しても、それが今の自分に合っているとは限りません。<br>必要なのは、今の自分の動きに対するアドバイスと、次に取り組むべき練習方法です。</p>
+        <h2 class="sec-title">強くなりたくて、<br class="sp-only">練習している。<br>でも、<span class="color">何をどう直せば<br class="sp-only">いいのかわからない。</span></h2>
+        <p class="home-lead">たくさんのYoutube動画を見て真似しても、<br class="sp-only">それが今の自分に合っているとは限りません。<br>必要なのは、今の自分の動きに対するアドバイスと、次に取り組むべき練習方法です。</p>
         <article class="worry-box">
           <div class="worry-item item-01">スパーリングでまた同じこと注意された。</div>
           <div class="worry-item item-02">お父さんがボクシング経験者だったらな。</div>
-          <div class="worry-item item-03">Youtubeではこうやって<br>言ってたけど。</div>
+          <div class="worry-item item-03">Youtubeではこうやって<br class="sp-none">言ってたけど。</div>
           <div class="worry-item item-04">もっとジムでも個別に教えてほしい。</div>
-          <div class="worry-item item-05">いろんなトレーナーの意見も<br>聞いてみたい。</div>
-          <div class="worry-item item-06">強いあの子はどんな練習して<br>いるんだろ？</div>
+          <div class="worry-item item-05">いろんなトレーナーの意見も<br class="sp-none">聞いてみたい。</div>
+          <div class="worry-item item-06">強いあの子はどんな練習して<br class="sp-none">いるんだろ？</div>
           <div class="worry-item item-07">今の自分が強くなるためには何が必要なの？</div>
         </article>
       </section>
@@ -96,7 +96,7 @@
 
       <!-- できること -->
       <section class="home-about">
-        <h2 class="sec-title">強くなるための、もっといい方法がある。<br><span class="color">動画を投稿して、自分に必要なアドバイスを受けよう。</span></h2>
+        <h2 class="sec-title">強くなるための、<br class="sp-only">もっといい方法がある。<br><span class="color">動画を投稿して、<br class="sp-only">自分に必要なアドバイスを受けよう。</span></h2>
       </section>
     </div>
     <p class="home-copy">© 2026 10K. All rights reserved. β版 v0.1.0</p>
