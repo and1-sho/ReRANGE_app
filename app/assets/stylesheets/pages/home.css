@@ -122,7 +122,8 @@
     position: relative;
     aspect-ratio: 16 / 9;
     width: 100%;
-    max-width: 1280px;
+    /* max-width: 1280px; */
+    max-width: 1300px;
     height: 100%;
     margin: 68px auto 32px;
     /* padding-top: 150px; */
@@ -131,14 +132,25 @@
     /* box-shadow: rgba(2, 27, 21, 0.18) 0px 8px 22px; */
   }
 
-  .home-hero__img {
+  .home-hero__image {
+    overflow: hidden;
     position: absolute;
     left: 190px;
     bottom: 0;
-    width: auto;
-    height: 92%;
+    width: 1100px;
+    height: 800px;
+    margin-left: -420px;
+  }
+
+  .home-hero__img {
+    width: 100%;
+    height: 100%;
     object-fit: cover;
-    /* margin-left: 250px; */
+    /* margin-right: 250px; */
+    margin-top: 120px;
+    object-position: 100% 0%;
+    /* padding-right: 400px; */
+
   }
 
   .home-hero-card {
@@ -158,7 +170,7 @@
   .home-hero__user-info {
     position: absolute;
     top: 80px;
-    left: 130px;
+    left: 100px;
     display: grid;
     grid-template-columns: 60px 1fr;
     align-items: center;
@@ -188,11 +200,11 @@
   .home-hero__video {
     position: absolute;
     top: 270px;
-    left: 0;
+    left: -40px;
     aspect-ratio: 16 / 9;
     width: 100%;
     height: auto;
-    max-width: 380px;
+    max-width: 370px;
     display: grid;
     place-content: center;
   }
@@ -206,7 +218,7 @@
   .home-hero__service {
     position: absolute;
     bottom: 100px;
-    right: 0;
+    right: -40px;
     padding: 20px 20px 48px 20px;
   }
 
@@ -288,19 +300,123 @@
     font-size: 18px;
   }
 
-
-
-
-
-
-
-
   .home-notes {
     font-size: 14px;
     font-weight: 600;
     letter-spacing: 0.05em;
     line-height: 1.8;
   }
+
+  /*==========================================================
+      　　問題・悩み
+  ==============================================================*/
+  .home-worry {
+    margin-top: 200px;
+  }
+
+  .home .sec-title {
+    font-size: 42px;
+    line-height: 1.6;
+  }
+
+  .home .sec-title .color {
+    color: #FC0D0D;
+  }
+
+  .worry-box {
+    position: relative;
+    margin: 64px auto 0;
+    max-width: 1000px;
+    min-height: 350px;
+  }
+
+  .worry-item {
+    width: fit-content;
+    padding: 18px 24px;
+    background: #949495;
+    border-radius: 8px;
+    font-size: 22px;
+    line-height: 1.7;
+    letter-spacing: 0.05em;
+    font-weight: 500;
+    text-align: left;
+    opacity: 0;
+    /* transform: translateY(20px); */
+    transition: opacity .6s ease, transform .6s ease;
+  }
+
+  /* 表示時 */
+  .worry-item.is-show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .worry-item.item-01 {
+    position: absolute;
+    top: 10px;
+    left: 20px;
+    background: #fdf9f1;
+    transition-delay: 1s;
+  }
+
+  .worry-item.item-02 {
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    background: #fce9c5;
+    transition-delay: 2s;
+  }
+
+  .worry-item.item-03 {
+    position: absolute;
+    top: 80px;
+    left: 160px;
+    background: #e2e9fa;
+    transition-delay: 3s;
+  }
+
+  .worry-item.item-04 {
+    position: absolute;
+    top: 140px;
+    right: 160px;
+    background: #fdf9f1;
+    transition-delay: 4s;
+  }
+
+  .worry-item.item-05 {
+    position: absolute;
+    top: 180px;
+    left: 130px;
+    background: #f7ebcf;
+    transition-delay: 5s;
+  }
+
+  .worry-item.item-06 {
+    position: absolute;
+    top: 220px;
+    right: 190px;
+    background: #f1f4fd;
+    transition-delay: 6s;
+  }
+
+  .worry-item.item-07 {
+    position: absolute;
+    top: 116px;
+    left: 260px;
+    background: #FC0D0D;
+    color: var(--color-white);
+    transition-delay: 7s;
+  }
+
+  /*==========================================================
+      　　できること
+  ==============================================================*/
+  .home-about {
+    margin-top: 160px;
+    min-height: 600px;
+  }
+
+
 
   .home-copy {
     font-size: 12.6px;
