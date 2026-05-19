@@ -36,6 +36,7 @@ body {
 
 @media screen and (min-width: 1024px) {
   /* パソコン用レイアウト 1024px以上の範囲に収めるデザインはこの中に記述 */
+  .pc-none,
   .tb-only {
     display: none;
   }
