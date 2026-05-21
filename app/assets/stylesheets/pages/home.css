@@ -119,7 +119,7 @@
     color: #021b15;
     line-height: 2.1;
     margin-bottom: 32px;
-    padding: 0 16px;
+    padding: 0 24px;
   }
 
   .home-main .home__btn {
@@ -305,7 +305,7 @@
       　　問題・悩み
   ==============================================================*/
   .home-worry {
-    margin-top: 130px;
+    margin-top: 80px;
   }
 
   .home .sec-title {
@@ -320,7 +320,7 @@
 
   .worry-box {
     position: relative;
-    margin: 40px 16px 0;
+    margin: -8px 16px 0;
     max-width: 1000px;
     min-height: 350px;
   }
@@ -330,7 +330,7 @@
     padding: 18px 24px;
     background: #949495;
     border-radius: 8px;
-    font-size: 18px;
+    font-size: 17px;
     line-height: 1.7;
     letter-spacing: 0.05em;
     font-weight: 500;
@@ -351,6 +351,7 @@
     left: 0px;
     background: #fdf9f1;
     transition-delay: 1s;
+    margin-left: 20px;
   }
 
   .worry-item.item-02 {
@@ -359,6 +360,7 @@
     left: 0px;
     background: #fce9c5;
     transition-delay: 2s;
+    margin-right: 30px;
   }
 
   .worry-item.item-03 {
@@ -367,6 +369,8 @@
     left: 0px;
     background: #e2e9fa;
     transition-delay: 3s;
+    margin-right: 10px;
+    margin-left: 20px;
   }
 
   .worry-item.item-04 {
@@ -375,6 +379,7 @@
     left: 0px;
     background: #fdf9f1;
     transition-delay: 4s;
+    margin-right: 30px;
   }
 
   .worry-item.item-05 {
@@ -383,6 +388,8 @@
     left: 0px;
     background: #f7ebcf;
     transition-delay: 5s;
+    margin-right: 10px;
+    margin-left: 10px;
   }
 
   .worry-item.item-06 {
@@ -391,6 +398,7 @@
     left: 0px;
     background: #f1f4fd;
     transition-delay: 6s;
+    margin-right: 20px;
   }
 
   .worry-item.item-07 {
@@ -400,19 +408,24 @@
     background: #FC0D0D;
     color: var(--color-white);
     transition-delay: 7s;
+    margin-right: 30px;
+    margin-left: 30px;
+    padding: 18px 24px;
+    font-size: 19px;
+    line-height: 1.8;
   }
 
   /*==========================================================
       　　特徴
   ==============================================================*/
   .home-feature {
-    margin-top: 100px;
+    margin-top: 20px;
     min-height: 400px;
   }
 
   .feature_box {
     padding: 0 24px;
-    margin-top: 40px;
+    margin-top: 36px;
   }
 
   .feature_item {
@@ -488,7 +501,8 @@
     font-size: 12.6px;
     font-weight: 600;
     letter-spacing: 0.05em;
-    padding: 0 0 80px;
+    padding: 20px 0 56px;
+    margin: 0;
   }
 }
 
@@ -532,32 +546,33 @@
   }
 
   .home__btn--ghost {
-    font-size: 14.5px;
+    font-size: 14px;
     max-width: none;
     margin-right: 8px;
     padding: 14px 20px !important;
   }
 
   .home-main-inner {
-    padding: 120px 0;
+    padding: 50px 0 100px;
   }
 
   .home-title {
-    font-size: 36px;
+    font-size: 40px;
   }
 
   .home-lead {
-    line-height: 2.3;
-    font-size: 17px;
+    line-height: 2.1;
+    font-size: 16px;
+    margin-bottom: 24px;
   }
 
   .home-main .home__btn {
-    font-size: 16px;
+    font-size: 15px;
   }
 
   /*=========== ホームヒーロー ===========*/
   .home-hero {
-    margin: 80px auto 0;
+    margin: 20px auto 0;
   }
 
   .home-hero__image {
@@ -576,9 +591,7 @@
   /* ユーザー */
   .home-hero__user-info {
     transform: scale(0.8);
-    top: 50px;
-    right: 70px;
-    left: auto;
+    left: 10px;
     grid-template-columns: 42px 1fr;
     column-gap: 18px;
     padding: 16px 36px 20px 20px;
@@ -599,15 +612,18 @@
 
   /* 動画 */
   .home-hero__video {
-    max-width: 230px;
-    left: auto;
-    top: 220px;
-    right: 90px;
+    max-width: 220px;
+    top: 100px;
+    right: 50px;
+  }
+
+  .video-bg {
+    margin-top: 26px;
   }
 
   .video-icon {
-    width: 56px;
-    height: 56px;
+    width: 40px;
+    height: 40px;
   }
 
   /* サービス内容 */
@@ -620,21 +636,23 @@
   }
 
   .home-service-01 {
-    top: 180px;
-    left: 40px;
+    display: block;
+    top: 240px;
+    left: 20px;
   }
 
   .home-service-02 {
+    display: block;
     top: auto;
     right: auto;
     left: -40px;
-    bottom: 200px;
+    bottom: 110px;
   }
 
   .home-service-03 {
+    top: 300px;
     left: auto;
-    right: 0px;
-    bottom: 54px;
+    right: -34px;
   }
 
   .service-item__text {
@@ -642,7 +660,7 @@
   }
 
   .home-notes {
-    margin: 44px 0 20px;
+    margin: 28px 0 20px;
   }
 
 
@@ -650,11 +668,20 @@
       　　TB_問題・悩み
   ==============================================================*/
   .home .sec-title {
-    font-size: 32px;
+    font-size: 36px;
+    padding: 0 40px;
+  }
+
+  .home-worry {
+    margin-top: 120px;
+  }
+
+  .home-worry .home-lead {
+    margin-top: -4px;
   }
 
   .worry-box {
-    margin: 60px 40px 0;
+    margin: 40px 40px 0;
   }
 
   .worry-item {
@@ -664,47 +691,58 @@
   .worry-item.item-01 {
     top: 10px;
     left: 20px;
+    margin: 0;
   }
 
   .worry-item.item-02 {
     top: 60px;
     left: auto;
     right: 20px;
+    margin: 0;
   }
 
   .worry-item.item-03 {
     top: 80px;
     left: 80px;
+    margin: 0;
   }
 
   .worry-item.item-04 {
     top: 140px;
     left: auto;
-    right: 140px;
+    right: 20px;
+    margin: 0;
   }
 
   .worry-item.item-05 {
-    top: 180px;
-    left: 60px;
+    top: 160px;
+    left: 40px;
+    margin: 0;
   }
 
   .worry-item.item-06 {
     top: 220px;
     left: auto;
-    right: 100px;
+    right: 60px;
+    margin: 0;
   }
 
   .worry-item.item-07 {
-    top: 110px;
+    top: 80px;
     left: 50%;
     transform: translateX(-50%);
     font-size: 23px;
     padding: 22px 36px;
+    margin: 0;
   }
 
   /*==========================================================
       　　TB_特徴
   ==============================================================*/
+  .home-feature {
+    margin-top: 70px;
+  }
+
   .feature_box {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -727,6 +765,7 @@
   .feature_item__icon {
     font-size: 56px;
     max-height: 77px;
+    transform: scale(0.8);
   }
 
   .item-01 .feature_item__icon {
@@ -744,7 +783,7 @@
 
   .feature_item__title {
     font-size: 22px;
-    margin-top: 18px;
+    margin-top: 10px;
   }
 
   .feature_item__text {
@@ -766,20 +805,27 @@
     height: 57px;
   }
 
+  .home-main-inner {
+    padding: 60px 0 100px;
+  }
+
   .home-title {
     font-size: 58px;
   }
 
   .home-lead {
-    font-size: 21px;
+    font-size: 18px;
+    line-height: 2.3;
+    margin-top: 16px;
   }
 
   /*=========== ホームヒーロー ===========*/
+  .home-hero {
+    margin: 0 auto;
+  }
+
   .home-hero__img {
-    width: 96%;
-    height: 96%;
-    margin-top: 60px;
-    margin-left: -700px;
+    width: 50%;
   }
 
   /* ユーザー */
@@ -787,17 +833,19 @@
     transform: scale(0.9);
     position: absolute;
     top: 20px;
-    left: 120px;
+    left: 140px;
   }
 
   /* 動画 */
   .home-hero__video {
     position: absolute;
-    right: 80px;
-    left: auto;
-    top: 250px;
-    bottom: auto;
     max-width: 280px;
+    top: 100px;
+    right: 100px;
+  }
+
+  .video-bg {
+    margin-top: 50px;
   }
 
   /* サービス内容 */
@@ -806,24 +854,23 @@
   }
 
   .home-service-01 {
-    right: auto;
-    top: 200px;
+    top: 240px;
     left: 20px;
   }
 
   .home-service-02 {
-    left: auto;
-    top: 60px;
-    right: 35px;
+    left: 10px;
+    bottom: 100px;
   }
 
   .home-service-03 {
-    right: 0px;
-    bottom: 80px;
+    top: 380px;
+    right: -30px;
   }
 
   .home-notes {
-    margin: 48px 0 20px;
+    font-size: 13px;
+    margin: 32px 0 20px;
   }
 
   /*==========================================================
@@ -834,7 +881,7 @@
   }
 
   .worry-box {
-    margin: 64px auto 0;
+    margin: 60px auto 0;
   }
 
   .worry-item {
@@ -854,7 +901,7 @@
 
   .worry-item.item-03 {
     top: 80px;
-    left: 180px;
+    left: 80px;
   }
 
   .worry-item.item-04 {
@@ -871,7 +918,7 @@
   .worry-item.item-06 {
     top: 220px;
     left: auto;
-    right: 190px;
+    right: 90px;
   }
 
   .worry-item.item-07 {
@@ -906,49 +953,49 @@
   /*==========================================================
       　　PC-big_ホーム
   ==============================================================*/
+  .home-main-inner {
+    padding: 48px 0 100px;
+  }
+
   .home-title .pc-only {
     display: none;
   }
 
   .home-lead {
     margin-top: 18px;
+    font-size: 18px;
+    margin-top: 16px;
+    margin-bottom: 28px;
   }
 
   /*=========== ホームヒーロー ===========*/
   .home-hero {
     aspect-ratio: 16 / 9;
     max-width: 1300px;
-    margin: 68px auto 32px;
+    margin: 8px auto 32px;
   }
 
   .home-hero__image {
     position: absolute;
-    left: 190px;
+    left: 160px;
     bottom: 0;
     width: 1100px;
-    height: 800px;
-    margin-top: 120px;
-    margin-left: -420px;
+    height: 740px;
   }
 
   .home-hero__img {
-    width: 100%;
-    height: 100%;
+    width: 58%;
     object-fit: cover;
     margin: 0;
-    margin-top: 120px;
-    object-position: 100% 0%;
+    object-position: 0% 0%;
   }
 
   /* ユーザー */
   .home-hero__user-info {
-    position: absolute;
-    top: 40px;
-    left: 65px;
     grid-template-columns: 60px 1fr;
     column-gap: 18px;
     padding: 20px 36px 24px 20px;
-    transform: scale(1);
+    transform: scale(0.9);
   }
 
   .home .user-icon {
@@ -967,21 +1014,26 @@
 
   /* 動画 */
   .home-hero__video {
-    position: absolute;
-    max-width: 370px;
+    max-width: 360px;
     margin: 0;
-    right: -25px;
-    left: auto;
-    top: 214px;
-    bottom: auto;
+    top: 120px;
+    right: 20px;
   }
+
+  .video-bg {
+    margin-top: 60px;
+  }
+
+  .video-icon {
+    width: 48px;
+    height: 48px;
+  }
+
 
   /* サービス内容 */
   .home-hero__service {
     transform: scale(1);
     position: absolute;
-    bottom: 100px;
-    right: -50px;
     max-width: none;
     padding: 20px 24px 22px;
     margin: 0;
@@ -991,30 +1043,14 @@
     margin: 0;
   }
 
-  .home-service-01 {
-    /* top: 50px;
-    right: 130px; */
-
-    top: 260px;
-    right: 60px;
-  }
-
   .home-service-02 {
-    /* right: auto; */
-    bottom: auto;
-    /* top: 260px;
-    left: -60px; */
-
-    left: auto;
-    top: 50px;
-    right: 22px;
+    left: 10px;
+    bottom: 180px;
   }
 
   .home-service-03 {
-    left: auto;
-    top: auto;
-    right: 0px;
-    bottom: 130px;
+    top: 420px;
+    right: -80px;
   }
 
   .service-item__text {
@@ -1029,7 +1065,7 @@
       　　PC-big_問題・悩み
   ==============================================================*/
   .home-worry {
-    margin-top: 200px;
+    margin-top: 130px;
   }
 
   .home .sec-title {
@@ -1037,8 +1073,14 @@
     line-height: 1.6;
   }
 
+  .home-worry .home-lead {
+    margin-top: -16px;
+    margin-bottom: 16px;
+    line-height: 2.2;
+  }
+
   .worry-box {
-    margin: 64px auto 0;
+    margin: 40px auto 0;
   }
 
   .worry-item {
@@ -1058,53 +1100,59 @@
 
   .worry-item.item-03 {
     top: 80px;
-    left: 160px;
+    left: 80px;
   }
 
   .worry-item.item-04 {
     top: 140px;
     left: auto;
-    right: 160px;
+    right: 60px;
   }
 
   .worry-item.item-05 {
     top: 180px;
-    left: 130px;
+    left: 60px;
   }
 
   .worry-item.item-06 {
-    top: 220px;
+    top: 230px;
     left: auto;
-    right: 190px;
+    right: 90px;
   }
 
   .worry-item.item-07 {
-    top: 116px;
+    top: 100px;
   }
 
   /*==========================================================
       　　PC-big_特徴
   ==============================================================*/
   .home-feature {
-  margin-top: 160px;
+  margin-top: 90px;
   min-height: 600px;
   }
 
   .feature_box {
     max-width: 1300px;
-    margin-top: 110px;
+    margin-top: 100px;
     row-gap: 20px;
   }
 
+  /* アイコン */
+  .feature_item__icon {
+    transform: scale(0.9);
+  }
+
   .feature_item__title {
-    font-size: 24px;
+    font-size: 22.5px;
     letter-spacing: 0.06em;
+    margin-top: 8px;
   }
 
   .feature_item__text {
-    font-size: 17px;
+    font-size: 16px;
     line-height: 1.9;
-    margin-top: 8px;
+    margin-top: 12px;
   }
 
 
