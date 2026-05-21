@@ -398,6 +398,7 @@
   .home-feature {
     margin-top: 20px;
     min-height: 400px;
+    padding-bottom: 40px;
   }
 
   .feature_box {
@@ -481,6 +482,220 @@
     padding: 20px 0 56px;
     margin: 0;
   }
+
+  /*==========================================================
+      　　画像
+  ==============================================================*/
+  .home-bg {
+    position: relative;
+    width: 100%;
+    height: 390px;
+    overflow: hidden;
+  }
+
+  .home-bg__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 34% 50%;
+    filter: brightness(60%);
+  }
+
+  .home-bg__title {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    font-size: 26px;
+    line-height: 1.6;
+    margin: 0;
+    color: var(--color-white);
+  }
+
+  /*==========================================================
+      　　比較
+  ==============================================================*/
+  /* .home-comparison {
+    padding: 26px 0;
+  }
+
+  .home-comparison__table {
+    width: fit-content;
+    border-collapse: collapse;
+    border-radius: 16px !important;
+  }
+
+  .home .table-title-box {
+    text-align: left;
+  }
+
+  .home-comparison__table th,
+  .home-comparison__table td {
+    border: 1px solid #ddd;
+    width: 240px;
+  }
+
+  .home-comparison__table th {
+    font-weight: 700;
+    padding: 16px 24px;
+  }
+
+
+  .home .table-title-box th {
+    font-size: 20px;
+    font-weight: 500;
+    padding: 24px;
+  }
+  .table-title__gym {
+    background: #f7ebcf;
+    color: #785400;
+    border: solid 1px #f7ebcf !important;
+  }
+  .table-title__sns {
+    background: #fdf9f1;
+    color: #45401a;
+    border: solid 1px #fdf9f1 !important;
+  }
+  .table-title__10k {
+    background: #f1f4fd;
+    color: #0967ff;
+    border: none !important;
+    border-radius: 0 8px 0 0;
+  }
+
+  .home-comparison__table th.table-category {
+    width: 160px !important;
+  }
+
+  .home-comparison__table td {
+    text-align: left;
+    padding: 13px 24px 19px;
+  }
+
+  .home-comparison__table tbody th {
+    text-align: left;
+  }
+
+
+  .home-comparison__table svg {
+    width: 24px;
+    height: 24px;
+    position: relative;
+    top: 6px;
+    margin-right: 6px;
+  }
+
+  .icon--bad {
+    color: #FC0D0D;
+  }
+
+  .icon--good {
+    color: #74C66D;
+  }
+
+  .icon--neutral {
+    color: #FCE106;
+    transform: rotate(-90deg);
+  } */
+
+
+
+
+.home-comparison {
+  padding: 26px 0;
+}
+
+.home-comparison__table-wrap {
+  overflow-x: auto;
+  border-radius: 16px;
+  overflow: hidden; /* ←これが重要 */
+  border: 1px solid #ddd;
+}
+
+.home-comparison__table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+/* 列幅 */
+.home-comparison__col-category {
+  width: 160px;
+}
+
+.home-comparison__col-service {
+  width: 240px;
+}
+
+/* セル */
+.home-comparison__table th,
+.home-comparison__table td {
+  border: 1px solid #ddd;
+  padding: 16px 24px;
+  text-align: left;
+}
+
+/* 左の項目 */
+.home-comparison__table .table-category {
+  text-align: left;
+  font-weight: 600;
+}
+
+/* ヘッダー */
+.table-title-box th {
+  font-size: 20px;
+  font-weight: 500;
+  padding: 24px;
+}
+
+/* 各サービス色 */
+.table-title__gym {
+  background: #f7ebcf;
+  color: #785400;
+  border: 1px solid #f7ebcf !important;
+}
+
+.table-title__sns {
+  background: #fdf9f1;
+  color: #45401a;
+  border: 1px solid #fdf9f1 !important;
+}
+
+.table-title__10k {
+  background: #f1f4fd;
+  color: #0967ff;
+  border: 1px solid #f1f4fd !important;
+}
+
+/* アイコン */
+.home-comparison__table svg {
+  width: 24px;
+  height: 24px;
+  position: relative;
+  top: 6px;
+  margin-right: 6px;
+}
+
+.icon--bad {
+  color: #FC0D0D;
+}
+
+.icon--good {
+  color: #74C66D;
+}
+
+.icon--neutral {
+  color: #FCE106;
+  transform: rotate(-90deg);
+}
+
+
+
+
+
+
+
+
 }
 
 @media screen and (min-width: 640px) {
