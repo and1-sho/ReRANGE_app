@@ -132,7 +132,6 @@
     position: relative;
     width: 100%;
     height: 100%;
-    /* margin: 92px auto 0; */
     margin: -20px auto 0;
   }
 
@@ -169,9 +168,6 @@
     position: absolute;
     top: 6px;
     left: -20px;
-
-    /* top: 214px;
-    left: -20px; */
     display: grid;
     grid-template-columns: 34px 1fr;
     align-items: center;
@@ -202,27 +198,18 @@
   /* 動画 */
   .home-hero__video {
     position: absolute;
-    /* top: 200px;
-    left: 15px; */
-    aspect-ratio: 16 / 9;
-    width: 100%;
-    height: auto;
-    max-width: 130px;
-    /* display: grid;
-    place-content: center; */
-    /* border: solid 1px #ffffff; */
-    overflow: hidden;
-
-
     top: 114px;
     right: 14px;
+    aspect-ratio: 16 / 9;
+    width: 130px;
+    height: 73.13px;
+    overflow: hidden;
   }
 
   .video-bg {
     width: 120%;
     height: 120%;
     object-fit: cover;
-    /* margin-top: 16px; */
     margin-top: 7px;
     margin-left: -10px;
     transform: translateY(-50%);
@@ -235,9 +222,6 @@
     transform: translate(-50%, -50%);
     width: 32px;
     height: 32px;
-
-    /* width: 22px;
-    height: 22px; */
     z-index: 10;
   }
 
@@ -252,9 +236,6 @@
     position: absolute;
     top: 100px;
     right: -60px;
-
-    /* top: 190px;
-    left: -60px; */
     display: none;
   }
 
@@ -262,9 +243,6 @@
     position: absolute;
     top: 230px;
     right: -60px;
-
-    /* left: -60px;
-    bottom: 24px; */
     display: none;
 
   }
@@ -298,7 +276,6 @@
     letter-spacing: 0.05em;
     line-height: 1.8;
     margin-top: 26px;
-    /* margin-top: -125px; */
   }
 
   /*==========================================================
@@ -359,7 +336,7 @@
     top: 50px;
     left: 0px;
     background: #fce9c5;
-    transition-delay: 2s;
+    transition-delay: 2.5s;
     margin-right: 30px;
   }
 
@@ -368,7 +345,7 @@
     top: 95px;
     left: 0px;
     background: #e2e9fa;
-    transition-delay: 3s;
+    transition-delay: 4s;
     margin-right: 10px;
     margin-left: 20px;
   }
@@ -378,7 +355,7 @@
     top: 140px;
     left: 0px;
     background: #fdf9f1;
-    transition-delay: 4s;
+    transition-delay: 5.5s;
     margin-right: 30px;
   }
 
@@ -387,7 +364,7 @@
     top: 180px;
     left: 0px;
     background: #f7ebcf;
-    transition-delay: 5s;
+    transition-delay: 7s;
     margin-right: 10px;
     margin-left: 10px;
   }
@@ -397,7 +374,7 @@
     top: 220px;
     left: 0px;
     background: #f1f4fd;
-    transition-delay: 6s;
+    transition-delay: 8.5s;
     margin-right: 20px;
   }
 
@@ -407,7 +384,7 @@
     left: 0;
     background: #FC0D0D;
     color: var(--color-white);
-    transition-delay: 7s;
+    transition-delay: 10s;
     margin-right: 30px;
     margin-left: 30px;
     padding: 18px 24px;
@@ -583,8 +560,6 @@
   .home-hero__img {
     width: 70%;
     height: 100%;
-    /* width: 140%;
-    height: 140%; */
     margin-right: -80px;
   }
 
@@ -612,9 +587,10 @@
 
   /* 動画 */
   .home-hero__video {
-    max-width: 220px;
     top: 100px;
     right: 50px;
+    width: 220px;
+    height: 123.75px;
   }
 
   .video-bg {
@@ -692,6 +668,7 @@
     top: 10px;
     left: 20px;
     margin: 0;
+    /* transition-delay: 1s; */
   }
 
   .worry-item.item-02 {
@@ -699,12 +676,14 @@
     left: auto;
     right: 20px;
     margin: 0;
+    transition-delay: 2s;
   }
 
   .worry-item.item-03 {
     top: 80px;
     left: 80px;
     margin: 0;
+    transition-delay: 3s;
   }
 
   .worry-item.item-04 {
@@ -712,12 +691,14 @@
     left: auto;
     right: 20px;
     margin: 0;
+    transition-delay: 4s;
   }
 
   .worry-item.item-05 {
     top: 160px;
     left: 40px;
     margin: 0;
+    transition-delay: 5s;
   }
 
   .worry-item.item-06 {
@@ -725,6 +706,7 @@
     left: auto;
     right: 60px;
     margin: 0;
+    transition-delay: 6s;
   }
 
   .worry-item.item-07 {
@@ -734,6 +716,7 @@
     font-size: 23px;
     padding: 22px 36px;
     margin: 0;
+    transition-delay: 7s;
   }
 
   /*==========================================================
@@ -842,6 +825,8 @@
     max-width: 280px;
     top: 100px;
     right: 100px;
+    width: 280px;
+    height: 157.5px;
   }
 
   .video-bg {
@@ -1018,6 +1003,8 @@
     margin: 0;
     top: 120px;
     right: 20px;
+    width: 360px;
+    height: 202.5px;
   }
 
   .video-bg {
