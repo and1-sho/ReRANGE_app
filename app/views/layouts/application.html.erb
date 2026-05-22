@@ -13,6 +13,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap" rel="stylesheet">
+
+    <!-- スクロールヒント（CSS） -->
+    <link rel="stylesheet" href="https://unpkg.com/scroll-hint@latest/css/scroll-hint.css">
   </head>
 
   <body>
@@ -31,5 +34,17 @@
     <% end %>
 
     <%= yield %>
+
+    <!-- スクロールヒント（JS） -->
+    <script src="https://unpkg.com/scroll-hint@latest/js/scroll-hint.min.js"></script>
+
+    <script>
+      new ScrollHint('.home-comparison__table-wrap--sp', {
+        suggestiveShadow: true,
+        i18n: {
+            scrollable: 'スクロールできます'
+        }
+      });
+    </script>
   </body>
 </html>
