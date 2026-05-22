@@ -533,8 +533,13 @@
     overflow-x: auto;
     box-sizing: border-box;
     max-width: 980px;
-    margin: 0 24px;
-    font-size: 16px;
+    /* margin: 0 24px; */
+    margin: 0 16px;
+    font-size: 15.5px;
+
+    /* border-left: 1px solid #e5e7eb;
+    border-top: 1px solid #e5e7eb;
+    border-bottom: 1px solid #e5e7eb; */
   }
 
   .home-comparison__table-wrap .border {
@@ -547,17 +552,47 @@
     border-collapse: collapse;
     min-width: 1000px;
     border: none !important;
+    border-spacing: 0;
+  }
+
+  /* スクロールヒント */
+  .scroll-hint-icon-wrap {
+    z-index: 20 !important;
+  }
+
+  .scroll-hint-text {
+    z-index: 20 !important;
+  }
+
+  .scroll-hint-shadow-wrap::before,
+  .scroll-hint-shadow-wrap::after {
+    display: none;
   }
 
   /* 列幅 */
   .home-comparison__col-category {
-    width: 140px;
+    width: 90px;
     font-size: 16.5px;
     border-top: none !important;
+    /* background: #e5e7eb; */
   }
 
+  .home-comparison__table-wrap--sp .table-category {
+    position: sticky;
+    left: 0;
+    background: #fff;
+    z-index: 2;
+    box-shadow:
+    1px 0 0 #e5e7eb,
+    0 1px 0 #e5e7eb;
+  }
+
+  /* .none-content.table-category {
+    border-bottom: 1px solid #e5e7eb;
+  } */
+
   .home-comparison__col-service {
-    width: 220px;
+    width: 200px;
   }
 
   /* セル */
@@ -568,8 +603,9 @@
 
   .home-comparison__table td {
     border-left: 1px solid #e5e7eb;
-    padding: 16px 24px;
-    line-height: 2.3;
+    /* padding: 16px 24px; */
+    padding: 12px 24px 19px;
+    /* line-height: 2.3; */
     text-align: left;
   }
 
@@ -596,12 +632,12 @@
   .table-title__gym {
     background: #f7ebcf;
     color: #785400;
-    border-radius: 0 10px 0 0;
   }
 
   .table-title__sns {
     background: #fdf9f1;
     color: #312f14;
+    border-radius: 0 10px 0 0;
   }
 
   .table-title__10k {
@@ -957,13 +993,14 @@
   }
 
   .home-comparison__table td {
-    line-height: 2.5;
+    /* line-height: 2.5; */
   }
 
   /* ヘッダー */
   .table-title-box th {
     font-size: 19.5px;
-    line-height: 1.7;
+    /* line-height: 1.7; */
+    line-height: 1.1;
   }
 
 
@@ -1163,6 +1200,7 @@
     overflow-x: visible;
     max-width: 1121px;
     margin: 64px auto 0;
+    font-size: 16px;
   }
   .home-comparison__table-wrap .border {
     min-width: 1120px;
@@ -1172,8 +1210,17 @@
     min-width: 1120px;
   }
 
+  /* 列幅 */
+  .home-comparison__col-category {
+    width: 130px;
+  }
+
+  .table-title-box th {
+    line-height: 1.2;
+  }
+
   /* 各サービス */
-  .table-title__gym {
+  .table-title__sns {
     border-radius: 0;
   }
 
@@ -1430,12 +1477,12 @@
 
   .table-title-box th {
     font-size: 20px;
-    line-height: 1.5;
+    /* line-height: 1.5; */
   }
 
-  .home-comparison__table td {
+  /* .home-comparison__table td {
     line-height: 2.3;
-  }
+  } */
 
 
 
