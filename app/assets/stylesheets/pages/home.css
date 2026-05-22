@@ -104,7 +104,7 @@
   }
 
   .home-main-inner {
-    padding: 40px 0;
+    padding: 40px 0 0;
   }
 
   .home-title {
@@ -484,7 +484,7 @@
     font-size: 12.6px;
     font-weight: 600;
     letter-spacing: 0.05em;
-    padding: 20px 0 56px;
+    padding: 32px 0;
     margin: 0;
   }
 
@@ -533,13 +533,8 @@
     overflow-x: auto;
     box-sizing: border-box;
     max-width: 980px;
-    /* margin: 0 24px; */
     margin: 0 16px;
     font-size: 15.5px;
-
-    /* border-left: 1px solid #e5e7eb;
-    border-top: 1px solid #e5e7eb;
-    border-bottom: 1px solid #e5e7eb; */
   }
 
   .home-comparison__table-wrap .border {
@@ -574,7 +569,6 @@
     width: 90px;
     font-size: 16.5px;
     border-top: none !important;
-    /* background: #e5e7eb; */
   }
 
   .home-comparison__table-wrap--sp .table-category {
@@ -586,10 +580,6 @@
     1px 0 0 #e5e7eb,
     0 1px 0 #e5e7eb;
   }
-
-  /* .none-content.table-category {
-    border-bottom: 1px solid #e5e7eb;
-  } */
 
   .home-comparison__col-service {
     width: 200px;
@@ -603,9 +593,7 @@
 
   .home-comparison__table td {
     border-left: 1px solid #e5e7eb;
-    /* padding: 16px 24px; */
     padding: 12px 24px 19px;
-    /* line-height: 2.3; */
     text-align: left;
   }
 
@@ -668,8 +656,62 @@
   }
 
   /*==========================================================
-      　　はじめる
+      　　ctaセクション
   ==============================================================*/
+  .home-cta {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 520px;
+    background-image: linear-gradient(#1685f8 40%, #065dde);
+    margin-top: 60px;
+  }
+
+  .home-cta__grid {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(0deg, transparent calc(100% - 1px), #f0f0f0 calc(100% - 1px)),
+    linear-gradient(90deg, transparent calc(100% - 1px), #f0f0f0 calc(100% - 1px));
+    background-size: 40px 40px;
+    background-repeat: repeat;
+    background-position: center center;
+    opacity: 0.2;
+  }
+
+  .home-cta__belt {
+    position: absolute;
+    bottom: 14px;
+    right: -40px;
+    width: auto;
+    height: 194px;
+  }
+
+  .home-cta__inner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    margin-top: -82px;
+  }
+
+  .home-cta__title {
+    margin: 0;
+    padding: 0 16px;
+    font-size: 30px;
+    line-height: 1.6;
+    color: var(--color-white);
+  }
+
+  .home-cta .home__btn {
+    background: var(--color-white);
+    color: var(--color-accent);
+    margin-top: 32px;
+  }
 
 
 }
@@ -996,15 +1038,37 @@
     margin: 64px 40px 0;
   }
 
-  .home-comparison__table td {
-    /* line-height: 2.5; */
-  }
-
   /* ヘッダー */
   .table-title-box th {
     font-size: 19.5px;
-    /* line-height: 1.7; */
     line-height: 1.1;
+  }
+
+  /*==========================================================
+      　　TB_ctaセクション
+  ==============================================================*/
+  .home-cta {
+    margin-top: 80px;
+  }
+
+  .home-cta__belt {
+    bottom: auto;
+    right: auto;
+    top: -20px;
+    left: -160px;
+    height: 570px;
+  }
+
+  .home-cta__inner {
+    margin-top: -20px;
+  }
+
+  .home-cta__title {
+    font-size: 36px;
+  }
+
+  .home-cta .home__btn {
+    margin-top: 40px;
   }
 
 
@@ -1241,7 +1305,7 @@
       　　PC-big_ホーム
   ==============================================================*/
   .home-main-inner {
-    padding: 48px 0 100px;
+    padding: 48px 0 20px;
   }
 
   .home-title .pc-only {
@@ -1318,7 +1382,6 @@
     height: 48px;
   }
 
-
   /* サービス内容 */
   .home-hero__service {
     transform: scale(1);
@@ -1348,6 +1411,10 @@
 
   .home-notes {
     margin: 1em 0;
+  }
+
+  .home-copy {
+    padding: 20px 0px 40px;
   }
 
   /*==========================================================
@@ -1481,13 +1548,41 @@
 
   .table-title-box th {
     font-size: 20px;
-    /* line-height: 1.5; */
   }
 
-  /* .home-comparison__table td {
-    line-height: 2.3;
-  } */
+  /*==========================================================
+      　　PC-big_ctaセクション
+  ==============================================================*/
+  .home-cta {
+    height: 584px;
+    margin-top: 100px;
+  }
 
+  .home-cta__grid {
+    background-size: 50px 50px;
+  }
+
+  .home-cta__belt {
+    top: -30px;
+    bottom: auto;
+    right: auto;
+    left: -160px;
+    height: 650px;
+  }
+
+  .home-cta__inner {
+    margin-top: -10px;
+  }
+
+  .home-cta__title {
+    font-size: 48px;
+    line-height: 1.8;
+  }
+
+  .home-cta .home__btn {
+    margin-top: 72px;
+    margin-top: 48px;
+  }
 
 
 }
