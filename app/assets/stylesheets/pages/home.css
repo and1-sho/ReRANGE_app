@@ -4,7 +4,9 @@
       　　ホーム
   ==============================================================*/
   .home {
+    max-width: 100vw;
     min-height: 100vh;
+    overflow: hidden;
     color: rgb(2, 27, 21);
     background: var(--color-white);
     font-family: "Noto Sans JP", sans-serif;
@@ -21,6 +23,7 @@
     max-height: 90px;
     box-sizing: border-box;
     padding: 16px 16px 16px 20px;
+    /* padding: 13px 16px 13px 20px; */
     background: var(--color-white);
     transition: box-shadow 0.25s ease;
   }
@@ -123,8 +126,10 @@
   }
 
   .home-main .home__btn {
-    padding: 16px 28px;
-    font-size: 14px;
+    /* padding: 16px 28px; */
+    padding: 20px 40px;
+    /* font-size: 14px; */
+    font-size: 15px;
   }
 
   /*=========== ホームヒーロー ===========*/
@@ -398,6 +403,7 @@
   .home-feature {
     margin-top: 20px;
     min-height: 400px;
+    padding-bottom: 40px;
   }
 
   .feature_box {
@@ -481,6 +487,151 @@
     padding: 20px 0 56px;
     margin: 0;
   }
+
+  /*==========================================================
+      　　画像
+  ==============================================================*/
+  .home-bg {
+    position: relative;
+    width: 100%;
+    height: 390px;
+    overflow: hidden;
+  }
+
+  .home-bg__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 34% 50%;
+    filter: brightness(50%);
+  }
+
+  .home-bg__title {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    font-size: 26px;
+    line-height: 1.6;
+    margin: 0;
+    color: var(--color-white);
+  }
+
+  /*==========================================================
+      　　比較
+  ==============================================================*/
+  .home-comparison {
+    padding: 26px 0;
+  }
+
+  .home-comparison__table-wrap--pc {
+    display: none;
+  }
+
+  .home-comparison__table-wrap {
+    overflow-x: auto;
+    box-sizing: border-box;
+    max-width: 980px;
+    margin: 0 24px;
+    font-size: 16px;
+  }
+
+  .home-comparison__table-wrap .border {
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+    min-width: 1000px;
+  }
+
+  .home-comparison__table {
+    border-collapse: collapse;
+    min-width: 1000px;
+    border: none !important;
+  }
+
+  /* 列幅 */
+  .home-comparison__col-category {
+    width: 140px;
+    font-size: 16.5px;
+    border-top: none !important;
+  }
+
+  .home-comparison__col-service {
+    width: 220px;
+  }
+
+  /* セル */
+  .home-comparison__table th{
+    padding: 16px 24px;
+    text-align: left;
+  }
+
+  .home-comparison__table td {
+    border-left: 1px solid #e5e7eb;
+    padding: 16px 24px;
+    line-height: 2.3;
+    text-align: left;
+  }
+
+  .home-comparison__table .none-content,
+  .home-comparison__table .border-bottom th,
+  .home-comparison__table .border-bottom td {
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  /* 左の項目 */
+  .home-comparison__table .table-category {
+    text-align: center;
+    font-weight: 600;
+  }
+
+  /* ヘッダー */
+  .table-title-box th {
+    font-size: 19px;
+    font-weight: 500;
+    padding: 24px 30px;
+  }
+
+  /* 各サービス色 */
+  .table-title__gym {
+    background: #f7ebcf;
+    color: #785400;
+    border-radius: 0 10px 0 0;
+  }
+
+  .table-title__sns {
+    background: #fdf9f1;
+    color: #312f14;
+  }
+
+  .table-title__10k {
+    background: #f1f4fd;
+    color: #0967ff;
+  }
+
+  /* アイコン */
+  .home-comparison__table svg {
+    width: 25.5px;
+    height: 25.5px;
+    position: relative;
+    top: 6.5px;
+    margin-right: 6px;
+  }
+
+  .icon--bad {
+    color: #FC0D0D;
+  }
+
+  .icon--good {
+    color: #74C66D;
+  }
+
+  .icon--neutral {
+    color: #FCE106;
+    transform: rotate(-90deg);
+  }
+
+
 }
 
 @media screen and (min-width: 640px) {
@@ -501,7 +652,8 @@
   .home-header__menu .home__btn {
     width: auto;
     text-align: left;
-    padding: 14px 20px;
+    /* padding: 14px 20px; */
+    padding: 16px 24px;
   }
 
   .home-main .home__btn.sp-only,
@@ -544,7 +696,8 @@
   }
 
   .home-main .home__btn {
-    font-size: 15px;
+    /* font-size: 15px; */
+    font-size: 16px;
   }
 
   /*=========== ホームヒーロー ===========*/
@@ -724,6 +877,7 @@
   ==============================================================*/
   .home-feature {
     margin-top: 70px;
+    padding-bottom: 128px;
   }
 
   .feature_box {
@@ -774,6 +928,44 @@
     line-height: 1.9;
     margin-top: 8px;
   }
+
+  /*==========================================================
+      　　TB_画像
+  ==============================================================*/
+  .home-bg {
+    height: 505px;
+  }
+
+  .home-bg__title {
+    font-size: 38px;
+    line-height: 1.8;
+  }
+
+  /*==========================================================
+      　　TB_比較
+  ==============================================================*/
+  .home-comparison {
+    padding-top: 100px;
+  }
+
+  .home-comparison .home-lead {
+    margin-top: -4px;
+  }
+
+  .home-comparison__table-wrap {
+    margin: 64px 40px 0;
+  }
+
+  .home-comparison__table td {
+    line-height: 2.5;
+  }
+
+  /* ヘッダー */
+  .table-title-box th {
+    font-size: 19.5px;
+    line-height: 1.7;
+  }
+
 
 
 }
@@ -915,6 +1107,10 @@
   /*==========================================================
       　　PC_特徴
   ==============================================================*/
+  .home-feature {
+    padding-bottom: 90px;
+  }
+
   .feature_box {
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(2, auto);
@@ -928,6 +1124,61 @@
   .item-02 .feature_item__icon {
     font-size: 58px;
     top: -12px;
+  }
+
+  /*==========================================================
+      　　PC_画像
+  ==============================================================*/
+  .home-bg {
+    height: 505px;
+  }
+
+  .home-bg__img {
+    width: 115%;
+    height: 115%;
+    object-position: 34% 100%;
+  }
+
+  .home-bg__title {
+    font-size: 42px;
+    line-height: 1.8;
+  }
+
+  /*==========================================================
+      　　PC_比較
+  ==============================================================*/
+  .home-comparison {
+    padding-top: 110px;
+  }
+
+  .home-comparison__table-wrap--sp {
+    display: none;
+  }
+
+  .home-comparison__table-wrap--pc {
+    display: block;
+  }
+
+  .home-comparison__table-wrap {
+    overflow-x: visible;
+    max-width: 1121px;
+    margin: 64px auto 0;
+  }
+  .home-comparison__table-wrap .border {
+    min-width: 1120px;
+  }
+
+  .home-comparison__table {
+    min-width: 1120px;
+  }
+
+  /* 各サービス */
+  .table-title__gym {
+    border-radius: 0;
+  }
+
+  .table-title__10k {
+    border-radius: 0 10px 0 0;
   }
 
 
@@ -1141,6 +1392,51 @@
     line-height: 1.9;
     margin-top: 12px;
   }
+
+  /*==========================================================
+      　　PC-big_画像
+  ==============================================================*/
+  .home-bg__img {
+    width: 100%;
+    height: 100%;
+    object-position: 34% 66%;
+  }
+
+  .home-bg__title {
+    font-size: 44px;
+    line-height: 1.8;
+  }
+
+  /*==========================================================
+      　　PC-big_比較
+  ==============================================================*/
+  .home-comparison .home-lead {
+    margin-top: -16px;
+    margin-bottom: 16px;
+    line-height: 2.2;
+  }
+
+  .home-comparison__table-wrap {
+    max-width: 1300px;
+    margin-top: 60px;
+  }
+  .home-comparison__table-wrap .border {
+    min-width: 1300px;
+  }
+
+  .home-comparison__table {
+    min-width: 1300px;
+  }
+
+  .table-title-box th {
+    font-size: 20px;
+    line-height: 1.5;
+  }
+
+  .home-comparison__table td {
+    line-height: 2.3;
+  }
+
 
 
 }
