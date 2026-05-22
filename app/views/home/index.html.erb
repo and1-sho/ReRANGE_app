@@ -132,7 +132,14 @@
         <p class="home-lead">10Kは、ボクシングをより現代的に、効率よく学ぶための方法です。<br class="sp-none">ここでは、ジムでの練習やSNS・YouTubeで学ぶ方法と比べて、何が違うのかをご紹介します。</p>
         <%= render "comparison_table_pc" %>
         <%= render "comparison_table_sp" %>
+      </section>
 
+      <!-- はじめる -->
+      <section class="home-cta">
+
+        <img class="home-cta__bg" src="/images/home-cta__bg.png" alt="ボクシングジム">
+        <h2 class="home-bg__title">あなたの練習をアップデートしてみませんか？10Kは、あなたのセカンドジムです。</h2>
+        <%= link_to "トレーナーに無料で相談しよう", new_user_registration_path, class: "home__btn home__btn--primary sp-none" %>
       </section>
     </div>
     <p class="home-copy">© 2026 10K. All rights reserved. β版 v0.1.0</p>
