@@ -682,10 +682,11 @@
 
   .home-cta__belt {
     position: absolute;
-    bottom: 14px;
-    right: -40px;
     width: auto;
-    height: 194px;
+    bottom: -4px;
+    right: -40px;
+    height: 234px;
+    opacity: 0.5;
   }
 
   .home-cta__inner {
@@ -1053,9 +1054,10 @@
   .home-cta__belt {
     bottom: auto;
     right: auto;
-    top: -20px;
+    top: -80px;
     left: -160px;
-    height: 570px;
+    height: 670px;
+    opacity: 0.4;
   }
 
   .home-cta__inner {
@@ -1310,9 +1312,8 @@
   .home-cta__belt {
     bottom: auto;
     right: auto;
-    top: -20px;
-    left: -160px;
-    height: 570px;
+    top: -85px;
+    height: 690px;
   }
 
   .home-cta__inner {
@@ -1590,11 +1591,8 @@
   }
 
   .home-cta__belt {
-    top: -30px;
-    bottom: auto;
-    right: auto;
-    left: -160px;
-    height: 650px;
+    top: -100px;
+    height: 780px;
   }
 
   .home-cta__inner {
