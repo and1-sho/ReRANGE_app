@@ -108,7 +108,7 @@
   }
 
   .home-title {
-    font-size: 32px;
+    font-size: 28px;
     letter-spacing: 1px;
     margin: 0;
     padding: 0 16px;
@@ -126,9 +126,7 @@
   }
 
   .home-main .home__btn {
-    /* padding: 16px 28px; */
     padding: 20px 40px;
-    /* font-size: 14px; */
     font-size: 15px;
   }
 
@@ -145,6 +143,7 @@
     width: 100%;
     height: 530px;
     margin: 0;
+    margin-top: 40px;
   }
 
   .home-hero__img {
@@ -481,10 +480,11 @@
 
   /* コピー */
   .home-copy {
-    font-size: 12.6px;
+    /* font-size: 12.6px; */
+    font-size: 12px;
     font-weight: 600;
     letter-spacing: 0.05em;
-    padding: 32px 0;
+    padding: 24px 0;
     margin: 0;
   }
 
@@ -734,7 +734,6 @@
   .home-header__menu .home__btn {
     width: auto;
     text-align: left;
-    /* padding: 14px 20px; */
     padding: 16px 24px;
   }
 
@@ -764,11 +763,14 @@
   }
 
   .home-main-inner {
-    padding: 50px 0 100px;
+    padding: 50px 0 0;
   }
 
   .home-title {
-    font-size: 40px;
+    font-size: 36px;
+    padding: 0 40px;
+    line-height: 1.6;
+    margin-bottom: 26px;
   }
 
   .home-lead {
@@ -778,7 +780,6 @@
   }
 
   .home-main .home__btn {
-    /* font-size: 15px; */
     font-size: 16px;
   }
 
@@ -903,7 +904,6 @@
     top: 10px;
     left: 20px;
     margin: 0;
-    /* transition-delay: 1s; */
   }
 
   .worry-item.item-02 {
@@ -1048,7 +1048,8 @@
       　　TB_ctaセクション
   ==============================================================*/
   .home-cta {
-    margin-top: 80px;
+    margin-top: 96px;
+    height: 500px;
   }
 
   .home-cta__belt {
@@ -1064,14 +1065,12 @@
   }
 
   .home-cta__title {
-    font-size: 36px;
+    font-size: 38px;
   }
 
   .home-cta .home__btn {
     margin-top: 40px;
   }
-
-
 
 }
 
@@ -1086,11 +1085,12 @@
   }
 
   .home-main-inner {
-    padding: 60px 0 100px;
+    padding: 60px 0 0;
   }
 
   .home-title {
-    font-size: 58px;
+    font-size: 46px;
+    margin-bottom: 32px;
   }
 
   .home-lead {
@@ -1153,6 +1153,11 @@
   .home-notes {
     font-size: 13px;
     margin: 32px 0 20px;
+  }
+
+  .home-copy {
+    font-size: 12.6px;
+    padding: 30px 0;
   }
 
   /*==========================================================
@@ -1296,6 +1301,29 @@
     border-radius: 0 10px 0 0;
   }
 
+  /*==========================================================
+      　　PC_ctaセクション
+  ==============================================================*/
+  .home-cta {
+    margin-top: 110px;
+    height: 510px;
+  }
+
+  .home-cta__belt {
+    bottom: auto;
+    right: auto;
+    top: -20px;
+    left: -160px;
+    height: 570px;
+  }
+
+  .home-cta__inner {
+    margin-top: -8px;
+  }
+
+  .home-cta__title {
+    font-size: 42px;
+  }
 
 }
 
@@ -1305,11 +1333,16 @@
       　　PC-big_ホーム
   ==============================================================*/
   .home-main-inner {
-    padding: 48px 0 20px;
+    padding: 48px 0 0;
   }
 
   .home-title .pc-only {
     display: none;
+  }
+
+  .home-title {
+    font-size: 48px;
+    margin-bottom: 40px;
   }
 
   .home-lead {
@@ -1323,7 +1356,7 @@
   .home-hero {
     aspect-ratio: 16 / 9;
     max-width: 1300px;
-    margin: 8px auto 32px;
+    margin: 16px auto 32px;
   }
 
   .home-hero__image {
@@ -1411,10 +1444,6 @@
 
   .home-notes {
     margin: 1em 0;
-  }
-
-  .home-copy {
-    padding: 20px 0px 40px;
   }
 
   /*==========================================================
@@ -1582,6 +1611,15 @@
   .home-cta .home__btn {
     margin-top: 72px;
     margin-top: 48px;
+    padding: 18px 38px;
+    border: solid 1.2px var(--color-white);
+    transition: background-color 0.2s ease,
+              color 0.2s ease;
+  }
+
+  .home-cta .home__btn:hover {
+    background-color: var(--color-accent);
+    color: var(--color-white);
   }
 
 
