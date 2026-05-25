@@ -23,7 +23,6 @@
     max-height: 90px;
     box-sizing: border-box;
     padding: 16px 16px 16px 20px;
-    /* padding: 13px 16px 13px 20px; */
     background: var(--color-white);
     transition: box-shadow 0.25s ease;
   }
@@ -480,7 +479,6 @@
 
   /* コピー */
   .home-copy {
-    /* font-size: 12.6px; */
     font-size: 12px;
     font-weight: 600;
     letter-spacing: 0.05em;
