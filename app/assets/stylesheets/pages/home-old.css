@@ -538,14 +538,12 @@
   .home-comparison__table-wrap .border {
     border-radius: 10px;
     border: 1px solid #e5e7eb;
-    /* min-width: 1000px; */
-    min-width: 900px;
+    min-width: 1000px;
   }
 
   .home-comparison__table {
     border-collapse: collapse;
-    /* min-width: 1000px; */
-    min-width: 900px;
+    min-width: 1000px;
     border: none !important;
     border-spacing: 0;
   }
@@ -571,7 +569,7 @@
     border-top: none !important;
   }
 
-  /* .home-comparison__table-wrap--sp .table-category {
+  .home-comparison__table-wrap--sp .table-category {
     position: sticky;
     left: 0;
     background: #fff;
@@ -579,15 +577,10 @@
     box-shadow:
     1px 0 0 #e5e7eb,
     0 1px 0 #e5e7eb;
-  } */
-
-  .home-comparison__col-service {
-    /* width: 200px; */
-    width: fit-content;
   }
 
-  .home-comparison__col-service:nth-of-type(1) {
-    width: 310px;
+  .home-comparison__col-service {
+    width: 200px;
   }
 
   /* セル */
@@ -602,10 +595,6 @@
     text-align: left;
   }
 
-  .home-comparison__table td:nth-of-type(1) {
-    border-left: none;
-  }
-
   .home-comparison__table .none-content,
   .home-comparison__table .border-bottom th,
   .home-comparison__table .border-bottom td {
@@ -613,10 +602,10 @@
   }
 
   /* 左の項目 */
-  /* .home-comparison__table .table-category {
+  .home-comparison__table .table-category {
     text-align: center;
     font-weight: 600;
-  } */
+  }
 
   /* ヘッダー */
   .table-title-box th {
@@ -640,7 +629,6 @@
   .table-title__10k {
     background: #f1f4fd;
     color: #0967ff;
-    border-radius: 10px 0 0 0;
   }
 
   /* アイコン */
