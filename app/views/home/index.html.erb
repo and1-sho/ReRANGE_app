@@ -18,8 +18,7 @@
 
   <main class="home-main">
     <div class="home-main-inner">
-      <h1 class="home-title">"強くなる"を<br class="sp-only">アップデートする</h1>
-      <p class="home-lead">練習動画やスパーリング動画を投稿すると、<br class="tb-only">ボクシングトレーナーからアドバイスが届くサービスです。</p>
+      <h1 class="home-title">必要なのは、もっと練習<br class="sp-only">することだけじゃない。<br class="tb-none">日々の練習を見てくれる<br class="sp-only">トレーナーです。</h1>
       <%= link_to "トレーナーに無料で相談しよう", new_user_registration_path, class: "home__btn home__btn--primary sp-none" %>
 
       <!-- ホームヒーロー -->
@@ -132,7 +131,16 @@
         <p class="home-lead">10Kは、ボクシングをより現代的に、効率よく学ぶための方法です。<br class="sp-none">ここでは、ジムでの練習やSNS・YouTubeで学ぶ方法と比べて、何が違うのかをご紹介します。</p>
         <%= render "comparison_table_pc" %>
         <%= render "comparison_table_sp" %>
+      </section>
 
+      <!-- ctaセクション -->
+      <section class="home-cta">
+        <div class="home-cta__grid"></div>
+        <img class="home-cta__belt" src="/images/home-belt.png" alt="ベルト">
+        <div class="home-cta__inner">
+          <h2 class="home-cta__title">あなたの練習を<br class="sp-only">アップデートしよう！</h2>
+          <%= link_to "トレーナーに無料で相談しよう", new_user_registration_path, class: "home__btn home__btn--primary" %>
+        </div>
       </section>
     </div>
     <p class="home-copy">© 2026 10K. All rights reserved. β版 v0.1.0</p>
