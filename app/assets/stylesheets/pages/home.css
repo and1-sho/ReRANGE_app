@@ -539,13 +539,13 @@
     border-radius: 10px;
     border: 1px solid #e5e7eb;
     /* min-width: 1000px; */
-    min-width: 900px;
+    min-width: 880px;
   }
 
   .home-comparison__table {
     border-collapse: collapse;
     /* min-width: 1000px; */
-    min-width: 900px;
+    min-width: 880px;
     border: none !important;
     border-spacing: 0;
   }
@@ -565,11 +565,11 @@
   }
 
   /* 列幅 */
-  .home-comparison__col-category {
+  /* .home-comparison__col-category {
     width: 90px;
     font-size: 16.5px;
     border-top: none !important;
-  }
+  } */
 
   /* .home-comparison__table-wrap--sp .table-category {
     position: sticky;
@@ -587,7 +587,7 @@
   }
 
   .home-comparison__col-service:nth-of-type(1) {
-    width: 310px;
+    width: 300px;
   }
 
   /* セル */
@@ -597,9 +597,13 @@
   }
 
   .home-comparison__table td {
+    position: relative;
     border-left: 1px solid #e5e7eb;
-    padding: 12px 24px 19px;
+    /* padding: 12px 24px 19px; */
+    padding: 16px 24px 16px 55px;
     text-align: left;
+    line-height: 1.8;
+    font-size: 15.3px;
   }
 
   .home-comparison__table td:nth-of-type(1) {
@@ -625,7 +629,7 @@
     padding: 24px 30px;
   }
 
-  /* 各サービス色 */
+  /* 各サービス */
   .table-title__gym {
     background: #f7ebcf;
     color: #785400;
@@ -647,9 +651,16 @@
   .home-comparison__table svg {
     width: 25.5px;
     height: 25.5px;
-    position: relative;
+    /* position: relative;
     top: 6.5px;
-    margin-right: 6px;
+    margin-right: 6px; */
+    position: absolute;
+    top: 16.5px;
+    left: 20px;
+  }
+
+  .home-comparison__table .td-bottom svg {
+    top: 30px;
   }
 
   .icon--bad {
@@ -1049,10 +1060,26 @@
     margin: 64px 40px 0;
   }
 
+  .home-comparison__table-wrap .border {
+    min-width: 940px;
+  }
+
+  .home-comparison__table {
+    min-width: 940px;
+  }
+
+  .home-comparison__col-service:nth-of-type(1) {
+    width: 370px;
+  }
+
   /* ヘッダー */
   .table-title-box th {
     font-size: 19.5px;
     line-height: 1.1;
+  }
+
+  .home-comparison__table .td-bottom svg {
+    top: 16.5px;
   }
 
   /*==========================================================
@@ -1296,21 +1323,45 @@
   }
 
   /* 列幅 */
-  .home-comparison__col-category {
+  /* .home-comparison__col-category {
     width: 130px;
+  } */
+
+  .home-comparison__col-service:nth-of-type(1) {
+    width: auto;
   }
 
+  .home-comparison__col-service:nth-of-type(3) {
+    width: 430px;
+  }
+
+  .home-comparison__table td {
+    font-size: 16px;
+    padding: 16px 24px 16px 62px;
+  }
+
+  /* ヘッダー */
   .table-title-box th {
     line-height: 1.2;
   }
 
   /* 各サービス */
+  .table-title__gym {
+    border-radius: 10px 0 0 0;
+  }
+
   .table-title__sns {
     border-radius: 0;
   }
 
   .table-title__10k {
     border-radius: 0 10px 0 0;
+  }
+
+  /* アイコン */
+  .home-comparison__table svg {
+    top: 18px;
+    left: 25.5px;
   }
 
   /*==========================================================
@@ -1575,20 +1626,34 @@
   }
 
   .home-comparison__table-wrap {
-    max-width: 1300px;
+    max-width: 1200px;
     margin-top: 60px;
   }
   .home-comparison__table-wrap .border {
-    min-width: 1300px;
+    min-width: 1200px;
   }
 
   .home-comparison__table {
-    min-width: 1300px;
+    max-width: 1200px;
+  }
+
+  .home-comparison__col-service:nth-of-type(1),
+  .home-comparison__col-service:nth-of-type(2) {
+    width: 380px;
+  }
+
+  .home-comparison__col-service:nth-of-type(3) {
+    width: 440px;
   }
 
   .table-title-box th {
     font-size: 20px;
   }
+
+  /* .home-comparison__table td {
+    font-size: 16px;
+    padding: 16px 24px 16px 55px;
+  } */
 
   /*==========================================================
       　　PC-big_ctaセクション
