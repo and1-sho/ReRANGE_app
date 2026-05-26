@@ -1,33 +1,41 @@
-const worryBox = document.querySelector('.worry-box');
-const worryItems = document.querySelectorAll('.worry-item');
+import { Controller } from "@hotwired/stimulus"
 
-let rootMarginValue = '-10% 0px';
+export default class extends Controller {
+  connect() {
+    const worryBox = document.querySelector('.worry-box')
+    const worryItems = document.querySelectorAll('.worry-item')
 
-if (window.innerWidth < 640) {
-  // SP
-  rootMarginValue = '-45% 0px';
-} else if (window.innerWidth < 1024) {
-  // TB
-  rootMarginValue = '-46% 0px';
-} else {
-  // PC
-  rootMarginValue = '-46% 0px';
-}
+    let rootMarginValue = '-10% 0px'
 
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-
-      worryItems.forEach(item => {
-        item.classList.add('is-show');
-      });
-
-      observer.unobserve(entry.target);
+    if (window.innerWidth < 640) {
+      // SP
+      rootMarginValue = '-45% 0px'
+    } else if (window.innerWidth < 1024) {
+      // TB
+      rootMarginValue = '-46% 0px'
+    } else {
+      // PC
+      rootMarginValue = '-46% 0px'
     }
-  });
-}, {
-  threshold: 0,
-  rootMargin: rootMarginValue
-});
 
-observer.observe(worryBox);
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+
+          worryItems.forEach(item => {
+            item.classList.add('is-show')
+          })
+
+          observer.unobserve(entry.target)
+        }
+      })
+    }, {
+      threshold: 0,
+      rootMargin: rootMarginValue
+    })
+
+    if (worryBox) {
+      observer.observe(worryBox)
+    }
+  }
+}
