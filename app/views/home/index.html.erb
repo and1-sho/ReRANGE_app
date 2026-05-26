@@ -133,6 +133,114 @@
         <%= render "comparison_table_sp" %>
       </section>
 
+      <!-- よくある質問 -->
+      <section class="home-faq">
+        <h2 class="sec-title">よくある質問</h2>
+        <div class="faq-box faq-block">
+          <article class="faq-item">
+            <input type="checkbox" id="toggle01" class="faq-toggle">
+            <label class="faq-title" for="toggle01">
+              <div class="text-Q">
+                <p class="title-text">お金はかかりますか？</p>
+                <span class="faq-icon"></span>
+              </div>
+            </label>
+            <div class="faq-content">
+              <div class="faq-A">
+                <div class="con-text">
+                  <p>今回のβ版（先行体験期間中）は、すべての機能を完全に無料でご利用いただけます。なお、正式版リリース後も有料プランへの加入手続きをしない限り、勝手にお金が発生することは一切ありませんのでご安心ください。</p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="faq-item">
+            <input type="checkbox" id="toggle02" class="faq-toggle">
+            <label class="faq-title" for="toggle02">
+              <div class="text-Q">
+                <p class="title-text">まだ始めたばかりの初心者ですが、動画を送っても恥ずかしくないですか？</p>
+                <span class="faq-icon"></span>
+              </div>
+            </label>
+            <div class="faq-content">
+              <div class="faq-A">
+                <div class="con-text">
+                  <p>大歓迎です！ 変な癖がついてしまう前の初心者の方ほど、プロのアドバイスを受けることで最速で綺麗なフォームが身につきます。「パンチの打ち方が全然わからない」という段階でも、親切丁寧に指導しますので安心してご参加ください。</p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="faq-item">
+            <input type="checkbox" id="toggle03" class="faq-toggle">
+            <label class="faq-title" for="toggle03">
+              <div class="text-Q">
+                <p class="title-text">どんな動画を送ればいいですか？ 綺麗に撮影しないとダメですか？</p>
+                <span class="faq-icon"></span>
+              </div>
+            </label>
+            <div class="faq-content">
+              <div class="faq-A">
+                <div class="con-text">
+                  <p>スマホで撮影した10秒〜30秒程度の短い動画でも十分です。 自宅でのシャドーボクシング、ジムでのサンドバッグ打ちやミット打ちなど、あなたの普段の練習をそのままスマホで撮影して投稿してみてください。</p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="faq-item">
+            <input type="checkbox" id="toggle04" class="faq-toggle">
+            <label class="faq-title" for="toggle04">
+              <div class="text-Q">
+                <p class="title-text">動画を投稿したら、本当にアドバイスが返ってきますか？</p>
+                <span class="faq-icon"></span>
+              </div>
+            </label>
+            <div class="faq-content">
+              <div class="faq-A">
+                <div class="con-text">
+                  <p>必ずトレーナーからアドバイスがあります。 今回は先行体験（MVP）枠として人数を限定して運営しているため、実力派トレーナーがあなたの動画を一本一本じっくりと拝見します。動画送信後、原則24時間以内に丁寧なアドバイスをお届けします。</p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="faq-item">
+            <input type="checkbox" id="toggle05" class="faq-toggle">
+            <label class="faq-title" for="toggle05">
+              <div class="text-Q">
+                <p class="title-text">送った動画やアドバイスは、他のユーザーにも見られますか？</p>
+                <span class="faq-icon"></span>
+              </div>
+            </label>
+            <div class="faq-content">
+              <div class="faq-A">
+                <div class="con-text">
+                  <p>はい、基本的にはアプリ内で全体に公開されます。 X（旧ツイッター）のようにあなたの投稿に対して、全国の様々なトレーナーから多角的なアドバイスが集まる仕組みです。他のユーザーへのプロの解説を見るだけでも、ボクシングの勉強として非常に役立ちます。</p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="faq-item">
+            <input type="checkbox" id="toggle06" class="faq-toggle">
+            <label class="faq-title" for="toggle06">
+              <div class="text-Q">
+                <p class="title-text">自分の動画をみんなに見られたくない、特定のコーチと1対1でやり取りしたい場合は？</p>
+                <span class="faq-icon"></span>
+              </div>
+            </label>
+            <div class="faq-content">
+              <div class="faq-A">
+                <div class="con-text">
+                  <p>今後のアップデートで「非公開の完全パーソナル機能」を追加予定です。タイムラインで「この人の教え方が一番しっくりくる」というお気に入りのトレーナーが見つかった場合、そのトレーナーを指名して、周りには非公開で深く指導を受けられる月額制の専属トレーナー機能を現在準備しています。</p>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
       <!-- ctaセクション -->
       <section class="home-cta">
         <div class="home-cta__grid"></div>
@@ -147,3 +255,61 @@
   </main>
 </div>
 
+<% content_for :head do %>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "お金はかかりますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "今回のβ版（先行体験期間中）は、すべての機能を完全に無料でご利用いただけます。なお、正式版リリース後も有料プランへの加入手続きをしない限り、勝手にお金が発生することは一切ありませんのでご安心ください。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "まだ始めたばかりの初心者ですが、動画を送っても恥ずかしくないですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "大歓迎です！ 変な癖がついてしまう前の初心者の方ほど、プロのアドバイスを受けることで最速で綺麗なフォームが身につきます。「パンチの打ち方が全然わからない」という段階でも、親切丁寧に指導しますので安心してご参加ください。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "どんな動画を送ればいいですか？綺麗に撮影しないとダメですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "スマホで撮影した10秒〜30秒程度の短い動画でも十分です。 自宅でのシャドーボクシング、ジムでのサンドバッグ打ちやミット打ちなど、あなたの普段の練習をそのままスマホで撮影して投稿してみてください。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "動画を投稿したら、本当にアドバイスが返ってきますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "必ずトレーナーからアドバイスがあります。今回は先行体験（MVP）枠として人数を限定して運営しているため、実力派トレーナーがあなたの動画を一本一本じっくりと拝見します。動画送信後、原則24時間以内に丁寧なアドバイスをお届けします。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "送った動画やアドバイスは、他のユーザーにも見られますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、基本的にはアプリ内で全体に公開されます。 X（旧ツイッター）のようにあなたの投稿に対して、全国の様々なトレーナーから多角的なアドバイスが集まる仕組みです。他のユーザーへのプロの解説を見るだけでも、ボクシングの勉強として非常に役立ちます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "自分の動画をみんなに見られたくない、特定のコーチと1対1でやり取りしたい場合は？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "今後のアップデートで「非公開の完全パーソナル機能」を追加予定です。 タイムラインで「この人の教え方が一番しっくりくる」というお気に入りのトレーナーが見つかった場合、そのトレーナーを指名して、周りには非公開で深く指導を受けられる月額制の専属トレーナー機能を現在準備しています。"
+        }
+      }
+    ]
+  }
+  </script>
+<% end %>
