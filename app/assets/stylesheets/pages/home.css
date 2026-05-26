@@ -247,7 +247,6 @@
     top: 230px;
     right: -60px;
     display: none;
-
   }
 
   .home-service-03 {
@@ -538,13 +537,11 @@
   .home-comparison__table-wrap .border {
     border-radius: 10px;
     border: 1px solid #e5e7eb;
-    /* min-width: 1000px; */
     min-width: 880px;
   }
 
   .home-comparison__table {
     border-collapse: collapse;
-    /* min-width: 1000px; */
     min-width: 880px;
     border: none !important;
     border-spacing: 0;
@@ -564,30 +561,12 @@
     display: none;
   }
 
-  /* 列幅 */
-  /* .home-comparison__col-category {
-    width: 90px;
-    font-size: 16.5px;
-    border-top: none !important;
-  } */
-
-  /* .home-comparison__table-wrap--sp .table-category {
-    position: sticky;
-    left: 0;
-    background: #fff;
-    z-index: 2;
-    box-shadow:
-    1px 0 0 #e5e7eb,
-    0 1px 0 #e5e7eb;
-  } */
-
-  .home-comparison__col-service {
-    /* width: 200px; */
-    width: fit-content;
-  }
-
   .home-comparison__col-service:nth-of-type(1) {
     width: 300px;
+  }
+  .home-comparison__col-service:nth-of-type(2),
+  .home-comparison__col-service:nth-of-type(3) {
+    width: 290px;
   }
 
   /* セル */
@@ -599,7 +578,6 @@
   .home-comparison__table td {
     position: relative;
     border-left: 1px solid #e5e7eb;
-    /* padding: 12px 24px 19px; */
     padding: 16px 24px 16px 55px;
     text-align: left;
     line-height: 1.8;
@@ -615,12 +593,6 @@
   .home-comparison__table .border-bottom td {
     border-bottom: 1px solid #e5e7eb;
   }
-
-  /* 左の項目 */
-  /* .home-comparison__table .table-category {
-    text-align: center;
-    font-weight: 600;
-  } */
 
   /* ヘッダー */
   .table-title-box th {
@@ -651,9 +623,6 @@
   .home-comparison__table svg {
     width: 25.5px;
     height: 25.5px;
-    /* position: relative;
-    top: 6.5px;
-    margin-right: 6px; */
     position: absolute;
     top: 16.5px;
     left: 20px;
@@ -1061,15 +1030,20 @@
   }
 
   .home-comparison__table-wrap .border {
-    min-width: 940px;
+    min-width: 950px;
   }
 
   .home-comparison__table {
-    min-width: 940px;
+    min-width: 950px;
   }
 
+  /* 列幅 */
   .home-comparison__col-service:nth-of-type(1) {
     width: 370px;
+  }
+  .home-comparison__col-service:nth-of-type(2),
+  .home-comparison__col-service:nth-of-type(3) {
+    width: 290px;
   }
 
   /* ヘッダー */
@@ -1323,14 +1297,10 @@
   }
 
   /* 列幅 */
-  /* .home-comparison__col-category {
-    width: 130px;
-  } */
-
-  .home-comparison__col-service:nth-of-type(1) {
-    width: auto;
+  .home-comparison__col-service:nth-of-type(1),
+  .home-comparison__col-service:nth-of-type(2) {
+    width: 345px;
   }
-
   .home-comparison__col-service:nth-of-type(3) {
     width: 430px;
   }
@@ -1641,7 +1611,6 @@
   .home-comparison__col-service:nth-of-type(2) {
     width: 380px;
   }
-
   .home-comparison__col-service:nth-of-type(3) {
     width: 440px;
   }
@@ -1649,11 +1618,6 @@
   .table-title-box th {
     font-size: 20px;
   }
-
-  /* .home-comparison__table td {
-    font-size: 16px;
-    padding: 16px 24px 16px 55px;
-  } */
 
   /*==========================================================
       　　PC-big_ctaセクション
