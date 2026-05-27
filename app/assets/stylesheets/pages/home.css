@@ -646,6 +646,153 @@
   }
 
   /*==========================================================
+      　　よくある質問
+  ==============================================================*/
+  .home-faq {
+    padding: 40px 0 26px;
+  }
+
+  .faq-toggle {
+    display: none;
+  }
+
+  .faq-box {
+    padding: 12px 24px 0;
+    text-align: left;
+  }
+
+  .faq-box .faq-item {
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .faq-title {
+    display: block;
+    padding: 24px 30px 24px 0;
+    font-optical-sizing: auto;
+    font-style: normal;
+    line-height: 1.6;
+    display: flex;
+    font-size: 15px;
+    align-items: center;
+    letter-spacing: .184em;
+    cursor: pointer;
+  }
+
+  .faq-item__arrow {
+    position: absolute;
+    top: 38px;
+    right: 16px;
+    width: 25px;
+    height: 25px;
+    transition: all 0.3s;
+    margin: auto 0;
+    transform: rotate(90deg);
+  }
+
+  .faq-box .title-text {
+    letter-spacing: .073em;
+    line-height: 1.7;
+    align-items: start;
+    font-size: 16px;
+    font-weight: 500;
+    margin: 0;
+  }
+
+  .text-Q,
+  .faq-A {
+    display: flex;
+  }
+
+  .text-Q {
+    width: 100%;
+  }
+
+  .text-Q img {
+    width: 25px;
+    height: 25px;
+  }
+
+  .faq-content {
+    max-height: 0;
+    overflow: hidden;
+  }
+
+  .faq-content .con-text {
+    padding-top: 1px;
+  }
+
+  .faq-content .con-text a {
+    font-weight: bold;
+    line-height: 2.3;
+  }
+
+  .faq-content .con-text .margin-bottom {
+    margin-bottom: 24px;
+  }
+
+  .faq-content .faq-A {
+    line-height: 2;
+    letter-spacing: .073em;
+    padding: 0 0 24px;
+    font-size: 15px;
+    margin-top: -4px;
+  }
+
+  .faq-content {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+    transition: all 0.3s;
+  }
+
+  .faq-toggle:checked + .faq-title + .faq-content {
+    max-height: 500px;
+    transition: all 1.5s;
+  }
+
+  .faq-title {
+    position: relative;
+  }
+
+  /* トグルアイコン */
+  .faq-icon {
+    display: grid;
+    place-items: center;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    position: absolute;
+    margin-left: 14px;
+    top: 50%;
+    right: 2px;
+    transform: translateY(-50%);
+    flex-shrink: 0;
+  }
+
+  .faq-icon::before,
+  .faq-icon::after {
+    content: "";
+    display: block;
+    width: 10px;
+    height: 1.5px;
+    background-color: #bbbbbc;
+    position: absolute;
+    transform-origin: center;
+    transition: transform .4s;
+  }
+  .faq-icon::after {
+    transform: rotate(90deg);
+  }
+
+  .faq-toggle:checked + .faq-title .faq-icon::after {
+    transform: rotate(180deg);
+  }
+
+  .faq-link-top {
+    margin-top: 10px;
+  }
+
+  /*==========================================================
       　　ctaセクション
   ==============================================================*/
   .home-cta {
@@ -1057,6 +1204,31 @@
   }
 
   /*==========================================================
+      　　TB_よくある質問
+  ==============================================================*/
+  .home-faq {
+    padding: 64px 0 26px;
+  }
+
+  .faq-box {
+    padding: 24px 60px 0;
+  }
+
+  .faq-box .title-text {
+    font-size: 17px;
+    line-height: 1.8;
+  }
+
+  .faq-content .faq-A {
+    font-size: 16px;
+  }
+
+  .faq-content .faq-A .con-text p {
+    margin-top: 8px;
+  }
+
+
+  /*==========================================================
       　　TB_ctaセクション
   ==============================================================*/
   .home-cta {
@@ -1332,6 +1504,44 @@
   .home-comparison__table svg {
     top: 18px;
     left: 25.5px;
+  }
+
+  /*==========================================================
+      　　PC_よくある質問
+  ==============================================================*/
+  .home-faq {
+    padding: 74px 0 26px;
+  }
+
+  .faq-box {
+    width: 920px;
+    margin: 0 auto;
+    padding: 20px 60px 0;
+  }
+
+  .faq-title {
+    padding: 24px 30px 24px 1.5px;
+  }
+
+  .faq-box .title-text {
+    line-height: 1.85;
+  }
+
+  .faq-icon {
+    right: 4px;
+  }
+
+  .faq-icon::before, .faq-icon::after {
+    width: 12px;
+    height: 1.5px;
+  }
+
+  .faq-content .faq-A {
+    padding-bottom: 32px;
+  }
+
+  .faq-content .faq-A .con-text p {
+    margin-top: 12px;
   }
 
   /*==========================================================
@@ -1624,7 +1834,7 @@
   ==============================================================*/
   .home-cta {
     height: 584px;
-    margin-top: 100px;
+    margin-top: 110px;
   }
 
   .home-cta__grid {
