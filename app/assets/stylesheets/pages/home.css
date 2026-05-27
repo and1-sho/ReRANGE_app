@@ -17,7 +17,9 @@
     justify-content: space-between;
     align-items: center;
     position: fixed;
-    top: 0px;
+    top: 0;
+    left: 0;
+    right: 0;
     z-index: 80;
     width: 100%;
     max-height: 90px;
@@ -181,10 +183,20 @@
   }
 
   .home .user-icon {
+    position: relative;
     width: 34px;
     height: 34px;
     border-radius: 50%;
-    background: #d9d9d9;
+    color: #888e8c;
+  }
+
+  .home .user-icon svg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 42px !important;
+    height: 42px !important;
   }
 
   .home .user-name {
@@ -196,6 +208,7 @@
     font-size: 10px;
     font-weight: 400;
     color: #949495;
+    color: #7f8684;
   }
 
   /* 動画 */
@@ -399,6 +412,7 @@
   ==============================================================*/
   .home-feature {
     margin-top: 20px;
+    margin-top: 24px;
     min-height: 400px;
     padding-bottom: 40px;
   }
@@ -649,7 +663,8 @@
       　　よくある質問
   ==============================================================*/
   .home-faq {
-    padding: 40px 0 26px;
+    /* padding: 40px 0 26px; */
+    padding: 24px 0 16px;
   }
 
   .faq-toggle {
@@ -657,7 +672,8 @@
   }
 
   .faq-box {
-    padding: 12px 24px 0;
+    /* padding: 12px 24px 0; */
+    padding: 8px 24px 0;
     text-align: left;
   }
 
@@ -834,7 +850,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     width: 100%;
-    margin-top: -82px;
+    margin-top: -84px;
   }
 
   .home-cta__title {
@@ -949,6 +965,11 @@
   .home .user-icon {
     width: 42px;
     height: 42px;
+  }
+
+  .home .user-icon svg {
+    width: 52px !important;
+    height: 52px !important;
   }
 
   .home .user-name {
@@ -1211,12 +1232,17 @@
   }
 
   .faq-box {
-    padding: 24px 60px 0;
+    padding: 16px 60px 0;
   }
 
   .faq-box .title-text {
     font-size: 17px;
     line-height: 1.8;
+  }
+
+  .faq-icon::before, .faq-icon::after {
+    width: 12px;
+    height: 1.5px;
   }
 
   .faq-content .faq-A {
@@ -1531,11 +1557,6 @@
     right: 4px;
   }
 
-  .faq-icon::before, .faq-icon::after {
-    width: 12px;
-    height: 1.5px;
-  }
-
   .faq-content .faq-A {
     padding-bottom: 32px;
   }
@@ -1627,6 +1648,11 @@
   .home .user-icon {
     width: 58px;
     height: 58px;
+  }
+
+  .home .user-icon svg {
+    width: 71px !important;
+    height: 71px !important;
   }
 
   .home .user-name {
