@@ -5,8 +5,7 @@
   ==============================================================*/
   .home {
     max-width: 100vw;
-    min-height: 100vh;
-    overflow: hidden;
+    min-height: 100svh;
     color: rgb(2, 27, 21);
     background: var(--color-white);
     font-family: "Noto Sans JP", sans-serif;
@@ -27,6 +26,7 @@
     padding: 16px 16px 16px 20px;
     background: var(--color-white);
     transition: box-shadow 0.25s ease;
+    transform: translateZ(0);
   }
 
   .home-header.is-scrolled {
