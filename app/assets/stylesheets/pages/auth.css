@@ -4,6 +4,10 @@
   /*==========================================================
       　　ログイン・新規登録・パスワードをお忘れの方
   ==============================================================*/
+  .auth-page {
+    font-family: "Noto Sans JP", sans-serif;
+  }
+
   .auth-header {
     display: flex;
     height: 75px;
@@ -69,7 +73,8 @@
   .auth-lead {
     margin: -8px 0 20px;
     font-size: 0.9rem;
-    line-height: 1.55;
+    line-height: 1.6 !important;
+    letter-spacing: 0.03em;
     color: rgba(2, 27, 21, 0.62);
     text-align: center;
   }
