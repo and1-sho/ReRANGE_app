@@ -34,3 +34,8 @@ cloudflare_r2:
   endpoint: <%= ENV["CLOUDFLARE_R2_ENDPOINT"] %>
   bucket: <%= ENV["CLOUDFLARE_R2_BUCKET"] %>
   force_path_style: true
+  # aws-sdk-s3 の新バージョンは複数のチェックサムを同時送信するが、
+  # Cloudflare R2 は1種類しか受け付けないためエラーになる。
+  # ~ (nil) を指定することでチェックサム送信を無効にして回避する。
+  upload_options:
+    checksum_algorithm: ~
